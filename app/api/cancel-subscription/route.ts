@@ -65,8 +65,10 @@ export async function POST(request: NextRequest) {
     }
 
     try {
-      // Cancel the Stripe subscription
-      await stripe.subscriptions.del(userData.stripe_subscription_id);
+      // Cancel the Stripe subscription (at period end)
+      await stripe.subscriptions.update(userData.stripe_subscription_id, {
+        cancel_at_period_end: true,
+      });
 
       console.log("Subscription cancelled in Stripe:", {
         subscriptionId: userData.stripe_subscription_id,
