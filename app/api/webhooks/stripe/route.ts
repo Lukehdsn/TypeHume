@@ -13,10 +13,12 @@ const supabase = createClient(
 
 export async function POST(request: NextRequest) {
   try {
+    console.log("🔔 Stripe webhook request received");
     const body = await request.text();
     const signature = request.headers.get("stripe-signature");
 
     if (!signature) {
+      console.error("❌ Missing stripe-signature header");
       return NextResponse.json(
         { error: "Missing stripe-signature header" },
         { status: 400 }
@@ -31,8 +33,9 @@ export async function POST(request: NextRequest) {
         signature,
         webhookSecret
       );
+      console.log("✅ Webhook signature verified, event type:", event.type);
     } catch (err) {
-      console.error("Webhook signature verification failed:", err);
+      console.error("❌ Webhook signature verification failed:", err);
       return NextResponse.json(
         { error: "Invalid signature" },
         { status: 400 }
@@ -73,7 +76,7 @@ export async function POST(request: NextRequest) {
         const stripeCustomerId = session.customer as string;
         const stripeSubscriptionId = session.subscription as string;
 
-        console.log("Updating user plan in Supabase", {
+        console.log("📝 Attempting to update user plan in Supabase", {
           userId,
           plan,
           wordLimit,
@@ -81,7 +84,10 @@ export async function POST(request: NextRequest) {
           stripeSubscriptionId,
         });
 
-        const { error: updateError } = await supabase
+        console.log("🔐 Supabase URL:", process.env.NEXT_PUBLIC_SUPABASE_URL);
+        console.log("🔐 Service role key exists:", !!process.env.SUPABASE_SERVICE_ROLE_KEY);
+
+        const { error: updateError, data } = await supabase
           .from("users")
           .update({
             plan,
@@ -93,18 +99,29 @@ export async function POST(request: NextRequest) {
           .eq("id", userId);
 
         if (updateError) {
-          console.error("Error updating user plan:", updateError);
+          console.error("❌ Error updating user plan in Supabase:", {
+            error: updateError,
+            code: updateError.code,
+            message: updateError.message,
+            details: updateError.details,
+            hint: updateError.hint,
+          });
           return NextResponse.json(
-            { error: "Failed to update user plan" },
+            { error: "Failed to update user plan", details: updateError.message },
             { status: 500 }
           );
         }
 
+        console.log("✅ User plan updated successfully", {
+          userId,
+          plan,
+          data,
+        });
         console.log(
           `✅ User ${userId} upgraded to ${plan} plan (${billingPeriod})`
         );
       } catch (err) {
-        console.error("Exception in checkout.session.completed handler:", err);
+        console.error("❌ Exception in checkout.session.completed handler:", err);
         throw err;
       }
     }
@@ -122,9 +139,10 @@ export async function POST(request: NextRequest) {
       // You could downgrade user to free plan here if desired
     }
 
+    console.log("✅ Webhook processed successfully, returning response");
     return NextResponse.json({ received: true });
   } catch (error) {
-    console.error("Webhook error:", error);
+    console.error("❌ Webhook error:", error);
     return NextResponse.json(
       { error: "Webhook processing failed" },
       { status: 500 }
