@@ -3,7 +3,8 @@
 import { useState, useEffect, useRef } from "react"
 import Link from "next/link"
 import { useAuth, useUser } from "@clerk/nextjs"
-import { Clipboard, Loader } from "lucide-react"
+import { Clipboard, Loader, X } from "lucide-react"
+import { useSearchParams } from "next/navigation"
 import { supabase } from "@/lib/supabase"
 import { getWordLimit, getPlanConfig, PlanType } from "@/lib/plans"
 import DetectorMarquee from "@/components/DetectorMarquee"
@@ -17,16 +18,31 @@ interface SavedSession {
 export default function DashboardPage() {
   const { userId } = useAuth()
   const { user } = useUser()
+  const searchParams = useSearchParams()
   const [input, setInput] = useState("")
   const [output, setOutput] = useState("")
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
+  const [successMessage, setSuccessMessage] = useState("")
   const panelRef = useRef<HTMLDivElement>(null)
   const [plan, setPlan] = useState<PlanType>("free")
   const [wordLimit, setWordLimit] = useState(500)
   const [wordsUsed, setWordsUsed] = useState(0)
   const [maxPerRequest, setMaxPerRequest] = useState(250)
   const [isInitializing, setIsInitializing] = useState(true)
+
+  // Handle checkout success message
+  useEffect(() => {
+    const checkoutSuccess = searchParams.get("checkout")
+    const plan = searchParams.get("plan")
+
+    if (checkoutSuccess === "success") {
+      setSuccessMessage(`Successfully upgraded to ${plan} plan! 🎉`)
+      // Auto-dismiss after 5 seconds
+      const timer = setTimeout(() => setSuccessMessage(""), 5000)
+      return () => clearTimeout(timer)
+    }
+  }, [searchParams])
 
   // Initialize user in database if they don't exist
   useEffect(() => {
@@ -412,6 +428,19 @@ export default function DashboardPage() {
               )}
             </button>
             </div>
+
+            {/* Success Message */}
+            {successMessage && (
+              <div className="px-6 pb-3 flex items-center gap-2 bg-green-50 text-green-700 rounded-lg p-3 border border-green-200">
+                <p className="text-sm flex-1">{successMessage}</p>
+                <button
+                  onClick={() => setSuccessMessage("")}
+                  className="text-green-600 hover:text-green-800"
+                >
+                  <X size={16} />
+                </button>
+              </div>
+            )}
 
             {/* Error Message */}
             {error && (
