@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect, useRef, Suspense } from "react"
 import Link from "next/link"
 import { useAuth, useUser } from "@clerk/nextjs"
 import { Clipboard, Loader, X } from "lucide-react"
@@ -15,10 +15,24 @@ interface SavedSession {
   timestamp: number
 }
 
+function CheckoutSuccessHandler({ onSuccess }: { onSuccess: (message: string) => void }) {
+  const searchParams = useSearchParams()
+
+  useEffect(() => {
+    const checkoutSuccess = searchParams.get("checkout")
+    const plan = searchParams.get("plan")
+
+    if (checkoutSuccess === "success") {
+      onSuccess(`Successfully upgraded to ${plan} plan! 🎉`)
+    }
+  }, [searchParams, onSuccess])
+
+  return null
+}
+
 export default function DashboardPage() {
   const { userId } = useAuth()
   const { user } = useUser()
-  const searchParams = useSearchParams()
   const [input, setInput] = useState("")
   const [output, setOutput] = useState("")
   const [loading, setLoading] = useState(false)
@@ -31,18 +45,11 @@ export default function DashboardPage() {
   const [maxPerRequest, setMaxPerRequest] = useState(250)
   const [isInitializing, setIsInitializing] = useState(true)
 
-  // Handle checkout success message
-  useEffect(() => {
-    const checkoutSuccess = searchParams.get("checkout")
-    const plan = searchParams.get("plan")
-
-    if (checkoutSuccess === "success") {
-      setSuccessMessage(`Successfully upgraded to ${plan} plan! 🎉`)
-      // Auto-dismiss after 5 seconds
-      const timer = setTimeout(() => setSuccessMessage(""), 5000)
-      return () => clearTimeout(timer)
-    }
-  }, [searchParams])
+  const handleCheckoutSuccess = (message: string) => {
+    setSuccessMessage(message)
+    // Auto-dismiss after 5 seconds
+    const timer = setTimeout(() => setSuccessMessage(""), 5000)
+  }
 
   // Initialize user in database if they don't exist
   useEffect(() => {
@@ -268,6 +275,9 @@ export default function DashboardPage() {
 
   return (
     <div className="min-h-screen bg-white">
+      <Suspense fallback={null}>
+        <CheckoutSuccessHandler onSuccess={handleCheckoutSuccess} />
+      </Suspense>
       {/* Navbar - Authenticated */}
       <nav>
         <div className="max-w-6xl mx-auto px-6 py-5 flex items-center justify-between">
