@@ -399,7 +399,7 @@ export default function PricingPage() {
             {/* Pro Card - Most Popular */}
             <div className={`relative rounded-2xl border-2 bg-white p-8 shadow-md hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col ${currentPlan === "pro" ? "border-[#7B7EFF]" : "border-[#7B7EFF]/60"}`}>
               {/* Most Popular/Current Plan Badge */}
-              {(currentPlan === "pro" || (currentPlan !== "premium" && currentPlan !== "pro")) && (
+              {currentPlan !== "premium" && (
                 <div className="absolute top-6 left-6 inline-block">
                   <span
                     className="inline-block px-3 py-1 text-xs font-semibold rounded-full"
