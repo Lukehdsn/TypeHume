@@ -16,6 +16,7 @@ export default function ProfilePage() {
   const [maxPerRequest, setMaxPerRequest] = useState(250)
   const [loading, setLoading] = useState(true)
   const [cancelLoading, setCancelLoading] = useState(false)
+  const [portalLoading, setPortalLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [successMessage, setSuccessMessage] = useState<string | null>(null)
 
@@ -52,6 +53,35 @@ export default function ProfilePage() {
 
     fetchUserData()
   }, [userId])
+
+  const handleOpenBillingPortal = async () => {
+    setPortalLoading(true)
+    setError(null)
+
+    try {
+      const response = await fetch("/api/billing-portal", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        setError(data.error || "Failed to open billing portal")
+        setPortalLoading(false)
+        return
+      }
+
+      // Redirect to Stripe billing portal
+      window.location.href = data.portalUrl
+    } catch (err) {
+      console.error("Portal error:", err)
+      setError("Failed to open billing portal. Please try again.")
+      setPortalLoading(false)
+    }
+  }
 
   const handleCancelSubscription = async () => {
     if (!confirm("Are you sure you want to cancel your subscription? You will be downgraded to the free plan.")) {
@@ -215,16 +245,25 @@ export default function ProfilePage() {
                 </div>
               </div>
 
-              {/* Sign Out Button */}
+              {/* Action Buttons */}
               <div className="flex gap-3 flex-wrap">
                 {plan !== "free" && (
-                  <button
-                    onClick={handleCancelSubscription}
-                    disabled={cancelLoading}
-                    className="bg-orange-600 text-white hover:bg-orange-700 rounded-lg px-6 py-3 font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                    {cancelLoading ? "Cancelling..." : "Cancel Subscription"}
-                  </button>
+                  <>
+                    <button
+                      onClick={handleOpenBillingPortal}
+                      disabled={portalLoading}
+                      className="bg-blue-600 text-white hover:bg-blue-700 rounded-lg px-6 py-3 font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      {portalLoading ? "Opening..." : "Manage Subscription"}
+                    </button>
+                    <button
+                      onClick={handleCancelSubscription}
+                      disabled={cancelLoading}
+                      className="bg-orange-600 text-white hover:bg-orange-700 rounded-lg px-6 py-3 font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      {cancelLoading ? "Cancelling..." : "Cancel Subscription"}
+                    </button>
+                  </>
                 )}
                 <SignOutButton>
                   <button className="bg-red-600 text-white hover:bg-red-700 rounded-lg px-6 py-3 font-medium transition-colors">
