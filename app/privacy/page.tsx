@@ -251,13 +251,32 @@ export default function PrivacyPage() {
           </section>
         </div>
 
-        {/* Footer Link */}
-        <div className="mt-16 pt-8 border-t border-gray-200 text-center text-gray-600">
-          <Link href="/" className="text-[#7B7EFF] hover:underline">
-            Back to Home
-          </Link>
-        </div>
       </div>
+
+      {/* Footer */}
+      <footer className="bg-gray-900 text-gray-300 mt-20 border-t border-gray-800">
+        <div className="max-w-5xl mx-auto px-6 py-12">
+          <div className="flex flex-col items-center gap-8 mb-8">
+            <div className="text-center">
+              <div className="flex items-center gap-2 mb-4 justify-center">
+                <span className="text-2xl font-bold text-[#7B7EFF]">TH</span>
+                <span className="text-xl font-semibold text-white">TextHume</span>
+              </div>
+              <p className="text-sm">Transform AI text into human-like content instantly.</p>
+            </div>
+
+            <div className="flex gap-6 text-sm">
+              <Link href="/pricing" className="hover:text-[#7B7EFF] transition-colors">Pricing</Link>
+              <Link href="/privacy" className="hover:text-[#7B7EFF] transition-colors">Privacy Policy</Link>
+              <a href="#" className="hover:text-[#7B7EFF] transition-colors">Terms Of Service</a>
+            </div>
+          </div>
+
+          <div className="border-t border-gray-700 pt-8 text-center text-sm">
+            <p>&copy; 2024 TextHume. All rights reserved.</p>
+          </div>
+        </div>
+      </footer>
     </div>
   )
 }

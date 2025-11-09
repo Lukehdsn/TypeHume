@@ -681,26 +681,19 @@ export default function Home() {
       {/* Footer */}
       <footer className="bg-gray-900 text-gray-300 mt-20">
         <div className="max-w-5xl mx-auto px-6 py-12">
-          <div className="grid md:grid-cols-3 gap-8 mb-8">
-            <div>
-              <div className="flex items-center gap-2 mb-4">
+          <div className="flex flex-col items-center gap-8 mb-8">
+            <div className="text-center">
+              <div className="flex items-center gap-2 mb-4 justify-center">
                 <span className="text-2xl font-bold text-accent">TH</span>
                 <span className="text-xl font-semibold text-white">TextHume</span>
               </div>
               <p className="text-sm">Transform AI text into human-like content instantly.</p>
             </div>
 
-            <div>
-              <ul className="space-y-2 text-sm">
-                <li><Link href="/pricing" className="hover:text-accent transition-colors">Pricing</Link></li>
-              </ul>
-            </div>
-
-            <div>
-              <ul className="space-y-2 text-sm">
-                <li><Link href="/privacy" className="hover:text-accent transition-colors">Privacy Policy</Link></li>
-                <li><a href="#" className="hover:text-accent transition-colors">Terms Of Service</a></li>
-              </ul>
+            <div className="flex gap-6 text-sm">
+              <Link href="/pricing" className="hover:text-accent transition-colors">Pricing</Link>
+              <Link href="/privacy" className="hover:text-accent transition-colors">Privacy Policy</Link>
+              <a href="#" className="hover:text-accent transition-colors">Terms Of Service</a>
             </div>
           </div>
 

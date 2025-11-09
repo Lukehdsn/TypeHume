@@ -862,40 +862,19 @@ export default function DashboardPage() {
       {/* Footer */}
       <footer className="bg-gray-900 text-gray-300 mt-20">
         <div className="max-w-5xl mx-auto px-6 py-12">
-          <div className="grid md:grid-cols-4 gap-8 mb-8">
-            <div>
-              <div className="flex items-center gap-2 mb-4">
+          <div className="flex flex-col items-center gap-8 mb-8">
+            <div className="text-center">
+              <div className="flex items-center gap-2 mb-4 justify-center">
                 <span className="text-2xl font-bold text-accent">TH</span>
                 <span className="text-xl font-semibold text-white">TextHume</span>
               </div>
               <p className="text-sm">Transform AI text into human-like content instantly.</p>
             </div>
 
-            <div>
-              <h4 className="font-semibold text-white mb-4">Product</h4>
-              <ul className="space-y-2 text-sm">
-                <li><a href="#" className="hover:text-accent transition-colors">Features</a></li>
-                <li><Link href="/pricing" className="hover:text-accent transition-colors">Pricing</Link></li>
-                <li><a href="#" className="hover:text-accent transition-colors">API</a></li>
-              </ul>
-            </div>
-
-            <div>
-              <h4 className="font-semibold text-white mb-4">Company</h4>
-              <ul className="space-y-2 text-sm">
-                <li><a href="#about" className="hover:text-accent transition-colors">About</a></li>
-                <li><a href="#" className="hover:text-accent transition-colors">Blog</a></li>
-                <li><a href="#" className="hover:text-accent transition-colors">Contact</a></li>
-              </ul>
-            </div>
-
-            <div>
-              <h4 className="font-semibold text-white mb-4">Legal</h4>
-              <ul className="space-y-2 text-sm">
-                <li><a href="#" className="hover:text-accent transition-colors">Privacy</a></li>
-                <li><a href="#" className="hover:text-accent transition-colors">Terms</a></li>
-                <li><a href="#" className="hover:text-accent transition-colors">Security</a></li>
-              </ul>
+            <div className="flex gap-6 text-sm">
+              <Link href="/pricing" className="hover:text-accent transition-colors">Pricing</Link>
+              <Link href="/privacy" className="hover:text-accent transition-colors">Privacy Policy</Link>
+              <a href="#" className="hover:text-accent transition-colors">Terms Of Service</a>
             </div>
           </div>
 
