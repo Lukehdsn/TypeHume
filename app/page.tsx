@@ -693,7 +693,7 @@ export default function Home() {
             <div className="flex gap-6 text-sm">
               <Link href="/pricing" className="hover:text-accent transition-colors">Pricing</Link>
               <Link href="/privacy" className="hover:text-accent transition-colors">Privacy Policy</Link>
-              <a href="#" className="hover:text-accent transition-colors">Terms Of Service</a>
+              <Link href="/terms" className="hover:text-accent transition-colors">Terms Of Service</Link>
             </div>
           </div>
 
