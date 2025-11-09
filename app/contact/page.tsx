@@ -25,12 +25,12 @@ export default function ContactPage() {
 
       {/* Contact Content */}
       <div className="max-w-3xl mx-auto px-6 py-16">
-        <h1 className="text-4xl font-bold text-gray-900 mb-4">Get in Touch</h1>
-        <p className="text-lg text-gray-600 mb-12">
+        <h1 className="text-4xl font-bold text-gray-900 mb-4 text-center">Get in Touch</h1>
+        <p className="text-lg text-gray-600 mb-12 text-center">
           Have a question or feedback about TextHume? We'd love to hear from you.
         </p>
 
-        <div className="group relative border border-gray-200 rounded-2xl bg-white p-8 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col items-center text-center">
+        <div className="max-w-lg mx-auto group relative border border-gray-200 rounded-2xl bg-white p-8 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col items-center text-center">
           {/* Icon Container */}
           <div className="w-16 h-16 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
             <svg className="w-8 h-8 text-[#7B7EFF]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
