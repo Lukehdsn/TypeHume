@@ -1,7 +1,7 @@
 "use client"
 
 import { useUser, useAuth } from "@clerk/nextjs"
-import { SignOutButton } from "@clerk/nextjs"
+import { SignOutButton, UserProfile } from "@clerk/nextjs"
 import Link from "next/link"
 import { useState, useEffect } from "react"
 import { supabase } from "@/lib/supabase"
@@ -15,10 +15,10 @@ export default function ProfilePage() {
   const [wordsUsed, setWordsUsed] = useState(0)
   const [maxPerRequest, setMaxPerRequest] = useState(250)
   const [loading, setLoading] = useState(true)
-  const [cancelLoading, setCancelLoading] = useState(false)
   const [portalLoading, setPortalLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [successMessage, setSuccessMessage] = useState<string | null>(null)
+  const [showAccountSettings, setShowAccountSettings] = useState(false)
 
   useEffect(() => {
     if (!userId) return
@@ -80,47 +80,6 @@ export default function ProfilePage() {
       console.error("Portal error:", err)
       setError("Failed to open billing portal. Please try again.")
       setPortalLoading(false)
-    }
-  }
-
-  const handleCancelSubscription = async () => {
-    if (!confirm("Are you sure you want to cancel your subscription? You will be downgraded to the free plan.")) {
-      return
-    }
-
-    setCancelLoading(true)
-    setError(null)
-    setSuccessMessage(null)
-
-    try {
-      const response = await fetch("/api/cancel-subscription", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-
-      const data = await response.json()
-
-      if (!response.ok) {
-        setError(data.error || "Failed to cancel subscription")
-        setCancelLoading(false)
-        return
-      }
-
-      // Success! Update state and show message
-      setSuccessMessage("Subscription cancelled successfully. You've been downgraded to the free plan.")
-      setPlan("free")
-      setWordLimit(data.wordLimit)
-      setWordsUsed(0)
-      setCancelLoading(false)
-
-      // Reload after brief delay
-      setTimeout(() => window.location.reload(), 2000)
-    } catch (err) {
-      console.error("Cancel error:", err)
-      setError("Failed to cancel subscription. Please try again.")
-      setCancelLoading(false)
     }
   }
 
@@ -257,11 +216,10 @@ export default function ProfilePage() {
                       {portalLoading ? "Opening..." : "Manage Subscription"}
                     </button>
                     <button
-                      onClick={handleCancelSubscription}
-                      disabled={cancelLoading}
-                      className="bg-orange-600 text-white hover:bg-orange-700 rounded-lg px-6 py-3 font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                      onClick={() => setShowAccountSettings(true)}
+                      className="bg-orange-600 text-white hover:bg-orange-700 rounded-lg px-6 py-3 font-medium transition-colors"
                     >
-                      {cancelLoading ? "Cancelling..." : "Cancel Subscription"}
+                      Account Settings
                     </button>
                   </>
                 )}
@@ -274,6 +232,26 @@ export default function ProfilePage() {
                   Back to Dashboard
                 </Link>
               </div>
+
+              {/* Account Settings Modal */}
+              {showAccountSettings && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+                  <div className="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+                    <div className="flex items-center justify-between p-6 border-b border-gray-200">
+                      <h2 className="text-2xl font-bold text-gray-900">Account Settings</h2>
+                      <button
+                        onClick={() => setShowAccountSettings(false)}
+                        className="text-gray-500 hover:text-gray-700 text-2xl"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                    <div className="p-6">
+                      <UserProfile />
+                    </div>
+                  </div>
+                </div>
+              )}
             </>
           )}
         </div>
