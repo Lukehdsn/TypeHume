@@ -93,7 +93,9 @@ export async function POST(request: NextRequest) {
         if (oldSubscriptionId && oldSubscriptionId !== newSubscriptionId) {
           try {
             console.log("🗑️ Cancelling old subscription:", oldSubscriptionId);
-            await stripe.subscriptions.del(oldSubscriptionId);
+            await stripe.subscriptions.update(oldSubscriptionId, {
+              cancel_at_period_end: true,
+            });
             console.log("✅ Old subscription cancelled successfully:", oldSubscriptionId);
           } catch (cancelErr: any) {
             // Log error but don't fail - old subscription might already be cancelled
