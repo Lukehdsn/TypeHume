@@ -71,10 +71,43 @@ export async function POST(request: NextRequest) {
       }
 
       try {
+        // Fetch user's current subscription before updating
+        const { data: userData, error: fetchError } = await supabase
+          .from("users")
+          .select("stripe_subscription_id")
+          .eq("id", userId)
+          .maybeSingle();
+
+        if (fetchError) {
+          console.error("❌ Error fetching user subscription ID:", {
+            message: fetchError.message,
+            code: fetchError.code,
+          });
+          // Continue anyway, just won't cancel old subscription
+        }
+
+        const oldSubscriptionId = userData?.stripe_subscription_id;
+        const newSubscriptionId = session.subscription as string;
+
+        // Cancel old subscription if this is an upgrade (different subscription IDs)
+        if (oldSubscriptionId && oldSubscriptionId !== newSubscriptionId) {
+          try {
+            console.log("🗑️ Cancelling old subscription:", oldSubscriptionId);
+            await stripe.subscriptions.del(oldSubscriptionId);
+            console.log("✅ Old subscription cancelled successfully:", oldSubscriptionId);
+          } catch (cancelErr: any) {
+            // Log error but don't fail - old subscription might already be cancelled
+            console.warn("⚠️ Could not cancel old subscription:", {
+              subscriptionId: oldSubscriptionId,
+              message: cancelErr.message,
+            });
+          }
+        }
+
         // Update user's plan in database
         const wordLimit = getWordLimit(plan);
         const stripeCustomerId = session.customer as string;
-        const stripeSubscriptionId = session.subscription as string;
+        const stripeSubscriptionId = newSubscriptionId;
 
         console.log("📝 Attempting to update user plan in Supabase", {
           userId,
@@ -82,6 +115,7 @@ export async function POST(request: NextRequest) {
           wordLimit,
           stripeCustomerId,
           stripeSubscriptionId,
+          oldSubscriptionCancelled: oldSubscriptionId && oldSubscriptionId !== newSubscriptionId,
         });
 
         console.log("🔐 Supabase URL:", process.env.NEXT_PUBLIC_SUPABASE_URL);
