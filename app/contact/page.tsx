@@ -27,7 +27,8 @@ export default function ContactPage() {
       <div className="max-w-3xl mx-auto px-6 py-16">
         <h1 className="text-4xl font-bold text-gray-900 mb-4 text-center">Get in Touch</h1>
         <p className="text-lg text-gray-600 mb-12 text-center">
-          Have a question or feedback about TextHume? We'd love to hear from you.
+          Have a question or feedback about TextHume?<br />
+          We'd love to hear from you.
         </p>
 
         <div className="max-w-lg mx-auto group relative border border-gray-200 rounded-2xl bg-white p-8 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col items-center text-center">
@@ -74,26 +75,19 @@ export default function ContactPage() {
       {/* Footer */}
       <footer className="bg-gray-900 text-gray-300 mt-20 border-t border-gray-800">
         <div className="max-w-5xl mx-auto px-6 py-12">
-          <div className="grid md:grid-cols-3 gap-8 mb-8">
-            <div>
-              <div className="flex items-center gap-2 mb-4">
+          <div className="flex flex-col items-center gap-8 mb-8">
+            <div className="text-center">
+              <div className="flex items-center gap-2 mb-4 justify-center">
                 <span className="text-2xl font-bold text-[#7B7EFF]">TH</span>
                 <span className="text-xl font-semibold text-white">TextHume</span>
               </div>
               <p className="text-sm">Transform AI text into human-like content instantly.</p>
             </div>
 
-            <div>
-              <ul className="space-y-2 text-sm">
-                <li><Link href="/pricing" className="hover:text-[#7B7EFF] transition-colors">Pricing</Link></li>
-              </ul>
-            </div>
-
-            <div>
-              <ul className="space-y-2 text-sm">
-                <li><Link href="/privacy" className="hover:text-[#7B7EFF] transition-colors">Privacy Policy</Link></li>
-                <li><a href="#" className="hover:text-[#7B7EFF] transition-colors">Terms Of Service</a></li>
-              </ul>
+            <div className="flex gap-6 text-sm">
+              <Link href="/pricing" className="hover:text-[#7B7EFF] transition-colors">Pricing</Link>
+              <Link href="/privacy" className="hover:text-[#7B7EFF] transition-colors">Privacy Policy</Link>
+              <a href="#" className="hover:text-[#7B7EFF] transition-colors">Terms Of Service</a>
             </div>
           </div>
 
