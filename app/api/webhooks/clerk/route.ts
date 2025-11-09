@@ -69,7 +69,9 @@ export async function POST(request: NextRequest) {
         if (userData?.stripe_subscription_id) {
           try {
             console.log("🗑️ Cancelling Stripe subscription:", userData.stripe_subscription_id);
-            await stripe.subscriptions.del(userData.stripe_subscription_id);
+            await stripe.subscriptions.update(userData.stripe_subscription_id, {
+              cancel_at_period_end: true,
+            });
             console.log("✅ Stripe subscription cancelled successfully");
           } catch (stripeErr: any) {
             // Subscription might already be cancelled, log but don't fail
