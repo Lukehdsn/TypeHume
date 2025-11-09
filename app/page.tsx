@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react"
 import Link from "next/link"
 import { Clipboard } from "lucide-react"
+import { useAuth } from "@clerk/nextjs"
 import { humanizeLocal } from "@/lib/humanize"
 import DetectorMarquee from "@/components/DetectorMarquee"
 
@@ -18,6 +19,7 @@ export default function Home() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
   const panelRef = useRef<HTMLDivElement>(null)
+  const { userId } = useAuth()
 
   // Load from localStorage on mount
   useEffect(() => {
@@ -65,6 +67,11 @@ export default function Home() {
   }
 
   const handleHumanize = async () => {
+    if (!userId) {
+      window.location.href = "/sign-up"
+      return
+    }
+
     if (!input.trim()) {
       setError("Please enter some text to humanize.")
       return
@@ -87,6 +94,10 @@ export default function Home() {
   }
 
   const scrollToPanel = () => {
+    if (!userId) {
+      window.location.href = "/sign-up"
+      return
+    }
     panelRef.current?.scrollIntoView({ behavior: "smooth" })
   }
 

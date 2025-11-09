@@ -331,12 +331,18 @@ export default function PricingPage() {
               </ul>
 
               {/* Button */}
-              <Link
-                href="/?start=free"
-                className="block bg-gray-900 text-white hover:bg-gray-800 rounded-xl px-4 py-3 text-center font-medium transition-colors"
+              <button
+                onClick={() => {
+                  if (!userId) {
+                    window.location.href = "/sign-up"
+                    return
+                  }
+                  window.location.href = "/app"
+                }}
+                className="block w-full bg-gray-900 text-white hover:bg-gray-800 rounded-xl px-4 py-3 text-center font-medium transition-colors"
               >
                 Start for free
-              </Link>
+              </button>
             </div>
 
             {/* Starter Card */}
