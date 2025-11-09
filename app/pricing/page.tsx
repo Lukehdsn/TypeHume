@@ -297,8 +297,8 @@ export default function PricingPage() {
           {/* Pricing Cards Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 pb-24">
             {/* Free Card */}
-            <div className={`relative rounded-2xl border bg-white p-8 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col ${currentPlan === "free" ? "border-[#7B7EFF] border-2" : "border-gray-200"}`}>
-              {currentPlan === "free" && (
+            <div className={`relative rounded-2xl border bg-white p-8 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col ${userId && currentPlan === "free" ? "border-[#7B7EFF] border-2" : "border-gray-200"}`}>
+              {userId && currentPlan === "free" && (
                 <div className="absolute top-4 right-4 inline-block">
                   <span
                     className="inline-block px-3 py-1 text-xs font-semibold rounded-full"
