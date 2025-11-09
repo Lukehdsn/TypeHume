@@ -21,8 +21,14 @@ export default function Home() {
   const panelRef = useRef<HTMLDivElement>(null)
   const { userId } = useAuth()
 
-  // Load from localStorage on mount
+  // Load from localStorage on mount - only for authenticated users
   useEffect(() => {
+    if (!userId) {
+      // Clear localStorage for non-authenticated users
+      localStorage.removeItem("texthume:last")
+      return
+    }
+
     const saved = localStorage.getItem("texthume:last")
     if (saved) {
       try {
@@ -33,10 +39,15 @@ export default function Home() {
         console.error("Failed to load saved session:", err)
       }
     }
-  }, [])
+  }, [userId])
 
-  // Save to localStorage whenever input or output changes
+  // Save to localStorage whenever input or output changes - only for authenticated users
   useEffect(() => {
+    // Only save to localStorage if user is authenticated
+    if (!userId) {
+      return
+    }
+
     if (input || output) {
       const session: SavedSession = {
         input,
@@ -45,7 +56,7 @@ export default function Home() {
       }
       localStorage.setItem("texthume:last", JSON.stringify(session))
     }
-  }, [input, output])
+  }, [input, output, userId])
 
   const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const text = e.target.value.slice(0, 500)
