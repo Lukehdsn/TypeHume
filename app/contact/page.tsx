@@ -30,23 +30,32 @@ export default function ContactPage() {
           Have a question or feedback about TextHume? We'd love to hear from you.
         </p>
 
-        <div className="bg-gradient-to-br from-[#7B7EFF]/10 to-[#7B7EFF]/5 border border-[#7B7EFF]/20 rounded-2xl p-12">
-          <div className="text-center">
-            <p className="text-gray-700 mb-6 text-lg">
-              Send us an email and we'll get back to you as soon as possible.
-            </p>
-
-            <a
-              href="mailto:texthume@gmail.com"
-              className="inline-block bg-[#7B7EFF] text-white hover:bg-[#6B6EDF] rounded-xl px-8 py-4 font-semibold transition-colors text-lg"
-            >
-              Email: texthume@gmail.com
-            </a>
-
-            <p className="text-gray-500 mt-8 text-sm">
-              We typically respond within 24 hours.
-            </p>
+        <div className="group relative border border-gray-200 rounded-2xl bg-white p-8 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col items-center text-center">
+          {/* Icon Container */}
+          <div className="w-16 h-16 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+            <svg className="w-8 h-8 text-[#7B7EFF]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+            </svg>
           </div>
+
+          {/* Content */}
+          <h3 className="text-lg font-semibold text-gray-900 mb-2">Send us an email</h3>
+          <p className="text-sm text-gray-600 mb-6">
+            We'd love to hear from you. Send us a message and we'll get back to you as soon as possible.
+          </p>
+
+          {/* Email Button */}
+          <a
+            href="mailto:texthume@gmail.com"
+            className="inline-block bg-[#7B7EFF] text-white hover:brightness-110 rounded-xl px-6 py-3 font-semibold transition-all text-sm mb-4"
+          >
+            Email: texthume@gmail.com
+          </a>
+
+          {/* Response Time */}
+          <p className="text-gray-500 text-xs">
+            Typically responds within 24 hours
+          </p>
         </div>
 
         <div className="mt-16 pt-12 border-t border-gray-200">
