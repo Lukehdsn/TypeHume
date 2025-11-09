@@ -19,6 +19,9 @@ export default function PrivacyPage() {
             <Link href="/pricing" className="text-gray-600 hover:text-gray-900">
               Pricing
             </Link>
+            <Link href="/contact" className="text-gray-600 hover:text-gray-900">
+              Contact
+            </Link>
           </div>
         </div>
       </nav>

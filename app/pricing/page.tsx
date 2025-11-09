@@ -194,10 +194,15 @@ export default function PricingPage() {
         {/* Navbar */}
         <nav className="border-b border-gray-200">
           <div className="max-w-6xl mx-auto px-6 py-5 flex items-center justify-between">
-            <Link href={userId ? "/app" : "/"} className="flex items-center gap-2">
-              <span className="text-2xl font-bold text-[#7B7EFF]">TH</span>
-              <span className="text-2xl font-semibold text-gray-900">TextHume</span>
-            </Link>
+            <div className="flex items-center gap-8">
+              <Link href={userId ? "/app" : "/"} className="flex items-center gap-2">
+                <span className="text-2xl font-bold text-[#7B7EFF]">TH</span>
+                <span className="text-2xl font-semibold text-gray-900">TextHume</span>
+              </Link>
+              <div className="hidden sm:flex gap-4">
+                <Link href="/contact" className="text-gray-700 hover:text-gray-900 transition-colors">Contact</Link>
+              </div>
+            </div>
 
             <div className="flex items-center gap-3">
               {userId ? (

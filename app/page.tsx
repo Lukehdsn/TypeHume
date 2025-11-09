@@ -157,6 +157,12 @@ export default function Home() {
               >
                 Pricing
               </Link>
+              <Link
+                href="/contact"
+                className="text-gray-900 hover:text-accent transition-colors"
+              >
+                Contact
+              </Link>
               <a
                 href="#about"
                 className="text-gray-900 hover:text-accent transition-colors"
