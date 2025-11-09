@@ -171,13 +171,8 @@ export default function PricingPage() {
     // If user already has this plan, don't do anything
     if (currentPlan === plan) return
 
-    // If upgrading from an existing paid plan, use upgrade endpoint
-    // Otherwise use checkout
-    if (currentPlan !== "free" && currentPlan !== plan) {
-      handleUpgrade(plan)
-    } else {
-      handleCheckout(plan)
-    }
+    // Always use checkout for all plan upgrades
+    handleCheckout(plan)
   }
 
   const starterPrice = billingPeriod === "monthly" ? 4.99 : 3
