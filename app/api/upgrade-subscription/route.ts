@@ -128,6 +128,14 @@ export async function POST(request: NextRequest) {
       };
 
       const priceId = priceIdMap[plan];
+      console.log("📋 Upgrade attempt:", {
+        plan,
+        priceId,
+        starterConfigured: !!process.env.STRIPE_PRICE_STARTER_MONTHLY,
+        proConfigured: !!process.env.STRIPE_PRICE_PRO_MONTHLY,
+        premiumConfigured: !!process.env.STRIPE_PRICE_PREMIUM_MONTHLY,
+      });
+
       if (!priceId) {
         console.error(`No price ID configured for plan: ${plan}`);
         return NextResponse.json(
