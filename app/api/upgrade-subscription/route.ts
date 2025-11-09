@@ -8,7 +8,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  process.env.SUPABASE_SERVICE_ROLE_KEY!
 );
 
 // Valid plan types
@@ -119,24 +119,34 @@ export async function POST(request: NextRequest) {
         );
       }
 
-      // Get all prices to find the one matching the new plan
-      const prices = await stripe.prices.list({
-        lookup_keys: [plan], // This assumes you set lookup_keys on your prices
-        limit: 1,
-      });
+      // Map plans to their Stripe price IDs
+      // These should be your actual Stripe price IDs from your dashboard
+      const priceIdMap: Record<string, string> = {
+        starter: process.env.STRIPE_PRICE_STARTER_MONTHLY || "",
+        pro: process.env.STRIPE_PRICE_PRO_MONTHLY || "",
+        premium: process.env.STRIPE_PRICE_PREMIUM_MONTHLY || "",
+      };
 
-      if (prices.data.length === 0) {
-        // Fallback: Try to find price by metadata
-        console.warn(`No price found with lookup_key ${plan}, using metadata search`);
-
-        // For now, return error asking to set lookup keys properly
+      const priceId = priceIdMap[plan];
+      if (!priceId) {
+        console.error(`No price ID configured for plan: ${plan}`);
         return NextResponse.json(
-          { error: "Price not found for plan. Please contact support." },
+          { error: "Price not configured for plan. Please contact support." },
           { status: 500 }
         );
       }
 
-      const newPrice = prices.data[0];
+      // Retrieve the price to verify it exists
+      let newPrice;
+      try {
+        newPrice = await stripe.prices.retrieve(priceId);
+      } catch (err) {
+        console.error(`Price ID ${priceId} not found in Stripe:`, err);
+        return NextResponse.json(
+          { error: "Price configuration error. Please contact support." },
+          { status: 500 }
+        );
+      }
 
       // Update the subscription with the new price
       const updatedSubscription = await stripe.subscriptions.update(
