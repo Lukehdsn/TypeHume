@@ -675,7 +675,7 @@ export default function Home() {
       {/* Footer */}
       <footer className="bg-gray-900 text-gray-300 mt-20">
         <div className="max-w-5xl mx-auto px-6 py-12">
-          <div className="grid md:grid-cols-4 gap-8 mb-8">
+          <div className="grid md:grid-cols-3 gap-8 mb-8">
             <div>
               <div className="flex items-center gap-2 mb-4">
                 <span className="text-2xl font-bold text-accent">TH</span>
@@ -685,29 +685,15 @@ export default function Home() {
             </div>
 
             <div>
-              <h4 className="font-semibold text-white mb-4">Product</h4>
               <ul className="space-y-2 text-sm">
-                <li><a href="#" className="hover:text-accent transition-colors">Features</a></li>
                 <li><Link href="/pricing" className="hover:text-accent transition-colors">Pricing</Link></li>
-                <li><a href="#" className="hover:text-accent transition-colors">API</a></li>
               </ul>
             </div>
 
             <div>
-              <h4 className="font-semibold text-white mb-4">Company</h4>
               <ul className="space-y-2 text-sm">
-                <li><a href="#about" className="hover:text-accent transition-colors">About</a></li>
-                <li><a href="#" className="hover:text-accent transition-colors">Blog</a></li>
-                <li><a href="#" className="hover:text-accent transition-colors">Contact</a></li>
-              </ul>
-            </div>
-
-            <div>
-              <h4 className="font-semibold text-white mb-4">Legal</h4>
-              <ul className="space-y-2 text-sm">
-                <li><Link href="/privacy" className="hover:text-accent transition-colors">Privacy</Link></li>
-                <li><a href="#" className="hover:text-accent transition-colors">Terms</a></li>
-                <li><a href="#" className="hover:text-accent transition-colors">Security</a></li>
+                <li><Link href="/privacy" className="hover:text-accent transition-colors">Privacy Policy</Link></li>
+                <li><a href="#" className="hover:text-accent transition-colors">Terms Of Service</a></li>
               </ul>
             </div>
           </div>
@@ -814,7 +800,7 @@ function FAQAccordion() {
             {openItems.includes(faq.id) && (
               <div
                 id={`faq-content-${faq.id}`}
-                className="px-6 pb-5 text-[0.95rem] text-gray-600 leading-relaxed border-t border-gray-200 animate-in fade-in slide-in-from-top-2"
+                className="px-6 pb-5 text-[0.95rem] text-gray-600 leading-relaxed animate-in fade-in slide-in-from-top-2"
               >
                 {faq.answer}
               </div>
