@@ -29,224 +29,139 @@ export default function PrivacyPage() {
       {/* Privacy Policy Content */}
       <div className="max-w-3xl mx-auto px-6 py-16">
         <h1 className="text-4xl font-bold text-gray-900 mb-2">Privacy Policy</h1>
-        <p className="text-gray-600 mb-8">Last updated: November 2024</p>
+        <p className="text-gray-600 mb-8">Effective Date: November 2025 | Website: TextHume.com | Contact: texthume@gmail.com</p>
 
         <div className="prose prose-lg max-w-none space-y-8 text-gray-700">
           {/* Introduction */}
           <section>
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">Introduction</h2>
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">1. Introduction</h2>
             <p>
-              TextHume ("we," "us," "our," or "Company") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and otherwise process your personal information when you use our website, mobile application, and related services (collectively, the "Service").
+              TextHume ("we," "our," or "us") provides an AI-powered text-humanizing platform that transforms robotic or AI-generated writing into more natural, human-sounding content. This Privacy Policy explains how we collect, use, and protect your information when you use our website and related services (collectively, the "Service"). By creating an account or using TextHume, you agree to this Privacy Policy.
             </p>
-          </section>
-
-          {/* Key Services & AI Disclosure */}
-          <section>
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">Important: AI-Powered Service & Third-Party Processing</h2>
-            <p>
-              TextHume uses <strong>Claude AI (developed by Anthropic)</strong> to humanize text that you submit. When you use our Service:
-            </p>
-            <ul className="list-disc pl-6 space-y-2 mt-3">
-              <li><strong>Your text is sent to Anthropic's Claude AI:</strong> We send the text you submit to Anthropic's servers for processing by their Claude language model.</li>
-              <li><strong>Anthropic's Privacy Policy applies:</strong> Anthropic may use your input data according to their privacy policy at https://www.anthropic.com/privacy</li>
-              <li><strong>Data retention:</strong> We retain your input and output text in our database for your records and to track word usage.</li>
-              <li><strong>No AI training:</strong> We request that Anthropic does not use your data to train future AI models.</li>
-            </ul>
           </section>
 
           {/* Information We Collect */}
           <section>
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">Information We Collect</h2>
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">2. Information We Collect</h2>
+            <p>We collect the following types of information:</p>
 
-            <h3 className="text-xl font-semibold text-gray-900 mb-3 mt-4">Account Information</h3>
+            <h3 className="text-xl font-semibold text-gray-900 mb-3 mt-4">a. Information You Provide</h3>
             <ul className="list-disc pl-6 space-y-2">
-              <li>Email address</li>
-              <li>Name</li>
-              <li>Profile information</li>
-              <li>Account preferences</li>
+              <li><strong>Account Information:</strong> When you sign up, we collect your email address, and password (hashed and encrypted).</li>
+              <li><strong>Usage Data:</strong> We track word usage (e.g., your 500-word free allowance or monthly quota) to manage plan limits.</li>
+              <li><strong>Payment Information:</strong> Payments and subscriptions are processed securely through Stripe. We do not store full credit-card details on our servers.</li>
+              <li><strong>Text Inputs:</strong> Any text you submit into the humanizer is temporarily processed by a third-party AI model to generate your output. We do not store or use text inputs for AI training</li>
+              <li><strong>Support & Feedback:</strong> When you contact us via email or form, we may store your message to respond to your request.</li>
             </ul>
 
-            <h3 className="text-xl font-semibold text-gray-900 mb-3 mt-4">Usage Information</h3>
+            <h3 className="text-xl font-semibold text-gray-900 mb-3 mt-4">b. Information Collected Automatically</h3>
             <ul className="list-disc pl-6 space-y-2">
-              <li>Text you submit for humanization</li>
-              <li>Humanized output text</li>
-              <li>Word count usage and subscription plan information</li>
-              <li>Interaction data (features used, frequency)</li>
-            </ul>
-
-            <h3 className="text-xl font-semibold text-gray-900 mb-3 mt-4">Payment Information</h3>
-            <ul className="list-disc pl-6 space-y-2">
-              <li>Billing address</li>
-              <li>Payment method (processed by Stripe - we don't store credit card data)</li>
-              <li>Purchase history and subscription details</li>
-            </ul>
-
-            <h3 className="text-xl font-semibold text-gray-900 mb-3 mt-4">Device & Access Information</h3>
-            <ul className="list-disc pl-6 space-y-2">
-              <li>IP address</li>
-              <li>Browser type and version</li>
-              <li>Device information</li>
-              <li>Access logs and timestamps</li>
+              <li><strong>Analytics:</strong> We use Google Analytics 4 (GA4) to understand site usage (page views, session length, device type, etc.). GA4 may collect anonymized identifiers such as cookies and truncated IP addresses.</li>
+              <li><strong>Technical Data:</strong> Your browser type, operating system, and time of access may be logged for performance and security monitoring.</li>
             </ul>
           </section>
 
           {/* How We Use Your Information */}
           <section>
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">How We Use Your Information</h2>
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">3. How We Use Your Information</h2>
+            <p>We use collected information to:</p>
             <ul className="list-disc pl-6 space-y-2">
-              <li>Provide, maintain, and improve the Service</li>
-              <li>Process text through Claude AI for humanization</li>
-              <li>Manage your account and subscription</li>
-              <li>Process payments through Stripe</li>
-              <li>Send service-related announcements and support messages</li>
-              <li>Monitor and analyze Service usage and trends</li>
-              <li>Detect and prevent fraud or security issues</li>
-              <li>Comply with legal obligations</li>
+              <li>Operate, maintain, and improve the Service.</li>
+              <li>Authenticate users and manage subscriptions.</li>
+              <li>Track plan usage and enforce word quotas.</li>
+              <li>Process payments and issue invoices.</li>
+              <li>Respond to support requests.</li>
+              <li>Analyze usage trends through analytics tools.</li>
+              <li>Detect and prevent spam, abuse, or fraud.</li>
             </ul>
-          </section>
-
-          {/* Third-Party Services */}
-          <section>
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">Third-Party Services</h2>
-            <p>
-              We use several third-party services to operate TextHume. These services may process your personal information according to their own privacy policies:
-            </p>
-
-            <h3 className="text-xl font-semibold text-gray-900 mb-3 mt-4">Anthropic (Claude AI)</h3>
-            <p>
-              <strong>Purpose:</strong> AI-powered text humanization
-            </p>
-            <p>
-              <strong>Data processed:</strong> Text you submit for humanization
-            </p>
-            <p>
-              <strong>Privacy Policy:</strong> https://www.anthropic.com/privacy
-            </p>
-
-            <h3 className="text-xl font-semibold text-gray-900 mb-3 mt-4">Stripe</h3>
-            <p>
-              <strong>Purpose:</strong> Payment processing and subscription management
-            </p>
-            <p>
-              <strong>Data processed:</strong> Billing address, payment method, purchase history
-            </p>
-            <p>
-              <strong>Privacy Policy:</strong> https://stripe.com/privacy
-            </p>
-            <p className="text-sm text-gray-600">
-              Note: Credit card data is never stored by us or transmitted to our servers. Stripe handles all payment processing.
-            </p>
-
-            <h3 className="text-xl font-semibold text-gray-900 mb-3 mt-4">Supabase</h3>
-            <p>
-              <strong>Purpose:</strong> Data storage and database management
-            </p>
-            <p>
-              <strong>Data processed:</strong> Account information, usage history, humanization records
-            </p>
-            <p>
-              <strong>Privacy Policy:</strong> https://supabase.com/privacy
-            </p>
-
-            <h3 className="text-xl font-semibold text-gray-900 mb-3 mt-4">Clerk</h3>
-            <p>
-              <strong>Purpose:</strong> User authentication and account management
-            </p>
-            <p>
-              <strong>Data processed:</strong> Email address, name, authentication credentials
-            </p>
-            <p>
-              <strong>Privacy Policy:</strong> https://clerk.com/privacy
-            </p>
+            <p className="mt-3">We will never sell or rent your personal data.</p>
           </section>
 
           {/* Data Retention */}
           <section>
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">Data Retention</h2>
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">4. Data Retention</h2>
             <ul className="list-disc pl-6 space-y-2">
-              <li><strong>Account data:</strong> Retained while your account is active. Deleted upon account deletion.</li>
-              <li><strong>Humanization history:</strong> Retained for your reference and word usage tracking. Deleted when you delete your account.</li>
-              <li><strong>Payment records:</strong> Retained as required by law for tax and legal purposes.</li>
-              <li><strong>Log data:</strong> Retained for up to 90 days for security purposes.</li>
+              <li>Account data (email, plan type, usage stats) are kept while your account is active.</li>
+              <li>If you delete your account, personal data are removed within 30 days, except where retention is required for billing or legal purposes.</li>
+              <li>Text inputs are stored only temporarily to generate results.</li>
             </ul>
           </section>
 
-          {/* Your Rights */}
+          {/* Data Sharing and Third Parties */}
           <section>
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">Your Rights</h2>
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">5. Data Sharing and Third Parties</h2>
             <p>
-              Depending on your location, you may have rights regarding your personal information, including:
+              We may share limited information with:
             </p>
             <ul className="list-disc pl-6 space-y-2">
-              <li><strong>Access:</strong> You can view your account information and humanization history anytime</li>
-              <li><strong>Deletion:</strong> You can request deletion of your account and all associated data</li>
-              <li><strong>Data portability:</strong> You can export your data</li>
-              <li><strong>Opt-out:</strong> You can disable marketing communications</li>
+              <li>Stripe (for billing and payments).</li>
+              <li>Anthropic PBC (Claude API provider, for text processing).</li>
+              <li>Google Analytics (for analytics and site performance).</li>
             </ul>
-            <p className="mt-4">
-              To exercise these rights, contact us at <a href="mailto:support@texthumeee.vercel.app" className="text-[#7B7EFF] hover:underline">support@texthumeee.vercel.app</a>
+            <p className="mt-3">
+              Each provider has its own independent privacy policy governing its data handling. We may also disclose data when required by law or to protect our rights and users.
+            </p>
+          </section>
+
+          {/* Cookies and Tracking */}
+          <section>
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">6. Cookies and Tracking</h2>
+            <p>
+              TextHume uses cookies and similar technologies to:
+            </p>
+            <ul className="list-disc pl-6 space-y-2">
+              <li>Maintain login sessions.</li>
+              <li>Measure anonymous analytics data.</li>
+            </ul>
+            <p className="mt-3">
+              You can manage or disable cookies in your browser, but certain features may not function correctly.
             </p>
           </section>
 
           {/* Security */}
           <section>
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">Security</h2>
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">7. Security</h2>
             <p>
-              We use industry-standard security measures to protect your information, including:
-            </p>
-            <ul className="list-disc pl-6 space-y-2">
-              <li>HTTPS encryption for all data in transit</li>
-              <li>Secure authentication through Clerk</li>
-              <li>Database encryption through Supabase</li>
-              <li>Regular security monitoring</li>
-            </ul>
-            <p className="mt-4">
-              While we implement reasonable security measures, no system is completely secure. We cannot guarantee absolute security of your information.
+              We use HTTPS encryption and follow modern security best practices. Passwords are hashed and never stored in plain text. However, no online system is 100% secure, and we cannot guarantee absolute protection.
             </p>
           </section>
 
-          {/* Account Deletion */}
+          {/* Your Rights */}
           <section>
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">Account Deletion & GDPR Compliance</h2>
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">8. Your Rights</h2>
             <p>
-              When you delete your account:
+              Depending on your jurisdiction, you may:
             </p>
             <ul className="list-disc pl-6 space-y-2">
-              <li>Your account and personal information are deleted from our database</li>
-              <li>Your humanization history is deleted</li>
-              <li>Any active subscription is cancelled (no refunds for partial months)</li>
-              <li>You remain responsible for any charges already incurred</li>
+              <li>Access, correct, or delete your data.</li>
+              <li>Opt out of analytics tracking. Requests can be sent to texthume@gmail.com.</li>
             </ul>
-            <p className="mt-4">
-              We maintain only transaction records required by law. Your deletion request is processed in accordance with GDPR and similar privacy regulations.
+          </section>
+
+          {/* Children's Privacy */}
+          <section>
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">9. Children's Privacy</h2>
+            <p>
+              Our Service is not intended for anyone under 13. We do not knowingly collect data from minors.
             </p>
           </section>
 
           {/* Changes to Policy */}
           <section>
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">Changes to This Privacy Policy</h2>
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">10. Changes to This Policy</h2>
             <p>
-              We may update this Privacy Policy from time to time. We will notify you of any material changes by updating the "Last updated" date and posting the new version on this page.
+              We may update this Privacy Policy periodically. The "Effective Date" will be updated, and continued use of the Service constitutes acceptance of the revised version.
             </p>
           </section>
 
           {/* Contact */}
           <section>
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">Contact Us</h2>
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">11. Contact</h2>
             <p>
-              If you have any questions about this Privacy Policy or our privacy practices, please contact us at:
+              For any privacy questions or requests:
             </p>
-            <div className="mt-4 p-4 bg-gray-50 rounded-lg">
-              <p className="font-semibold">TextHume</p>
-              <p>Email: <a href="mailto:support@texthumeee.vercel.app" className="text-[#7B7EFF] hover:underline">support@texthumeee.vercel.app</a></p>
-            </div>
-          </section>
-
-          {/* Disclaimer */}
-          <section>
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">Legal Disclaimer</h2>
-            <p className="text-sm text-gray-600">
-              This privacy policy is provided as-is for a solo proprietor business. It covers the main privacy practices of TextHume. As our business grows and our revenue increases, we plan to have this policy reviewed and updated by a lawyer to ensure full legal compliance. We recommend reviewing Anthropic, Stripe, Supabase, and Clerk's privacy policies as well, since they are responsible for their own data handling practices.
+            <p className="mt-3">
+              📩 <a href="mailto:texthume@gmail.com" className="text-[#7B7EFF] hover:underline">texthume@gmail.com</a>
             </p>
           </section>
         </div>
