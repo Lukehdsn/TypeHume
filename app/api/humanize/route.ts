@@ -105,6 +105,7 @@ export async function POST(request: Request) {
 5. Add subtle human-like imperfections and natural flow
 6. Vary word choice to avoid repetition
 7. Keep the same overall structure and format as the input text
+8. Remove em-dashes and hyphens completely, use periods or commas instead
 
 CRITICAL: Keep the output roughly the same length as the input (within 10-15% variation). Avoid expanding the text unnecessarily.
 
