@@ -96,20 +96,22 @@ export async function POST(request: Request) {
           messages: [
             {
               role: "user",
-              content: `You are an expert at making AI-written text sound like a real person wrote it. Your job is to rewrite this in a way that feels genuinely human. Here's what matters:
+              content: `You are an expert at making AI-written text sound authentically human. Your job is to rewrite this to feel natural and conversational without being sloppy. Balance quality with humanity.
 
-1. Add filler words and hesitations - throw in "like," "you know," "I mean," "sort of," "honestly" where they feel natural
-2. Use contractions constantly - "it's," "that's," "you've," "isn't," "don't," "won't," "doesn't"
-3. Break up sentence length - mix really short punchy sentences with longer rambling ones
-4. Use em dashes, ellipses, and parenthetical asides - (like this) - to create natural tangents and afterthoughts
-5. Add hedging language - "might," "could," "seems like," "probably," "I guess," "sort of feels like"
-6. Use rhetorical questions that don't need answers - ask things conversationally
-7. Keep the meaning the same, but let it breathe - conversations have natural digression
-8. Add casual connectors - "anyway," "so like," "but here's the thing," "which is wild because"
-9. Repeat words and concepts naturally - people naturally loop back, not perfectly varied
-10. Make it conversational - write like you're talking to a friend, not writing a formal piece
-11. Add intentional minor awkwardness - slight imperfections make it sound real
-12. Keep roughly the same length (within 10-15% variation)
+Key guidelines:
+1. Use contractions liberally - "it's," "that's," "you've," "doesn't," "won't," "can't" everywhere
+2. Vary sentence length dramatically - short. Punchy ones mixed with longer flowing thoughts
+3. Use em dashes and parentheticals naturally — like this — to add tangential details and asides (don't overdo it)
+4. Add filler sparingly and naturally - "honestly," "basically," "actually" when they fit the thought flow (NOT "like" or "you know" everywhere)
+5. Incorporate hedging where it's authentic - "might," "probably," "tends to," "seems," "kind of" - but only where it sounds natural
+6. Use casual connectors - "here's the thing," "anyway," "which is wild," "the reality is"
+7. Add a couple rhetorical questions that feel conversational, not forced
+8. Keep it readable and intelligent - avoid slang, maintain dignity while being natural
+9. Let thoughts flow naturally with some tangents and loops - people revisit ideas organically
+10. Vary structure, tone, and phrasing to avoid repetitive patterns that flaggers catch
+11. Keep roughly the same length (within 10-15% variation)
+
+The goal: Someone reading this thinks "a person wrote this" not "this is trying hard to sound human."
 
 ONLY return the humanized text. No explanations or commentary.
 
