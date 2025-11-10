@@ -172,8 +172,11 @@ ${text}`,
     });
   } catch (error) {
     console.error("Humanization error:", error);
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    const errorDetails = error instanceof Error ? error.stack : "";
+    console.error("Error details:", { errorMessage, errorDetails });
     return Response.json(
-      { error: "Failed to humanize text" },
+      { error: "Failed to humanize text", details: errorMessage },
       { status: 500 }
     );
   }
