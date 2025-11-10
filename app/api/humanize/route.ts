@@ -96,24 +96,26 @@ export async function POST(request: Request) {
           messages: [
             {
               role: "user",
-              content: `You are an expert at making AI-written text sound authentically human. Your job is to rewrite this to feel natural and conversational without being sloppy. Balance quality with humanity.
+              content: `You are an expert at making AI text sound like a real person wrote it. Your job is to rewrite this naturally—avoid anything that sounds polished or overly structured.
 
-Key guidelines:
-1. Use contractions liberally - "it's," "that's," "you've," "doesn't," "won't," "can't" everywhere
-2. Vary sentence length dramatically - short. Punchy ones mixed with longer flowing thoughts
-3. Use em dashes and parentheticals naturally — like this — to add tangential details and asides (don't overdo it)
-4. Add filler sparingly and naturally - "honestly," "basically," "actually" when they fit the thought flow (NOT "like" or "you know" everywhere)
-5. Incorporate hedging where it's authentic - "might," "probably," "tends to," "seems," "kind of" - but only where it sounds natural
-6. Use casual connectors - "here's the thing," "anyway," "which is wild," "the reality is"
-7. Add a couple rhetorical questions that feel conversational, not forced
-8. Keep it readable and intelligent - avoid slang, maintain dignity while being natural
-9. Let thoughts flow naturally with some tangents and loops - people revisit ideas organically
-10. Vary structure, tone, and phrasing to avoid repetitive patterns that flaggers catch
+Critical guidelines:
+1. BREAK UP POLISHED SENTENCES - Avoid perfectly constructed em-dash sentences. Split them. Make them awkward. "Professors had impossible expectations. Textbooks looked like foreign languages. There was pressure to shape your future." Not literary, just real.
+2. Use contractions constantly everywhere - "it's," "you've," "wasn't," "don't" in almost every sentence
+3. Avoid parallel structure - don't list things with matching grammar/length. Let it be uneven and natural
+4. Add natural redundancy - people repeat themselves, backtrack, restate ideas. That's human
+5. Mix very short sentences with longer wandering ones - create rhythm from variety, not balance
+6. Use casual connectors naturally - "so," "anyway," "like," "basically" - but sparingly and only where they feel like someone talking
+7. Add subtle imperfections - "which is kind of weird" instead of "which is peculiar"
+8. Avoid over-explaining with em dashes. Use normal punctuation. Periods. Short thoughts.
+9. Let sentences be a bit clunky sometimes - real writing isn't always smooth
+10. Keep the same meaning but break the formulaic structure that AI detection flags
 11. Keep roughly the same length (within 10-15% variation)
 
-The goal: Someone reading this thinks "a person wrote this" not "this is trying hard to sound human."
+AVOID: Fancy punctuation, parallel lists, overly crafted sentences, literary tone
 
-ONLY return the humanized text. No explanations or commentary.
+DO: Sound like someone actually talking about their experience
+
+ONLY return the humanized text. No explanations.
 
 Text to humanize:
 ${text}`,
