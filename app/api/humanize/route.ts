@@ -95,7 +95,10 @@ export async function POST(request: Request) {
           temperature: 0.6,
           top_p: 0.9,
           max_tokens: Math.max(256, Math.ceil(inputWordCount * 1.2)),
-          system: `You rewrite AI-sounding text into natural, human-like writing while preserving meaning and formatting.
+          messages: [
+            {
+              role: "user",
+              content: `You rewrite AI-sounding text into natural, human-like writing while preserving meaning and formatting.
 
 Rules:
 1. Keep facts, names, dates, and structure accurate.
@@ -104,11 +107,9 @@ Rules:
 4. Use natural, authentic language — like a college-educated human explaining ideas casually.
 5. Avoid buzzwords, filler, and over-hedging phrases.
 6. Keep output within ±12% of the input length.
-7. Return ONLY the rewritten text. No explanations, no summaries, no commentary.`,
-          messages: [
-            {
-              role: "user",
-              content: `Tone: neutral, confident, conversational. Contractions allowed.
+7. Return ONLY the rewritten text. No explanations, no summaries, no commentary.
+
+Tone: neutral, confident, conversational. Contractions allowed.
 Rewrite the following text according to the rules above:
 
 ${text}`,
