@@ -96,26 +96,19 @@ export async function POST(request: Request) {
           messages: [
             {
               role: "user",
-              content: `You are an expert at making AI text sound like a real person wrote it. Your job is to rewrite this naturally—avoid anything that sounds polished or overly structured.
+              content: `You are an expert at transforming AI-generated text into natural, human-like writing. Your task is to rewrite the following text to:
 
-Critical guidelines:
-1. BREAK UP POLISHED SENTENCES - Avoid perfectly constructed em-dash sentences. Split them. Make them awkward. "Professors had impossible expectations. Textbooks looked like foreign languages. There was pressure to shape your future." Not literary, just real.
-2. Use contractions constantly everywhere - "it's," "you've," "wasn't," "don't" in almost every sentence
-3. Avoid parallel structure - don't list things with matching grammar/length. Let it be uneven and natural
-4. Add natural redundancy - people repeat themselves, backtrack, restate ideas. That's human
-5. Mix very short sentences with longer wandering ones - create rhythm from variety, not balance
-6. Use casual connectors naturally - "so," "anyway," "like," "basically" - but sparingly and only where they feel like someone talking
-7. Add subtle imperfections - "which is kind of weird" instead of "which is peculiar"
-8. Avoid over-explaining with em dashes. Use normal punctuation. Periods. Short thoughts.
-9. Let sentences be a bit clunky sometimes - real writing isn't always smooth
-10. Keep the same meaning but break the formulaic structure that AI detection flags
-11. Keep roughly the same length (within 10-15% variation)
+1. Remove AI-style patterns (repetitive sentence structures, overly formal tone)
+2. Add natural variation in sentence length and structure
+3. Use more conversational, authentic language
+4. Preserve the original meaning and intent
+5. Add subtle human-like imperfections and natural flow
+6. Vary word choice to avoid repetition
+7. Keep the same overall structure and format as the input text
 
-AVOID: Fancy punctuation, parallel lists, overly crafted sentences, literary tone
+CRITICAL: Keep the output roughly the same length as the input (within 10-15% variation). Avoid expanding the text unnecessarily.
 
-DO: Sound like someone actually talking about their experience
-
-ONLY return the humanized text. No explanations.
+IMPORTANT: Return ONLY the humanized text with no explanations, summaries, or meta-commentary.
 
 Text to humanize:
 ${text}`,
