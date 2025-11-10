@@ -42,6 +42,7 @@ export default function PricingPage() {
   const [wordLimit, setWordLimit] = useState(500)
   const [wordsUsed, setWordsUsed] = useState(0)
   const [currentPlan, setCurrentPlan] = useState<PlanType>("free")
+  const [currentBillingPeriod, setCurrentBillingPeriod] = useState<"monthly" | "annual">("monthly")
   const [checkoutLoading, setCheckoutLoading] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [successMessage, setSuccessMessage] = useState<string | null>(null)
@@ -54,7 +55,7 @@ export default function PricingPage() {
       try {
         const { data, error } = await supabase
           .from("users")
-          .select("plan, word_limit, words_used")
+          .select("plan, word_limit, words_used, billing_period")
           .eq("id", userId)
           .maybeSingle()
 
@@ -73,6 +74,7 @@ export default function PricingPage() {
           setCurrentPlan((data.plan as PlanType) || "free")
           setWordLimit(data.word_limit)
           setWordsUsed(data.words_used)
+          setCurrentBillingPeriod((data.billing_period as "monthly" | "annual") || "monthly")
         }
       } catch (err) {
         console.error("Error fetching user data:", err)
@@ -352,7 +354,7 @@ export default function PricingPage() {
 
             {/* Starter Card */}
             <div className={`relative rounded-2xl border bg-white p-8 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col ${currentPlan === "starter" ? "border-[#7B7EFF] border-2" : "border-gray-200"}`}>
-              {currentPlan === "starter" && (
+              {currentPlan === "starter" && currentBillingPeriod === billingPeriod && (
                 <div className="absolute top-4 right-4 inline-block">
                   <span
                     className="inline-block px-3 py-1 text-xs font-semibold rounded-full"
@@ -411,7 +413,7 @@ export default function PricingPage() {
                     className="inline-block px-3 py-1 text-xs font-semibold rounded-full"
                     style={{ background: "rgba(123, 126, 255, 0.1)", color: "#7B7EFF" }}
                   >
-                    {currentPlan === "pro" ? "Current Plan" : "Most popular"}
+                    {currentPlan === "pro" && currentBillingPeriod === billingPeriod ? "Current Plan" : "Most popular"}
                   </span>
                 </div>
               )}
@@ -458,7 +460,7 @@ export default function PricingPage() {
 
             {/* Premium Card */}
             <div className={`relative rounded-2xl border bg-white p-8 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col ${currentPlan === "premium" ? "border-[#7B7EFF] border-2" : "border-gray-200"}`}>
-              {currentPlan === "premium" && (
+              {currentPlan === "premium" && currentBillingPeriod === billingPeriod && (
                 <div className="absolute top-4 right-4 inline-block">
                   <span
                     className="inline-block px-3 py-1 text-xs font-semibold rounded-full"

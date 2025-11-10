@@ -131,6 +131,7 @@ export async function POST(request: NextRequest) {
             words_used: 0, // Reset word count on upgrade
             stripe_customer_id: stripeCustomerId,
             stripe_subscription_id: stripeSubscriptionId,
+            billing_period: billingPeriod || "monthly", // Save billing period (monthly or annual)
           })
           .eq("id", userId);
 
