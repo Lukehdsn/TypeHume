@@ -348,8 +348,10 @@ export default function DashboardPage() {
           Turn robotic AI writing into natural, human-like text in seconds
         </p>
 
-        <Link href="/pricing" className="mx-auto block px-8 py-4 text-lg font-semibold bg-[#7B7EFF] text-white rounded-xl hover:shadow-[0_0_20px_4px_rgba(123,126,255,0.4)] transition-all duration-200 mt-10 text-center">
-          Get more words
+        <Link href="/pricing">
+          <button className="mx-auto block px-8 py-4 text-lg font-semibold bg-[#7B7EFF] text-white rounded-xl hover:shadow-[0_0_20px_4px_rgba(123,126,255,0.4)] transition-all duration-200 mt-10">
+            Get more words
+          </button>
         </Link>
 
         {/* Social Proof */}
