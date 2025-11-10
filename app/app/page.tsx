@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef, Suspense } from "react"
 import Link from "next/link"
-import { useAuth, useUser } from "@clerk/nextjs"
+import { useAuth, useUser, useClerk } from "@clerk/nextjs"
 import { Clipboard, Loader, X } from "lucide-react"
 import { useSearchParams } from "next/navigation"
 import { supabase } from "@/lib/supabase"
@@ -15,17 +15,49 @@ interface SavedSession {
   timestamp: number
 }
 
-function CheckoutSuccessHandler({ onSuccess }: { onSuccess: (message: string) => void }) {
+function CheckoutSuccessHandler({ onSuccess, setError }: { onSuccess: (message: string) => void; setError: (msg: string) => void }) {
   const searchParams = useSearchParams()
+  const { userId: currentUserId } = useAuth()
+  const { signOut } = useClerk()
 
   useEffect(() => {
-    const checkoutSuccess = searchParams.get("checkout")
-    const plan = searchParams.get("plan")
+    const validateCheckout = async () => {
+      const checkoutSuccess = searchParams.get("checkout")
+      const plan = searchParams.get("plan")
+      const sessionId = searchParams.get("session_id")
 
-    if (checkoutSuccess === "success") {
-      onSuccess(`Successfully upgraded to ${plan} plan! 🎉`)
+      if (checkoutSuccess === "success" && sessionId && currentUserId) {
+        try {
+          // Validate that current user matches the user who made the payment
+          const response = await fetch(`/api/validate-checkout?session_id=${sessionId}`)
+          const data = await response.json()
+
+          if (!response.ok) {
+            setError("Failed to validate checkout. Please refresh the page.")
+            return
+          }
+
+          // Check if the user who made payment matches current logged-in user
+          if (data.userId !== currentUserId) {
+            setError(
+              `Session mismatch detected. You're logged in as a different account than the one that made this purchase. Please sign in with the account that completed the payment.`
+            )
+            // Optional: sign out to force user to sign in with correct account
+            await signOut()
+            return
+          }
+
+          // User and session match - show success
+          onSuccess(`Successfully upgraded to ${plan} plan! 🎉`)
+        } catch (err) {
+          console.error("Checkout validation error:", err)
+          setError("Failed to validate checkout. Please refresh.")
+        }
+      }
     }
-  }, [searchParams, onSuccess])
+
+    validateCheckout()
+  }, [searchParams, currentUserId, onSuccess, setError, signOut])
 
   return null
 }
@@ -276,7 +308,7 @@ export default function DashboardPage() {
   return (
     <div className="min-h-screen bg-white">
       <Suspense fallback={null}>
-        <CheckoutSuccessHandler onSuccess={handleCheckoutSuccess} />
+        <CheckoutSuccessHandler onSuccess={handleCheckoutSuccess} setError={setError} />
       </Suspense>
       {/* Navbar - Authenticated */}
       <nav>
