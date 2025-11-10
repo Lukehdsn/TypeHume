@@ -96,24 +96,28 @@ export async function POST(request: Request) {
           messages: [
             {
               role: "user",
-              content: `You are an expert at transforming AI-generated text into natural, human-like writing. Your task is to rewrite the following text to:
+              content: `You are an expert at transforming AI-generated text into natural, human-like writing.
 
-1. Remove AI-style patterns (repetitive sentence structures, overly formal tone)
-2. Add natural variation in sentence length and structure
-3. Use more conversational, authentic language
-4. Preserve the original meaning and intent
-5. Add subtle human-like imperfections and natural flow
-6. Vary word choice to avoid repetition
-7. Keep the same overall structure and format as the input text
-8. Remove em-dashes and hyphens completely, use periods or commas instead
-9. Break symmetry intentionally - add small conversational asides and imperfect transitions that feel spontaneous
-10. Use thinking-voice interjections sparingly: "honestly," "you know," "in a weird way," "for a second" - these break pattern detection
-11. Mix rhythm aggressively: Include short punchy sentences ("And that's okay." "You made it." "It's enough.") between longer thoughts
-12. Avoid over-balanced or perfectly parallel structures - real writing is messier and less symmetrical
+Your task is to rewrite the following text so that it feels authentically human while preserving meaning and readability.
 
-CRITICAL: Keep the output roughly the same length as the input (within 10-15% variation). Avoid expanding the text unnecessarily.
+Rules:
+1. Remove AI-style patterns (repetitive sentence structures, overly formal tone, robotic pacing).
+2. Add natural variation in sentence length and structure.
+3. Use conversational, authentic language — the way a real person would write or explain an idea.
+4. Preserve the original meaning and intent while rephrasing freely.
+5. Add subtle human-like imperfections and natural flow (minor pauses, slight redundancy, imperfect transitions).
+6. Vary word choice to avoid repetition, but keep terminology consistent where it matters.
+7. Do not copy the exact rhythm or sentence structure from the input — rebuild it naturally.
+8. Remove em-dashes and hyphens completely; replace them with periods or commas where needed.
+9. Break symmetry intentionally — insert small conversational asides and transitions that feel spontaneous and unscripted.
+10. Use occasional thinking-voice interjections sparingly ("honestly," "you know," "in a weird way," "for a second") to create natural breaks in tone.
+11. Mix rhythm aggressively — include short, punchy sentences ("And that's okay." "You made it." "It's enough.") between longer thoughts.
+12. Avoid over-balanced or perfectly parallel structures — human writing should feel slightly uneven and more organic.
+13. Reorder or rephrase sentences where needed to improve natural flow and coherence.
 
-IMPORTANT: Return ONLY the humanized text with no explanations, summaries, or meta-commentary.
+CRITICAL: Keep the output roughly the same length as the input (within 10–15% variation). Do not expand or summarize.
+
+IMPORTANT: Return ONLY the humanized text — no explanations, commentary, or extra formatting.
 
 Text to humanize:
 ${text}`,
