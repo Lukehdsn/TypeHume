@@ -17,16 +17,33 @@ interface SavedSession {
 
 function CheckoutSuccessHandler({ onSuccess, setError }: { onSuccess: (message: string) => void; setError: (msg: string) => void }) {
   const searchParams = useSearchParams()
-  const { userId: currentUserId } = useAuth()
+  const { userId: currentUserId, isLoaded } = useAuth()
   const { signOut } = useClerk()
+  const [hasValidated, setHasValidated] = useState(false)
 
   useEffect(() => {
+    // Wait for Clerk to fully load before validating
+    if (!isLoaded) return
+
+    // Only validate once to prevent re-running on dependency changes
+    if (hasValidated) return
+
     const validateCheckout = async () => {
       const checkoutSuccess = searchParams.get("checkout")
       const plan = searchParams.get("plan")
       const sessionId = searchParams.get("session_id")
 
-      if (checkoutSuccess === "success" && sessionId && currentUserId) {
+      // Only proceed if we have a checkout success indicator and session ID
+      if (checkoutSuccess === "success" && sessionId) {
+        // Mark as validated to prevent re-runs
+        setHasValidated(true)
+
+        // If no user is logged in after Clerk has loaded, that's suspicious
+        if (!currentUserId) {
+          setError("No active session found. Please sign in to complete your upgrade.")
+          return
+        }
+
         try {
           // Validate that current user matches the user who made the payment
           const response = await fetch(`/api/validate-checkout?session_id=${sessionId}`)
@@ -42,13 +59,16 @@ function CheckoutSuccessHandler({ onSuccess, setError }: { onSuccess: (message: 
             setError(
               `Session mismatch detected. You're logged in as a different account than the one that made this purchase. Please sign in with the account that completed the payment.`
             )
-            // Optional: sign out to force user to sign in with correct account
-            await signOut()
+            // Explicitly specify redirect URL to prevent Clerk mobile default behavior
+            await signOut({ redirectUrl: "/" })
             return
           }
 
           // User and session match - show success
           onSuccess(`Successfully upgraded to ${plan} plan! 🎉`)
+
+          // Clean up URL params after successful validation
+          window.history.replaceState({}, "", "/app")
         } catch (err) {
           console.error("Checkout validation error:", err)
           setError("Failed to validate checkout. Please refresh.")
@@ -57,7 +77,7 @@ function CheckoutSuccessHandler({ onSuccess, setError }: { onSuccess: (message: 
     }
 
     validateCheckout()
-  }, [searchParams, currentUserId, onSuccess, setError, signOut])
+  }, [isLoaded, hasValidated, searchParams, currentUserId, onSuccess, setError, signOut])
 
   return null
 }
