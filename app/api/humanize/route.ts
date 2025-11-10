@@ -94,7 +94,7 @@ export async function POST(request: Request) {
           model: "claude-sonnet-4-5-20250929",
           temperature: 0.6,
           top_p: 0.9,
-          max_tokens: Math.ceil(inputWordCount * 1.2),
+          max_tokens: Math.max(256, Math.ceil(inputWordCount * 1.2)),
           system: `You rewrite AI-sounding text into natural, human-like writing while preserving meaning and formatting.
 
 Rules:
