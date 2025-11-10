@@ -92,24 +92,25 @@ export async function POST(request: Request) {
         const attemptStartTime = Date.now();
         message = await client.messages.create({
           model: "claude-sonnet-4-5-20250929",
-          max_tokens: Math.max(256, Math.ceil(inputWordCount * 1.2)),
+          max_tokens: 2048,
           messages: [
             {
               role: "user",
-              content: `You rewrite AI-sounding text into natural, human-like writing while preserving meaning and formatting.
+              content: `You are an expert at transforming AI-generated text into natural, human-like writing. Your task is to rewrite the following text to:
 
-Rules:
-1. Keep facts, names, dates, and structure accurate.
-2. Remove AI-style patterns (uniform cadence, repetitive transitions, robotic tone).
-3. Mix sentence lengths (short, medium, occasional long); allow a few fragments.
-4. Use natural, authentic language — like a college-educated human explaining ideas casually.
-5. Avoid buzzwords, filler, and over-hedging phrases.
-6. Keep output within ±12% of the input length.
-7. Return ONLY the rewritten text. No explanations, no summaries, no commentary.
+1. Remove AI-style patterns (repetitive sentence structures, overly formal tone)
+2. Add natural variation in sentence length and structure
+3. Use more conversational, authentic language
+4. Preserve the original meaning and intent
+5. Add subtle human-like imperfections and natural flow
+6. Vary word choice to avoid repetition
+7. Keep the same overall structure and format as the input text
 
-Tone: neutral, confident, conversational. Contractions allowed.
-Rewrite the following text according to the rules above:
+CRITICAL: Keep the output roughly the same length as the input (within 10-15% variation). Avoid expanding the text unnecessarily.
 
+IMPORTANT: Return ONLY the humanized text with no explanations, summaries, or meta-commentary.
+
+Text to humanize:
 ${text}`,
             },
           ],
