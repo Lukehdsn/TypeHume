@@ -106,6 +106,10 @@ export async function POST(request: Request) {
 6. Vary word choice to avoid repetition
 7. Keep the same overall structure and format as the input text
 8. Remove em-dashes and hyphens completely, use periods or commas instead
+9. Break symmetry intentionally - add small conversational asides and imperfect transitions that feel spontaneous
+10. Use thinking-voice interjections sparingly: "honestly," "you know," "in a weird way," "for a second" - these break pattern detection
+11. Mix rhythm aggressively: Include short punchy sentences ("And that's okay." "You made it." "It's enough.") between longer thoughts
+12. Avoid over-balanced or perfectly parallel structures - real writing is messier and less symmetrical
 
 CRITICAL: Keep the output roughly the same length as the input (within 10-15% variation). Avoid expanding the text unnecessarily.
 
