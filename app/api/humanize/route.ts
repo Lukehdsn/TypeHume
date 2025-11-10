@@ -96,19 +96,22 @@ export async function POST(request: Request) {
           messages: [
             {
               role: "user",
-              content: `You are an expert at transforming AI-generated text into natural, human-like writing. Your task is to rewrite the following text to:
+              content: `You are an expert at making AI-written text sound like a real person wrote it. Your job is to rewrite this in a way that feels genuinely human. Here's what matters:
 
-1. Remove AI-style patterns (repetitive sentence structures, overly formal tone)
-2. Add natural variation in sentence length and structure
-3. Use more conversational, authentic language
-4. Preserve the original meaning and intent
-5. Add subtle human-like imperfections and natural flow
-6. Vary word choice to avoid repetition
-7. Keep the same overall structure and format as the input text
+1. Add filler words and hesitations - throw in "like," "you know," "I mean," "sort of," "honestly" where they feel natural
+2. Use contractions constantly - "it's," "that's," "you've," "isn't," "don't," "won't," "doesn't"
+3. Break up sentence length - mix really short punchy sentences with longer rambling ones
+4. Use em dashes, ellipses, and parenthetical asides - (like this) - to create natural tangents and afterthoughts
+5. Add hedging language - "might," "could," "seems like," "probably," "I guess," "sort of feels like"
+6. Use rhetorical questions that don't need answers - ask things conversationally
+7. Keep the meaning the same, but let it breathe - conversations have natural digression
+8. Add casual connectors - "anyway," "so like," "but here's the thing," "which is wild because"
+9. Repeat words and concepts naturally - people naturally loop back, not perfectly varied
+10. Make it conversational - write like you're talking to a friend, not writing a formal piece
+11. Add intentional minor awkwardness - slight imperfections make it sound real
+12. Keep roughly the same length (within 10-15% variation)
 
-CRITICAL: Keep the output roughly the same length as the input (within 10-15% variation). Avoid expanding the text unnecessarily.
-
-IMPORTANT: Return ONLY the humanized text with no explanations, summaries, or meta-commentary.
+ONLY return the humanized text. No explanations or commentary.
 
 Text to humanize:
 ${text}`,
