@@ -367,7 +367,7 @@ export default function PricingPage() {
             </div>
 
             {/* Starter Card */}
-            <div className={`relative rounded-2xl border bg-white p-8 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col ${currentPlan === "starter" ? "border-[#7B7EFF] border-2" : "border-gray-200"}`}>
+            <div className={`relative rounded-2xl border bg-white p-8 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col ${currentPlan === "starter" && currentBillingPeriod === billingPeriod ? "border-[#7B7EFF] border-2" : "border-gray-200"}`}>
               {currentPlan === "starter" && currentBillingPeriod === billingPeriod && (
                 <div className="absolute top-4 right-4 inline-block">
                   <span
@@ -419,7 +419,7 @@ export default function PricingPage() {
             </div>
 
             {/* Pro Card - Most Popular */}
-            <div className={`relative rounded-2xl border-2 bg-white p-8 shadow-md hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col ${currentPlan === "pro" ? "border-[#7B7EFF]" : "border-[#7B7EFF]/60"}`}>
+            <div className={`relative rounded-2xl border-2 bg-white p-8 shadow-md hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col ${currentPlan === "pro" && currentBillingPeriod === billingPeriod ? "border-[#7B7EFF]" : "border-[#7B7EFF]/60"}`}>
               {/* Most Popular/Current Plan Badge */}
               {currentPlan !== "premium" && (
                 <div className="absolute top-6 left-6 inline-block">
@@ -473,7 +473,7 @@ export default function PricingPage() {
             </div>
 
             {/* Premium Card */}
-            <div className={`relative rounded-2xl border bg-white p-8 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col ${currentPlan === "premium" ? "border-[#7B7EFF] border-2" : "border-gray-200"}`}>
+            <div className={`relative rounded-2xl border bg-white p-8 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col ${currentPlan === "premium" && currentBillingPeriod === billingPeriod ? "border-[#7B7EFF] border-2" : "border-gray-200"}`}>
               {currentPlan === "premium" && currentBillingPeriod === billingPeriod && (
                 <div className="absolute top-4 right-4 inline-block">
                   <span
