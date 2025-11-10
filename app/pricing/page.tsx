@@ -130,6 +130,10 @@ export default function PricingPage() {
         return
       }
 
+      // Store current plan before redirecting to Stripe
+      // This allows us to detect the upgrade on return
+      localStorage.setItem("preCheckoutPlan", currentPlan)
+
       // Redirect to Stripe checkout
       window.location.href = data.sessionUrl
     } catch (error) {

@@ -16,20 +16,21 @@ interface SavedSession {
 }
 
 function CheckoutSuccessHandler({ onSuccess }: { onSuccess: (message: string) => void }) {
-  const searchParams = useSearchParams()
-
   useEffect(() => {
-    const checkoutSuccess = searchParams.get("checkout")
-    const plan = searchParams.get("plan")
+    // Check if we just returned from a successful Stripe checkout
+    const preCheckoutPlan = localStorage.getItem("preCheckoutPlan")
 
-    if (checkoutSuccess === "success") {
-      // Show success message
-      onSuccess(`Successfully upgraded to ${plan} plan! 🎉`)
+    if (preCheckoutPlan) {
+      // Show success message after a brief delay to ensure plan data is loaded
+      const timer = setTimeout(() => {
+        onSuccess(`Successfully upgraded! Your new plan is now active. 🎉`)
+        // Clear the stored value
+        localStorage.removeItem("preCheckoutPlan")
+      }, 500)
 
-      // Clean up URL params after showing success
-      window.history.replaceState({}, "", "/app")
+      return () => clearTimeout(timer)
     }
-  }, [searchParams, onSuccess])
+  }, [onSuccess])
 
   return null
 }
