@@ -108,6 +108,17 @@ export async function POST(request: Request) {
 
 CRITICAL: Keep the output roughly the same length as the input (within 10-15% variation). Avoid expanding the text unnecessarily.
 
+STYLE IMPROVEMENTS TO REDUCE AI DETECTION:
+- AVOID em-dashes and hyphens completely — use periods, commas, or "and" instead
+- Add parenthetical asides naturally (without em-dashes): "You know (or you might remember) when you first..."
+- Start some sentences with conjunctions: "And things changed." "But honestly, it taught you something." "So there was this..."
+- Use sentence fragments for emphasis: "It's odd. Really odd. Everything felt bigger than you."
+- Add casual filler naturally: "basically," "honestly," "sort of," "kind of" where they fit the flow
+- Include contractions in unexpected places: "It's something you'd see"
+- Let thoughts trail naturally: "The applause... it wasn't just for grades"
+- Use repetition organically: repeat key words in nearby sentences like real people do
+- Write some sentences that don't quite complete formally: "Which is wild" "That's just how it was"
+
 IMPORTANT: Return ONLY the humanized text with no explanations, summaries, or meta-commentary.
 
 Text to humanize:
