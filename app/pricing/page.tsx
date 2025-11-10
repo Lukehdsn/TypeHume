@@ -49,9 +49,14 @@ export default function PricingPage() {
 
   // Fetch user's word data if authenticated
   useEffect(() => {
-    if (!userId) return
+    console.log("🔍 useEffect triggered - userId:", userId)
+    if (!userId) {
+      console.log("⚠️ userId not available yet")
+      return
+    }
 
     const fetchUserData = async () => {
+      console.log("🚀 Fetching user data from Supabase...")
       try {
         const { data, error } = await supabase
           .from("users")
@@ -71,10 +76,19 @@ export default function PricingPage() {
         }
 
         if (data) {
+          console.log("📊 Fetched user data from Supabase:", {
+            plan: data.plan,
+            billing_period: data.billing_period,
+            word_limit: data.word_limit,
+            words_used: data.words_used
+          })
           setCurrentPlan((data.plan as PlanType) || "free")
           setWordLimit(data.word_limit)
           setWordsUsed(data.words_used)
           setCurrentBillingPeriod((data.billing_period as "monthly" | "annual") || "monthly")
+          console.log("✅ State updated - currentBillingPeriod set to:", (data.billing_period as "monthly" | "annual") || "monthly")
+        } else {
+          console.warn("⚠️ No user data returned from Supabase")
         }
       } catch (err) {
         console.error("Error fetching user data:", err)
@@ -389,7 +403,7 @@ export default function PricingPage() {
               </ul>
 
               {/* Button */}
-              {currentPlan === "starter" ? (
+              {currentPlan === "starter" && currentBillingPeriod === billingPeriod ? (
                 <div className="bg-gray-100 text-gray-600 rounded-xl px-4 py-3 text-center font-medium cursor-not-allowed">
                   Current Plan
                 </div>
@@ -443,7 +457,7 @@ export default function PricingPage() {
               </ul>
 
               {/* Button */}
-              {currentPlan === "pro" ? (
+              {currentPlan === "pro" && currentBillingPeriod === billingPeriod ? (
                 <div className="bg-gray-100 text-gray-600 rounded-xl px-4 py-3 text-center font-medium cursor-not-allowed">
                   Current Plan
                 </div>
@@ -495,7 +509,7 @@ export default function PricingPage() {
               </ul>
 
               {/* Button */}
-              {currentPlan === "premium" ? (
+              {currentPlan === "premium" && currentBillingPeriod === billingPeriod ? (
                 <div className="bg-gray-100 text-gray-600 rounded-xl px-4 py-3 text-center font-medium cursor-not-allowed">
                   Current Plan
                 </div>
