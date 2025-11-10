@@ -91,7 +91,7 @@ export async function POST(request: Request) {
       try {
         const attemptStartTime = Date.now();
         message = await client.messages.create({
-          model: "claude-4.5-sonnet-20250929",
+          model: "claude-sonnet-4-5-20250929",
           temperature: 0.6,
           top_p: 0.9,
           max_tokens: Math.ceil(inputWordCount * 1.2),
