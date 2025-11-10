@@ -15,69 +15,21 @@ interface SavedSession {
   timestamp: number
 }
 
-function CheckoutSuccessHandler({ onSuccess, setError }: { onSuccess: (message: string) => void; setError: (msg: string) => void }) {
+function CheckoutSuccessHandler({ onSuccess }: { onSuccess: (message: string) => void }) {
   const searchParams = useSearchParams()
-  const { userId: currentUserId, isLoaded } = useAuth()
-  const { signOut } = useClerk()
-  const [hasValidated, setHasValidated] = useState(false)
 
   useEffect(() => {
-    // Wait for Clerk to fully load before validating
-    if (!isLoaded) return
+    const checkoutSuccess = searchParams.get("checkout")
+    const plan = searchParams.get("plan")
 
-    // Only validate once to prevent re-running on dependency changes
-    if (hasValidated) return
+    if (checkoutSuccess === "success") {
+      // Show success message
+      onSuccess(`Successfully upgraded to ${plan} plan! 🎉`)
 
-    const validateCheckout = async () => {
-      const checkoutSuccess = searchParams.get("checkout")
-      const plan = searchParams.get("plan")
-      const sessionId = searchParams.get("session_id")
-
-      // Only proceed if we have a checkout success indicator and session ID
-      if (checkoutSuccess === "success" && sessionId) {
-        // Mark as validated to prevent re-runs
-        setHasValidated(true)
-
-        // If no user is logged in after Clerk has loaded, that's suspicious
-        if (!currentUserId) {
-          setError("No active session found. Please sign in to complete your upgrade.")
-          return
-        }
-
-        try {
-          // Validate that current user matches the user who made the payment
-          const response = await fetch(`/api/validate-checkout?session_id=${sessionId}`)
-          const data = await response.json()
-
-          if (!response.ok) {
-            setError("Failed to validate checkout. Please refresh the page.")
-            return
-          }
-
-          // Check if the user who made payment matches current logged-in user
-          if (data.userId !== currentUserId) {
-            setError(
-              `Session mismatch detected. You're logged in as a different account than the one that made this purchase. Please sign in with the account that completed the payment.`
-            )
-            // Explicitly specify redirect URL to prevent Clerk mobile default behavior
-            await signOut({ redirectUrl: "/" })
-            return
-          }
-
-          // User and session match - show success
-          onSuccess(`Successfully upgraded to ${plan} plan! 🎉`)
-
-          // Clean up URL params after successful validation
-          window.history.replaceState({}, "", "/app")
-        } catch (err) {
-          console.error("Checkout validation error:", err)
-          setError("Failed to validate checkout. Please refresh.")
-        }
-      }
+      // Clean up URL params after showing success
+      window.history.replaceState({}, "", "/app")
     }
-
-    validateCheckout()
-  }, [isLoaded, hasValidated, searchParams, currentUserId, onSuccess, setError, signOut])
+  }, [searchParams, onSuccess])
 
   return null
 }
@@ -328,7 +280,7 @@ export default function DashboardPage() {
   return (
     <div className="min-h-screen bg-white">
       <Suspense fallback={null}>
-        <CheckoutSuccessHandler onSuccess={handleCheckoutSuccess} setError={setError} />
+        <CheckoutSuccessHandler onSuccess={handleCheckoutSuccess} />
       </Suspense>
       {/* Navbar - Authenticated */}
       <nav>
