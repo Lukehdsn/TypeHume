@@ -14,12 +14,8 @@ export type HumanizeRequest = z.infer<typeof HumanizeRequestSchema>;
 
 // Checkout endpoint validation
 export const CheckoutRequestSchema = z.object({
-  plan: z.enum(["free", "starter", "pro", "premium"], {
-    errorMap: () => ({ message: "Invalid plan. Must be one of: free, starter, pro, premium" }),
-  }),
-  billingPeriod: z.enum(["monthly", "annual"], {
-    errorMap: () => ({ message: "Invalid billing period. Must be monthly or annual" }),
-  }),
+  plan: z.enum(["free", "starter", "pro", "premium"]).catch("premium"),
+  billingPeriod: z.enum(["monthly", "annual"]).catch("monthly"),
   userId: z.string().min(1, "User ID is required"),
 });
 
@@ -42,9 +38,7 @@ export type UserFetchRequest = z.infer<typeof UserFetchRequestSchema>;
 
 // Upgrade subscription validation
 export const UpgradeSubscriptionRequestSchema = z.object({
-  plan: z.enum(["free", "starter", "pro", "premium"], {
-    errorMap: () => ({ message: "Invalid plan" }),
-  }),
+  plan: z.enum(["free", "starter", "pro", "premium"]).catch("premium"),
 });
 
 export type UpgradeSubscriptionRequest = z.infer<typeof UpgradeSubscriptionRequestSchema>;
