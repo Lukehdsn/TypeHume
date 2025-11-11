@@ -13,7 +13,7 @@ export async function POST(request: Request) {
 
     const { data, error } = await supabaseServer
       .from("users")
-      .select("plan, word_limit, words_used")
+      .select("plan, word_limit, words_used, billing_period")
       .eq("id", userId)
       .maybeSingle();
 

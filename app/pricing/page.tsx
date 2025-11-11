@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react"
 import Link from "next/link"
 import { useAuth, useUser } from "@clerk/nextjs"
-import { supabase } from "@/lib/supabase"
 import { PlanType } from "@/lib/plans"
 
 const features = {
@@ -56,39 +55,37 @@ export default function PricingPage() {
     }
 
     const fetchUserData = async () => {
-      console.log("🚀 Fetching user data from Supabase...")
+      console.log("🚀 Fetching user data from API...")
       try {
-        const { data, error } = await supabase
-          .from("users")
-          .select("plan, word_limit, words_used, billing_period")
-          .eq("id", userId)
-          .maybeSingle()
+        const response = await fetch("/api/user/fetch", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ userId }),
+        })
 
-        if (error) {
-          console.error("Error fetching user data - detailed:", {
-            message: error.message,
-            code: error.code,
-            details: error.details,
-            hint: error.hint,
-            fullError: error
-          })
+        const data = await response.json()
+
+        if (!response.ok) {
+          console.error("Error fetching user data:", data)
           return
         }
 
-        if (data) {
-          console.log("📊 Fetched user data from Supabase:", {
-            plan: data.plan,
-            billing_period: data.billing_period,
-            word_limit: data.word_limit,
-            words_used: data.words_used
+        if (data.user) {
+          console.log("📊 Fetched user data from API:", {
+            plan: data.user.plan,
+            billing_period: data.user.billing_period,
+            word_limit: data.user.word_limit,
+            words_used: data.user.words_used
           })
-          setCurrentPlan((data.plan as PlanType) || "free")
-          setWordLimit(data.word_limit)
-          setWordsUsed(data.words_used)
-          setCurrentBillingPeriod((data.billing_period as "monthly" | "annual") || "monthly")
-          console.log("✅ State updated - currentBillingPeriod set to:", (data.billing_period as "monthly" | "annual") || "monthly")
+          setCurrentPlan((data.user.plan as PlanType) || "free")
+          setWordLimit(data.user.word_limit)
+          setWordsUsed(data.user.words_used)
+          setCurrentBillingPeriod((data.user.billing_period as "monthly" | "annual") || "monthly")
+          console.log("✅ State updated - currentBillingPeriod set to:", (data.user.billing_period as "monthly" | "annual") || "monthly")
         } else {
-          console.warn("⚠️ No user data returned from Supabase")
+          console.warn("⚠️ No user data returned from API")
         }
       } catch (err) {
         console.error("Error fetching user data:", err)
