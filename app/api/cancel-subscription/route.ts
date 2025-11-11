@@ -15,7 +15,10 @@ export async function POST(request: NextRequest) {
   try {
     // Get authenticated user
     const { userId } = await auth();
+    console.log("Cancel subscription request for userId:", userId);
+
     if (!userId) {
+      console.error("No userId in auth");
       return NextResponse.json(
         { error: "Unauthorized" },
         { status: 401 }
@@ -42,14 +45,22 @@ export async function POST(request: NextRequest) {
     }
 
     if (!userData) {
+      console.error("User not found in database");
       return NextResponse.json(
         { error: "User not found" },
         { status: 404 }
       );
     }
 
+    console.log("User data fetched:", {
+      plan: userData.plan,
+      has_stripe_id: !!userData.stripe_subscription_id,
+      stripe_id: userData.stripe_subscription_id?.substring(0, 20),
+    });
+
     // Check if user has an active subscription to cancel
     if (!userData.stripe_subscription_id) {
+      console.error("User has no stripe subscription ID");
       return NextResponse.json(
         { error: "No active subscription to cancel" },
         { status: 400 }
@@ -58,6 +69,7 @@ export async function POST(request: NextRequest) {
 
     // Check if already on free plan
     if (userData.plan === "free") {
+      console.error("User is already on free plan");
       return NextResponse.json(
         { error: "Already on free plan" },
         { status: 400 }
@@ -111,10 +123,12 @@ export async function POST(request: NextRequest) {
         periodEnd: periodEndDate.toISOString(),
       });
     } catch (stripeError: any) {
-      console.error("Stripe API error:", {
+      console.error("❌ Stripe API error:", {
         message: stripeError.message,
         code: stripeError.code,
         type: stripeError.type,
+        status: stripeError.statusCode,
+        full: JSON.stringify(stripeError),
       });
 
       // Return safe error message
@@ -131,8 +145,12 @@ export async function POST(request: NextRequest) {
         { status: 500 }
       );
     }
-  } catch (error) {
-    console.error("Cancel subscription error:", error);
+  } catch (error: any) {
+    console.error("❌ Outer catch - Cancel subscription error:", {
+      message: error?.message,
+      stack: error?.stack,
+      full: JSON.stringify(error),
+    });
     return NextResponse.json(
       { error: "Failed to cancel subscription" },
       { status: 500 }
