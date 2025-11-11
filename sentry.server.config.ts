@@ -36,11 +36,5 @@ Sentry.init({
   },
 
   // Additional context
-  integrations: [
-    Sentry.Replay({
-      // Mask all text content, but keep media playback
-      maskAllText: true,
-      blockAllMedia: false,
-    }),
-  ],
+  integrations: [],
 });
