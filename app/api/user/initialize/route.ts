@@ -29,12 +29,21 @@ export async function POST(request: Request) {
       .maybeSingle();
 
     if (fetchError) {
-      console.error("API: Error checking if user exists:", fetchError);
+      console.error("API: Error checking if user exists:", {
+        message: fetchError.message,
+        code: fetchError.code,
+        details: fetchError.details,
+      });
       return Response.json(
-        { error: "Failed to check user status" },
+        { error: "Failed to check user status", details: fetchError.message },
         { status: 500 }
       );
     }
+
+    console.log("API: Query result for userId:", userId, {
+      found: !!existingUser,
+      data: existingUser,
+    });
 
     // If user exists, return their existing data (preserves paid plan, word limits, etc.)
     if (existingUser) {
@@ -42,6 +51,7 @@ export async function POST(request: Request) {
         userId: existingUser.id,
         plan: existingUser.plan,
         email: existingUser.email,
+        wordLimit: existingUser.word_limit,
       });
       return Response.json({
         success: true,
@@ -49,6 +59,8 @@ export async function POST(request: Request) {
         isNew: false,
       });
     }
+
+    console.log("API: User not found, will create new user with free plan");
 
     // User doesn't exist, create them with free plan
     const defaultPlan: PlanType = "free";
