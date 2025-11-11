@@ -31,7 +31,7 @@ export const PLANS: Record<PlanType, PlanConfig> = {
     name: "Starter",
     wordLimit: 5000,
     monthlyPrice: 4.99,
-    annualPrice: 3,
+    annualPrice: 36, // $4.99/month × 12 × 0.60 (40% savings)
     maxWordsPerRequest: 500,
     features: [
       "5,000 words/month",
@@ -44,7 +44,7 @@ export const PLANS: Record<PlanType, PlanConfig> = {
     name: "Pro",
     wordLimit: 20000,
     monthlyPrice: 14.99,
-    annualPrice: 8,
+    annualPrice: 96, // $14.99/month × 12 × 0.53 (47% savings)
     maxWordsPerRequest: 1500,
     features: [
       "20,000 words/month",
@@ -58,7 +58,7 @@ export const PLANS: Record<PlanType, PlanConfig> = {
     name: "Premium",
     wordLimit: 50000,
     monthlyPrice: 38.99,
-    annualPrice: 20,
+    annualPrice: 240, // $38.99/month × 12 × 0.51 (49% savings)
     maxWordsPerRequest: 3000,
     features: [
       "50,000 words/month",
