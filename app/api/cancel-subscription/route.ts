@@ -138,12 +138,35 @@ export async function POST(request: NextRequest) {
       });
 
       // Update database: mark as canceling but KEEP paid plan until period ends
-      const periodEndTimestamp = (updatedSubscription as any).current_period_end;
+      // Fetch fresh subscription to ensure we have the period_end timestamp
+      console.log("FETCH_FRESH: Getting fresh subscription data after cancel");
+      let freshSubscription: Stripe.Subscription;
+      try {
+        freshSubscription = await stripe.subscriptions.retrieve(subId!);
+        console.log("FRESH_SUB:", {
+          id: freshSubscription.id,
+          current_period_end: freshSubscription.current_period_end,
+          type_of_period_end: typeof freshSubscription.current_period_end,
+        });
+      } catch (err) {
+        console.error("Error fetching fresh subscription:", err);
+        freshSubscription = updatedSubscription;
+      }
+
+      const periodEndTimestamp = freshSubscription.current_period_end;
       console.log("Period end timestamp from Stripe:", {
         timestamp: periodEndTimestamp,
         type: typeof periodEndTimestamp,
         isValid: periodEndTimestamp && !isNaN(periodEndTimestamp),
       });
+
+      if (!periodEndTimestamp || isNaN(periodEndTimestamp)) {
+        console.error("❌ Invalid period end timestamp:", periodEndTimestamp);
+        return NextResponse.json(
+          { error: "Failed to retrieve subscription period end date" },
+          { status: 500 }
+        );
+      }
 
       const periodEndDate = new Date(periodEndTimestamp * 1000);
       console.log("Converted to date:", periodEndDate.toISOString());
