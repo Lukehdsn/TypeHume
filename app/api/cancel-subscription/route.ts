@@ -143,9 +143,11 @@ export async function POST(request: NextRequest) {
       let freshSubscription: Stripe.Subscription;
       try {
         freshSubscription = await stripe.subscriptions.retrieve(subId!);
+        console.log("FRESH_SUB_FULL:", JSON.stringify(freshSubscription, null, 2));
         console.log("FRESH_SUB:", {
           id: freshSubscription.id,
           current_period_end: (freshSubscription as any).current_period_end,
+          current_period_start: (freshSubscription as any).current_period_start,
           type_of_period_end: typeof (freshSubscription as any).current_period_end,
         });
       } catch (err) {
@@ -153,7 +155,15 @@ export async function POST(request: NextRequest) {
         freshSubscription = updatedSubscription;
       }
 
-      const periodEndTimestamp = (freshSubscription as any).current_period_end;
+      let periodEndTimestamp = (freshSubscription as any).current_period_end;
+
+      // Fallback: if current_period_end is undefined, try to calculate from items
+      if (!periodEndTimestamp && (freshSubscription as any).items?.data?.[0]) {
+        const billCycle = (freshSubscription as any).items.data[0];
+        periodEndTimestamp = billCycle.billing_cycle_anchor_config?.renew_at ||
+                             billCycle.billing_cycle_anchor;
+        console.log("Using fallback period end from billing cycle:", periodEndTimestamp);
+      }
       console.log("Period end timestamp from Stripe:", {
         timestamp: periodEndTimestamp,
         type: typeof periodEndTimestamp,
