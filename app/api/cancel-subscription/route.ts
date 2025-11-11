@@ -95,7 +95,7 @@ export async function POST(request: NextRequest) {
           status: currentSubscription.status,
           cancel_at_period_end: currentSubscription.cancel_at_period_end,
           canceled_at: currentSubscription.canceled_at,
-          current_period_end: currentSubscription.current_period_end,
+          current_period_end: (currentSubscription as any).current_period_end,
         });
       } catch (fetchErr: any) {
         console.error("ERROR_FETCH_SUB_FAILED");
@@ -118,7 +118,7 @@ export async function POST(request: NextRequest) {
           id: updatedSubscription.id,
           status: updatedSubscription.status,
           cancel_at_period_end: updatedSubscription.cancel_at_period_end,
-          current_period_end: updatedSubscription.current_period_end,
+          current_period_end: (updatedSubscription as any).current_period_end,
         });
       } catch (stripeErr: any) {
         console.error("ERROR_STRIPE_CALL_FAILED");
