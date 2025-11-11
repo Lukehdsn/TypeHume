@@ -85,6 +85,24 @@ export async function POST(request: NextRequest) {
       const subId = userData.stripe_subscription_id;
       console.log("START: Attempting to cancel Stripe subscription, subId:", subId);
 
+      // First, retrieve the current subscription to check its status
+      console.log("FETCH_SUB: Fetching current subscription status");
+      let currentSubscription: Stripe.Subscription;
+      try {
+        currentSubscription = await stripe.subscriptions.retrieve(subId!);
+        console.log("CURRENT_SUB_STATUS:", {
+          id: currentSubscription.id,
+          status: currentSubscription.status,
+          cancel_at_period_end: currentSubscription.cancel_at_period_end,
+          canceled_at: currentSubscription.canceled_at,
+          current_period_end: currentSubscription.current_period_end,
+        });
+      } catch (fetchErr: any) {
+        console.error("ERROR_FETCH_SUB_FAILED");
+        console.error("FETCH_ERROR:", fetchErr?.message);
+        throw fetchErr;
+      }
+
       // Cancel the Stripe subscription (at period end)
       let updatedSubscription: Stripe.Subscription;
       try {
@@ -96,6 +114,12 @@ export async function POST(request: NextRequest) {
         });
 
         console.log("SUCCESS: stripe.subscriptions.update succeeded");
+        console.log("UPDATED_SUB:", {
+          id: updatedSubscription.id,
+          status: updatedSubscription.status,
+          cancel_at_period_end: updatedSubscription.cancel_at_period_end,
+          current_period_end: updatedSubscription.current_period_end,
+        });
       } catch (stripeErr: any) {
         console.error("ERROR_STRIPE_CALL_FAILED");
         console.error("ERROR_MESSAGE:", stripeErr?.message);
