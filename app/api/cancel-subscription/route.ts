@@ -25,7 +25,7 @@ export async function POST(request: NextRequest) {
     // Fetch user's Stripe subscription ID
     const { data: userData, error: fetchError } = await supabase
       .from("users")
-      .select("stripe_subscription_id, plan")
+      .select("stripe_subscription_id, plan, word_limit")
       .eq("id", userId)
       .maybeSingle();
 
