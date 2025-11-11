@@ -256,9 +256,21 @@ export async function POST(request: NextRequest) {
     // Handle customer.subscription.deleted when subscription ends
     if (event.type === "customer.subscription.deleted") {
       const subscription = event.data.object as Stripe.Subscription;
-      console.log(`⚠️ Subscription deleted: ${subscription.id}`);
+      console.log(`⚠️ Subscription deletion event received:`, {
+        subscriptionId: subscription.id,
+        status: subscription.status,
+        canceledAt: subscription.canceled_at,
+        cancelAtPeriodEnd: subscription.cancel_at_period_end,
+      });
 
       try {
+        // IMPORTANT: Only downgrade if user explicitly cancelled (not if subscription just ended)
+        // Only process if cancel_at_period_end is true (user initiated cancellation)
+        if (!subscription.cancel_at_period_end) {
+          console.log(`ℹ️ Subscription ${subscription.id} was deleted but not by user cancellation (cancel_at_period_end=false). Not downgrading.`);
+          return NextResponse.json({ received: true });
+        }
+
         // Find user with this subscription
         const { data: userData } = await supabase
           .from("users")
@@ -267,6 +279,8 @@ export async function POST(request: NextRequest) {
           .maybeSingle();
 
         if (userData) {
+          console.log(`📝 Downgrading user ${userData.id} due to explicit subscription cancellation`);
+
           // Downgrade user to free plan
           const freeWordLimit = getWordLimit("free");
           const { error: updateError } = await supabase
