@@ -77,24 +77,53 @@ export async function POST(request: NextRequest) {
     }
 
     try {
-      // Cancel the Stripe subscription (at period end)
-      const updatedSubscription: Stripe.Subscription = await stripe.subscriptions.update(
-        userData.stripe_subscription_id,
-        {
-          cancel_at_period_end: true,
-        }
-      );
+      // Verify Stripe secret key is loaded
+      if (!process.env.STRIPE_SECRET_KEY) {
+        throw new Error("STRIPE_SECRET_KEY environment variable is not set");
+      }
 
-      console.log("Subscription cancelled in Stripe:", {
+      console.log("Attempting to cancel Stripe subscription:", {
+        subscriptionId: userData.stripe_subscription_id?.substring(0, 20),
+        stripeKeyExists: !!process.env.STRIPE_SECRET_KEY,
+      });
+
+      // Cancel the Stripe subscription (at period end)
+      let updatedSubscription: Stripe.Subscription;
+      try {
+        updatedSubscription = await stripe.subscriptions.update(
+          userData.stripe_subscription_id,
+          {
+            cancel_at_period_end: true,
+          }
+        );
+      } catch (stripeErr: any) {
+        console.error("🔴 Stripe subscriptions.update failed:", {
+          subscriptionId: userData.stripe_subscription_id?.substring(0, 20),
+          message: stripeErr?.message,
+          statusCode: stripeErr?.statusCode,
+          type: stripeErr?.type,
+          param: stripeErr?.param,
+          code: stripeErr?.code,
+        });
+        throw stripeErr;
+      }
+
+      console.log("✅ Subscription cancelled in Stripe:", {
         subscriptionId: userData.stripe_subscription_id,
         userId,
         periodEnd: (updatedSubscription as any).current_period_end,
       });
 
       // Update database: mark as canceling but KEEP paid plan until period ends
-      const periodEndDate = new Date(
-        (updatedSubscription as any).current_period_end * 1000
-      );
+      const periodEndTimestamp = (updatedSubscription as any).current_period_end;
+      console.log("Period end timestamp from Stripe:", {
+        timestamp: periodEndTimestamp,
+        type: typeof periodEndTimestamp,
+        isValid: periodEndTimestamp && !isNaN(periodEndTimestamp),
+      });
+
+      const periodEndDate = new Date(periodEndTimestamp * 1000);
+      console.log("Converted to date:", periodEndDate.toISOString());
 
       const { error: updateError } = await supabase
         .from("users")
