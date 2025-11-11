@@ -145,15 +145,15 @@ export async function POST(request: NextRequest) {
         freshSubscription = await stripe.subscriptions.retrieve(subId!);
         console.log("FRESH_SUB:", {
           id: freshSubscription.id,
-          current_period_end: freshSubscription.current_period_end,
-          type_of_period_end: typeof freshSubscription.current_period_end,
+          current_period_end: (freshSubscription as any).current_period_end,
+          type_of_period_end: typeof (freshSubscription as any).current_period_end,
         });
       } catch (err) {
         console.error("Error fetching fresh subscription:", err);
         freshSubscription = updatedSubscription;
       }
 
-      const periodEndTimestamp = freshSubscription.current_period_end;
+      const periodEndTimestamp = (freshSubscription as any).current_period_end;
       console.log("Period end timestamp from Stripe:", {
         timestamp: periodEndTimestamp,
         type: typeof periodEndTimestamp,
