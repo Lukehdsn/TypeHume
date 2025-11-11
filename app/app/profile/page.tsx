@@ -18,6 +18,8 @@ export default function ProfilePage() {
   const [error, setError] = useState<string | null>(null)
   const [successMessage, setSuccessMessage] = useState<string | null>(null)
   const [showAccountSettings, setShowAccountSettings] = useState(false)
+  const [subscriptionStatus, setSubscriptionStatus] = useState<string | null>(null)
+  const [subscriptionPeriodEnd, setSubscriptionPeriodEnd] = useState<string | null>(null)
 
   useEffect(() => {
     if (!userId) return
@@ -46,6 +48,8 @@ export default function ProfilePage() {
           setWordLimit(data.user.word_limit || 500)
           setWordsUsed(data.user.words_used || 0)
           setMaxPerRequest(getPlanConfig(userPlan).maxWordsPerRequest)
+          setSubscriptionStatus(data.user.subscription_status || null)
+          setSubscriptionPeriodEnd(data.user.subscription_period_end || null)
         }
         setLoading(false)
       } catch (err) {
@@ -142,6 +146,28 @@ export default function ProfilePage() {
               <div className="text-green-600 font-bold text-lg">✓</div>
               <div className="text-left flex-grow">
                 <p className="font-medium text-green-900">{successMessage}</p>
+              </div>
+            </div>
+          )}
+
+          {/* Cancellation Notice */}
+          {subscriptionStatus === "canceling" && subscriptionPeriodEnd && (
+            <div className="mb-6 p-4 bg-yellow-50 border border-yellow-300 rounded-lg flex items-start gap-3">
+              <div className="text-yellow-600 font-bold text-lg">⏰</div>
+              <div className="text-left flex-grow">
+                <p className="font-medium text-yellow-900">
+                  Your subscription will be cancelled on{" "}
+                  <span className="font-bold">
+                    {new Date(subscriptionPeriodEnd).toLocaleDateString("en-US", {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                    })}
+                  </span>
+                </p>
+                <p className="text-sm text-yellow-700 mt-1">
+                  You'll keep your {getPlanConfig(plan).name} access until then. After your billing period ends, your account will downgrade to the Free plan.
+                </p>
               </div>
             </div>
           )}
