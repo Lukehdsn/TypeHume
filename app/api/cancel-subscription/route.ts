@@ -66,7 +66,7 @@ export async function POST(request: NextRequest) {
 
     try {
       // Cancel the Stripe subscription (at period end)
-      const updatedSubscription = await stripe.subscriptions.update(
+      const updatedSubscription: Stripe.Subscription = await stripe.subscriptions.update(
         userData.stripe_subscription_id,
         {
           cancel_at_period_end: true,
