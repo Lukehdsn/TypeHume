@@ -155,15 +155,16 @@ export async function POST(request: NextRequest) {
         freshSubscription = updatedSubscription;
       }
 
-      let periodEndTimestamp = (freshSubscription as any).current_period_end;
+      // The current_period_end is on the subscription items, not the subscription itself
+      // Try multiple sources in order of preference
+      let periodEndTimestamp = (freshSubscription as any).cancel_at ||
+                               (freshSubscription as any).items?.data?.[0]?.current_period_end;
 
-      // Fallback: if current_period_end is undefined, try to calculate from items
-      if (!periodEndTimestamp && (freshSubscription as any).items?.data?.[0]) {
-        const billCycle = (freshSubscription as any).items.data[0];
-        periodEndTimestamp = billCycle.billing_cycle_anchor_config?.renew_at ||
-                             billCycle.billing_cycle_anchor;
-        console.log("Using fallback period end from billing cycle:", periodEndTimestamp);
-      }
+      console.log("Period end resolution:", {
+        cancelAt: (freshSubscription as any).cancel_at,
+        itemsPeriodEnd: (freshSubscription as any).items?.data?.[0]?.current_period_end,
+        resolved: periodEndTimestamp,
+      });
       console.log("Period end timestamp from Stripe:", {
         timestamp: periodEndTimestamp,
         type: typeof periodEndTimestamp,
