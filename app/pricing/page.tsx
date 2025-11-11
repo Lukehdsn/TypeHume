@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react"
 import Link from "next/link"
 import { useAuth, useUser } from "@clerk/nextjs"
-import { PlanType } from "@/lib/plans"
+import { PlanType, PLANS } from "@/lib/plans"
 
 const features = {
   free: [
@@ -192,10 +192,25 @@ export default function PricingPage() {
     handleCheckout(plan)
   }
 
-  const starterPrice = billingPeriod === "monthly" ? 4.99 : 3
-  const proPrice = billingPeriod === "monthly" ? 14.99 : 8
-  const premiumPrice = billingPeriod === "monthly" ? 38.99 : 20
-  const savingsPercent = billingPeriod === "annual" ? "47" : null
+  const starterPrice = billingPeriod === "monthly"
+    ? PLANS.starter.monthlyPrice
+    : PLANS.starter.annualPrice / 12
+  const proPrice = billingPeriod === "monthly"
+    ? PLANS.pro.monthlyPrice
+    : PLANS.pro.annualPrice / 12
+  const premiumPrice = billingPeriod === "monthly"
+    ? PLANS.premium.monthlyPrice
+    : PLANS.premium.annualPrice / 12
+
+  // Calculate savings percentage dynamically
+  const calculateSavingsPercent = () => {
+    if (billingPeriod !== "annual") return null
+    const monthlyTotal = PLANS.pro.monthlyPrice * 12
+    const annualTotal = PLANS.pro.annualPrice
+    const savings = Math.round(((monthlyTotal - annualTotal) / monthlyTotal) * 100)
+    return savings.toString()
+  }
+  const savingsPercent = calculateSavingsPercent()
   const wordsRemaining = Math.max(0, wordLimit - wordsUsed)
   const userInitial = user?.primaryEmailAddress?.emailAddress
     ?.charAt(0)
