@@ -76,12 +76,12 @@ export async function POST(request: NextRequest) {
       console.log("Subscription cancelled in Stripe:", {
         subscriptionId: userData.stripe_subscription_id,
         userId,
-        periodEnd: updatedSubscription.current_period_end,
+        periodEnd: (updatedSubscription as any).current_period_end,
       });
 
       // Update database: mark as canceling but KEEP paid plan until period ends
       const periodEndDate = new Date(
-        updatedSubscription.current_period_end * 1000
+        (updatedSubscription as any).current_period_end * 1000
       );
 
       const { error: updateError } = await supabase
