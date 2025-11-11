@@ -83,41 +83,27 @@ export async function POST(request: NextRequest) {
       }
 
       const subId = userData.stripe_subscription_id;
-      console.log("Attempting to cancel Stripe subscription:", {
-        subscriptionId: subId?.substring(0, 20),
-        subscriptionIdFull: subId,
-        subscriptionIdLength: subId?.length,
-        subscriptionIdType: typeof subId,
-        stripeKeyExists: !!process.env.STRIPE_SECRET_KEY,
-        stripeKeyPrefix: process.env.STRIPE_SECRET_KEY?.substring(0, 7),
-      });
+      console.log("START: Attempting to cancel Stripe subscription, subId:", subId);
 
       // Cancel the Stripe subscription (at period end)
       let updatedSubscription: Stripe.Subscription;
       try {
-        console.log("About to call stripe.subscriptions.update with:", {
-          id: subId,
-          params: { cancel_at_period_end: true },
-        });
+        console.log("BEFORE_STRIPE_CALL: About to call stripe.subscriptions.update");
+        console.log("STRIPE_CALL_PARAMS:", { id: subId, cancel_at_period_end: true });
 
         updatedSubscription = await stripe.subscriptions.update(subId!, {
           cancel_at_period_end: true,
         });
 
-        console.log("stripe.subscriptions.update succeeded");
+        console.log("SUCCESS: stripe.subscriptions.update succeeded");
       } catch (stripeErr: any) {
-        console.error("🔴 Stripe subscriptions.update failed:", {
-          subscriptionId: userData.stripe_subscription_id?.substring(0, 20),
-          message: stripeErr?.message,
-          statusCode: stripeErr?.statusCode,
-          type: stripeErr?.type,
-          param: stripeErr?.param,
-          code: stripeErr?.code,
-          fullError: JSON.stringify(stripeErr, Object.getOwnPropertyNames(stripeErr)),
-          errorKeys: Object.keys(stripeErr || {}),
-          errorName: stripeErr?.name,
-          errorString: String(stripeErr),
-        });
+        console.error("ERROR_STRIPE_CALL_FAILED");
+        console.error("ERROR_MESSAGE:", stripeErr?.message);
+        console.error("ERROR_NAME:", stripeErr?.name);
+        console.error("ERROR_TYPE:", stripeErr?.type);
+        console.error("ERROR_CODE:", stripeErr?.code);
+        console.error("ERROR_STATUS:", stripeErr?.statusCode);
+        console.error("FULL_ERROR:", stripeErr);
         throw stripeErr;
       }
 
