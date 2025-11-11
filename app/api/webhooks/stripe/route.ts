@@ -169,9 +169,9 @@ export async function POST(request: NextRequest) {
       console.log(`✅ Payment succeeded for invoice: ${invoice.id}`);
 
       // Only process renewal payments (not initial invoices)
-      if (invoice.billing_reason === "subscription_cycle" && invoice.subscription) {
+      const subscriptionId = (invoice as any).subscription as string | undefined;
+      if (invoice.billing_reason === "subscription_cycle" && subscriptionId) {
         try {
-          const subscriptionId = invoice.subscription as string;
 
           // Find user with this subscription
           const { data: userData, error: fetchError } = await supabase
@@ -300,8 +300,8 @@ export async function POST(request: NextRequest) {
       console.log(`❌ Payment failed for invoice: ${invoice.id}`);
 
       try {
-        if (invoice.subscription) {
-          const subscriptionId = invoice.subscription as string;
+        const subscriptionId = (invoice as any).subscription as string | undefined;
+        if (subscriptionId) {
 
           // Find user and notify/log for manual intervention
           const { data: userData } = await supabase
