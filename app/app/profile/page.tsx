@@ -20,6 +20,7 @@ export default function ProfilePage() {
   const [showAccountSettings, setShowAccountSettings] = useState(false)
   const [subscriptionStatus, setSubscriptionStatus] = useState<string | null>(null)
   const [subscriptionPeriodEnd, setSubscriptionPeriodEnd] = useState<string | null>(null)
+  const [cancelLoading, setCancelLoading] = useState(false)
 
   useEffect(() => {
     if (!userId) return
@@ -87,6 +88,42 @@ export default function ProfilePage() {
       console.error("Portal error:", err)
       setError("Failed to open billing portal. Please try again.")
       setPortalLoading(false)
+    }
+  }
+
+  const handleCancelSubscription = async () => {
+    if (!confirm("Are you sure you want to cancel your subscription? You'll keep access until your billing period ends.")) {
+      return
+    }
+
+    setCancelLoading(true)
+    setError(null)
+
+    try {
+      const response = await fetch("/api/cancel-subscription", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        setError(data.error || "Failed to cancel subscription")
+        setCancelLoading(false)
+        return
+      }
+
+      // Update UI with cancellation status
+      setSubscriptionStatus("canceling")
+      setSubscriptionPeriodEnd(data.periodEnd)
+      setSuccessMessage(data.message || "Subscription cancelled successfully!")
+      setCancelLoading(false)
+    } catch (err) {
+      console.error("Cancel error:", err)
+      setError("Failed to cancel subscription. Please try again.")
+      setCancelLoading(false)
     }
   }
 
@@ -244,6 +281,15 @@ export default function ProfilePage() {
                     >
                       {portalLoading ? "Opening..." : "Manage Subscription"}
                     </button>
+                    {subscriptionStatus !== "canceling" && (
+                      <button
+                        onClick={handleCancelSubscription}
+                        disabled={cancelLoading}
+                        className="bg-red-600 text-white hover:bg-red-700 rounded-lg px-6 py-3 font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                      >
+                        {cancelLoading ? "Cancelling..." : "Cancel Subscription"}
+                      </button>
+                    )}
                     <button
                       onClick={() => setShowAccountSettings(true)}
                       className="bg-orange-600 text-white hover:bg-orange-700 rounded-lg px-6 py-3 font-medium transition-colors"
