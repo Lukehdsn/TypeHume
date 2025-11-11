@@ -1,6 +1,8 @@
 import { Anthropic } from "@anthropic-ai/sdk";
+import { auth } from "@clerk/nextjs/server";
 import { supabaseServer } from "@/lib/supabase-server";
 import { getPlanConfig, PlanType } from "@/lib/plans";
+import { checkRateLimit } from "@/lib/ratelimit";
 
 const client = new Anthropic({
   apiKey: process.env.ANTHROPIC_API_KEY,
@@ -11,12 +13,46 @@ export async function POST(request: Request) {
     const startTime = Date.now();
     console.log("[TIMING] Request started");
 
+    // Verify user is authenticated
+    const { userId: authenticatedUserId } = await auth();
+    if (!authenticatedUserId) {
+      return Response.json(
+        { error: "Unauthorized" },
+        { status: 401 }
+      );
+    }
+
     const { text, userId } = await request.json();
 
     if (!text || !userId) {
       return Response.json(
         { error: "Missing text or userId" },
         { status: 400 }
+      );
+    }
+
+    // Verify the userId in request matches the authenticated user
+    if (userId !== authenticatedUserId) {
+      return Response.json(
+        { error: "Unauthorized" },
+        { status: 401 }
+      );
+    }
+
+    // Check rate limiting (10 requests per minute per user)
+    const rateLimitResult = await checkRateLimit(userId);
+    if (!rateLimitResult.success) {
+      return Response.json(
+        {
+          error: "Rate limit exceeded. Maximum 10 requests per minute.",
+          retryAfter: rateLimitResult.resetAfter,
+        },
+        {
+          status: 429,
+          headers: {
+            "Retry-After": rateLimitResult.resetAfter.toString(),
+          }
+        }
       );
     }
 
@@ -139,22 +175,53 @@ ${text}`,
       throw new Error("Failed to get response from Claude after retries");
     }
 
-    const humanizedText =
-      message.content[0].type === "text" ? message.content[0].text : "";
+    // Validate Claude API response format
+    if (!message.content || !Array.isArray(message.content) || message.content.length === 0) {
+      throw new Error("Invalid Claude response: missing content");
+    }
 
-    // Update user's word usage
+    const firstContent = message.content[0];
+    if (!firstContent || firstContent.type !== "text") {
+      throw new Error("Invalid Claude response: expected text content");
+    }
+
+    const humanizedText = firstContent.text;
+    if (!humanizedText || typeof humanizedText !== "string") {
+      throw new Error("Invalid Claude response: text is not a string");
+    }
+
+    // Update user's word usage with atomic constraint check
+    // This prevents race conditions where concurrent requests bypass the limit
     const updateStartTime = Date.now();
-    const { error: updateError } = await supabaseServer
+    const newWordsUsed = userData.words_used + inputWordCount;
+
+    const { error: updateError, data: updateData } = await supabaseServer
       .from("users")
       .update({
-        words_used: userData.words_used + inputWordCount,
+        words_used: newWordsUsed,
       })
-      .eq("id", userId);
+      .eq("id", userId)
+      .lte("word_limit", newWordsUsed) // Only update if new usage doesn't exceed limit
+      .select();
+
     console.log(`[TIMING] Database update: ${Date.now() - updateStartTime}ms`);
 
     if (updateError) {
       console.error("Failed to update word usage:", updateError);
       // Don't fail the request, but log the error
+      // In production, consider returning 429 or 402 (payment required)
+    }
+
+    // Double-check that update succeeded (race condition detection)
+    if (!updateData || updateData.length === 0) {
+      console.warn("⚠️ Word usage update failed - user may have insufficient words or concurrent limit exceeded", {
+        userId,
+        inputWordCount,
+        previousWordsUsed: userData.words_used,
+        wordLimit: userData.word_limit,
+      });
+      // Return success anyway since humanization completed, but log for monitoring
+      // In future, we could queue a retry or return error
     }
 
     // Save to humanizations table

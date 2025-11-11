@@ -41,7 +41,7 @@ export async function POST(request: NextRequest) {
     const planConfig = PLANS[plan as PlanType];
     const price = billingPeriod === "monthly"
       ? planConfig.monthlyPrice
-      : planConfig.annualPrice * 12; // Multiply by 12 for full annual amount
+      : planConfig.annualPrice; // annualPrice is already the monthly-equivalent rate
 
     // Create checkout session
     const session = await stripe.checkout.sessions.create({

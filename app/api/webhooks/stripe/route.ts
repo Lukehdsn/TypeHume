@@ -167,13 +167,159 @@ export async function POST(request: NextRequest) {
     if (event.type === "invoice.payment_succeeded") {
       const invoice = event.data.object as Stripe.Invoice;
       console.log(`✅ Payment succeeded for invoice: ${invoice.id}`);
+
+      // Only process renewal payments (not initial invoices)
+      if (invoice.billing_reason === "subscription_cycle" && invoice.subscription) {
+        try {
+          const subscriptionId = invoice.subscription as string;
+
+          // Find user with this subscription
+          const { data: userData, error: fetchError } = await supabase
+            .from("users")
+            .select("id, plan, word_limit")
+            .eq("stripe_subscription_id", subscriptionId)
+            .maybeSingle();
+
+          if (fetchError) {
+            console.error("❌ Error fetching user for renewal:", {
+              subscriptionId,
+              error: fetchError.message,
+            });
+            return NextResponse.json({ received: true });
+          }
+
+          if (userData) {
+            // Reset word usage for subscription renewal
+            const { error: updateError } = await supabase
+              .from("users")
+              .update({
+                words_used: 0, // Reset words on successful renewal
+              })
+              .eq("id", userData.id);
+
+            if (updateError) {
+              console.error("❌ Error resetting words on renewal:", {
+                userId: userData.id,
+                error: updateError.message,
+              });
+            } else {
+              console.log(`✅ Words reset for user ${userData.id} on subscription renewal`);
+            }
+          }
+        } catch (err) {
+          console.error("❌ Exception in invoice.payment_succeeded handler:", err);
+        }
+      }
     }
 
-    // Handle customer.subscription.deleted
+    // Handle customer.subscription.updated for mid-cycle plan changes
+    if (event.type === "customer.subscription.updated") {
+      const subscription = event.data.object as Stripe.Subscription;
+      console.log(`📝 Subscription updated: ${subscription.id}`);
+
+      try {
+        // Find user with this subscription
+        const { data: userData } = await supabase
+          .from("users")
+          .select("id, plan")
+          .eq("stripe_subscription_id", subscription.id)
+          .maybeSingle();
+
+        if (userData && subscription.items.data[0]?.plan.metadata?.plan_type) {
+          const newPlan = subscription.items.data[0].plan.metadata.plan_type as PlanType;
+          const newWordLimit = getWordLimit(newPlan);
+
+          // Update user's plan if it changed
+          const { error: updateError } = await supabase
+            .from("users")
+            .update({
+              plan: newPlan,
+              word_limit: newWordLimit,
+              words_used: 0, // Reset on plan change
+            })
+            .eq("id", userData.id);
+
+          if (updateError) {
+            console.error("❌ Error updating user on subscription change:", {
+              userId: userData.id,
+              error: updateError.message,
+            });
+          } else {
+            console.log(`✅ User ${userData.id} plan updated to ${newPlan}`);
+          }
+        }
+      } catch (err) {
+        console.error("❌ Exception in customer.subscription.updated handler:", err);
+      }
+    }
+
+    // Handle customer.subscription.deleted when subscription ends
     if (event.type === "customer.subscription.deleted") {
       const subscription = event.data.object as Stripe.Subscription;
-      console.log(`⚠️ Subscription cancelled: ${subscription.id}`);
-      // You could downgrade user to free plan here if desired
+      console.log(`⚠️ Subscription deleted: ${subscription.id}`);
+
+      try {
+        // Find user with this subscription
+        const { data: userData } = await supabase
+          .from("users")
+          .select("id")
+          .eq("stripe_subscription_id", subscription.id)
+          .maybeSingle();
+
+        if (userData) {
+          // Downgrade user to free plan
+          const freeWordLimit = getWordLimit("free");
+          const { error: updateError } = await supabase
+            .from("users")
+            .update({
+              plan: "free",
+              word_limit: freeWordLimit,
+              words_used: 0,
+              stripe_subscription_id: null,
+              stripe_customer_id: null,
+            })
+            .eq("id", userData.id);
+
+          if (updateError) {
+            console.error("❌ Error downgrading user on subscription deletion:", {
+              userId: userData.id,
+              error: updateError.message,
+            });
+          } else {
+            console.log(`✅ User ${userData.id} downgraded to free plan after subscription deletion`);
+          }
+        }
+      } catch (err) {
+        console.error("❌ Exception in customer.subscription.deleted handler:", err);
+      }
+    }
+
+    // Handle invoice.payment_failed for payment failures
+    if (event.type === "invoice.payment_failed") {
+      const invoice = event.data.object as Stripe.Invoice;
+      console.log(`❌ Payment failed for invoice: ${invoice.id}`);
+
+      try {
+        if (invoice.subscription) {
+          const subscriptionId = invoice.subscription as string;
+
+          // Find user and notify/log for manual intervention
+          const { data: userData } = await supabase
+            .from("users")
+            .select("id, email")
+            .eq("stripe_subscription_id", subscriptionId)
+            .maybeSingle();
+
+          if (userData) {
+            // Log failed payment attempt - in production, send email notification here
+            console.warn(`⚠️ Payment failed for user ${userData.id} (${userData.email}). Subscription: ${subscriptionId}`);
+            // TODO: Send payment failure email to user
+            // TODO: Consider downgrading after N retries
+          }
+        }
+      } catch (err) {
+        console.error("❌ Exception in invoice.payment_failed handler:", err);
+      }
     }
 
     console.log("✅ Webhook processed successfully, returning response");
