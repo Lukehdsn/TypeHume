@@ -21,57 +21,81 @@ export async function POST(request: Request) {
 
     console.log("API: Starting user initialization for userId:", userId);
 
+    // First, check if user already exists
+    const { data: existingUser, error: fetchError } = await supabaseServer
+      .from("users")
+      .select("*")
+      .eq("id", userId)
+      .maybeSingle();
+
+    if (fetchError) {
+      console.error("API: Error checking if user exists:", fetchError);
+      return Response.json(
+        { error: "Failed to check user status" },
+        { status: 500 }
+      );
+    }
+
+    // If user exists, return their existing data (preserves paid plan, word limits, etc.)
+    if (existingUser) {
+      console.log("API: User already exists, returning existing data:", {
+        userId: existingUser.id,
+        plan: existingUser.plan,
+        email: existingUser.email,
+      });
+      return Response.json({
+        success: true,
+        user: existingUser,
+        isNew: false,
+      });
+    }
+
+    // User doesn't exist, create them with free plan
     const defaultPlan: PlanType = "free";
     const defaultWordLimit = getWordLimit(defaultPlan);
 
-    // Use upsert to handle race conditions atomically
-    // If user exists, return existing data; if not, create with free plan
-    const { data: userData, error: upsertError } = await supabaseServer
+    const { data: newUser, error: insertError } = await supabaseServer
       .from("users")
-      .upsert({
+      .insert({
         id: userId,
         email: email || "",
         plan: defaultPlan,
         word_limit: defaultWordLimit,
         words_used: 0,
-      }, {
-        onConflict: "id", // Use id as primary key for conflict detection
-        ignoreDuplicates: false, // Return the existing or new row
       })
       .select()
       .single();
 
-    if (upsertError) {
-      console.error("API: Failed to initialize user - detailed:", {
-        message: upsertError.message,
-        code: upsertError.code,
-        details: upsertError.details,
-        hint: upsertError.hint,
+    if (insertError) {
+      console.error("API: Failed to create new user:", {
+        message: insertError.message,
+        code: insertError.code,
+        details: insertError.details,
       });
       return Response.json(
-        { error: "Failed to initialize user", code: upsertError.code },
+        { error: "Failed to create user", code: insertError.code },
         { status: 500 }
       );
     }
 
-    if (!userData) {
-      console.error("API: Upsert succeeded but no data returned");
+    if (!newUser) {
+      console.error("API: Insert succeeded but no data returned");
       return Response.json(
         { error: "Failed to retrieve user data" },
         { status: 500 }
       );
     }
 
-    console.log("API: User initialized successfully:", {
-      userId: userData.id,
-      plan: userData.plan,
-      email: userData.email,
+    console.log("API: New user created successfully:", {
+      userId: newUser.id,
+      plan: newUser.plan,
+      email: newUser.email,
     });
 
     return Response.json({
       success: true,
-      user: userData,
-      isNew: userData.plan === defaultPlan, // Might not be reliable, but indicates fresh initialization
+      user: newUser,
+      isNew: true,
     });
   } catch (error) {
     console.error("API: User initialization error:", error);
