@@ -3,6 +3,7 @@ import { auth } from "@clerk/nextjs/server";
 import { supabaseServer } from "@/lib/supabase-server";
 import { getPlanConfig, PlanType } from "@/lib/plans";
 import { checkRateLimit } from "@/lib/ratelimit";
+import { HumanizeRequestSchema, validateRequest } from "@/lib/validations";
 
 const client = new Anthropic({
   apiKey: process.env.ANTHROPIC_API_KEY,
@@ -22,14 +23,20 @@ export async function POST(request: Request) {
       );
     }
 
-    const { text, userId } = await request.json();
+    // Validate request body
+    const { data: validatedData, error: validationError } = await validateRequest(
+      request,
+      HumanizeRequestSchema
+    );
 
-    if (!text || !userId) {
+    if (validationError) {
       return Response.json(
-        { error: "Missing text or userId" },
+        { error: validationError },
         { status: 400 }
       );
     }
+
+    const { text, userId } = validatedData!;
 
     // Verify the userId in request matches the authenticated user
     if (userId !== authenticatedUserId) {

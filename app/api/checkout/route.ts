@@ -1,34 +1,26 @@
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
 import { PLANS, PlanType } from "@/lib/plans";
+import { CheckoutRequestSchema, validateRequest } from "@/lib/validations";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
 export async function POST(request: NextRequest) {
   try {
-    const { plan, billingPeriod, userId } = await request.json();
+    // Validate request body
+    const { data: validatedData, error: validationError } = await validateRequest(
+      request,
+      CheckoutRequestSchema
+    );
 
-    if (!plan || !billingPeriod || !userId) {
+    if (validationError) {
       return NextResponse.json(
-        { error: "Missing required fields: plan, billingPeriod, userId" },
+        { error: validationError },
         { status: 400 }
       );
     }
 
-    // Validate plan exists
-    if (!PLANS[plan as PlanType]) {
-      return NextResponse.json(
-        { error: "Invalid plan" },
-        { status: 400 }
-      );
-    }
-
-    if (billingPeriod !== "monthly" && billingPeriod !== "annual") {
-      return NextResponse.json(
-        { error: "Invalid billing period" },
-        { status: 400 }
-      );
-    }
+    const { plan, billingPeriod, userId } = validatedData!;
 
     // Don't allow checkout for free plan
     if (plan === "free") {

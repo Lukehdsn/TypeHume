@@ -1,15 +1,22 @@
 import { supabaseServer } from "@/lib/supabase-server";
+import { UserFetchRequestSchema, validateRequest } from "@/lib/validations";
 
 export async function POST(request: Request) {
   try {
-    const { userId } = await request.json();
+    // Validate request body
+    const { data: validatedData, error: validationError } = await validateRequest(
+      request,
+      UserFetchRequestSchema
+    );
 
-    if (!userId) {
+    if (validationError) {
       return Response.json(
-        { error: "Missing userId" },
+        { error: validationError },
         { status: 400 }
       );
     }
+
+    const { userId } = validatedData!;
 
     const { data, error } = await supabaseServer
       .from("users")

@@ -1,16 +1,23 @@
 import { supabaseServer } from "@/lib/supabase-server";
 import { getWordLimit, PlanType } from "@/lib/plans";
+import { UserInitializeRequestSchema, validateRequest } from "@/lib/validations";
 
 export async function POST(request: Request) {
   try {
-    const { userId, email } = await request.json();
+    // Validate request body
+    const { data: validatedData, error: validationError } = await validateRequest(
+      request,
+      UserInitializeRequestSchema
+    );
 
-    if (!userId) {
+    if (validationError) {
       return Response.json(
-        { error: "Missing userId" },
+        { error: validationError },
         { status: 400 }
       );
     }
+
+    const { userId, email } = validatedData!;
 
     console.log("API: Starting user initialization for userId:", userId);
 
