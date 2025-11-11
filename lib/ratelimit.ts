@@ -47,7 +47,7 @@ export async function checkRateLimit(userId: string): Promise<{ success: boolean
     return {
       success: result.success,
       remaining: Math.max(0, result.remaining),
-      resetAfter: Math.ceil((result.resetAfter - Date.now()) / 1000),
+      resetAfter: Math.ceil((result.reset - Date.now()) / 1000),
     };
   } catch (error) {
     console.error("Rate limiter error:", error);
