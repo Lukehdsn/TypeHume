@@ -4,7 +4,6 @@ import { useUser, useAuth } from "@clerk/nextjs"
 import { SignOutButton, UserProfile } from "@clerk/nextjs"
 import Link from "next/link"
 import { useState, useEffect } from "react"
-import { supabase } from "@/lib/supabase"
 import { getPlanConfig, PlanType } from "@/lib/plans"
 
 export default function ProfilePage() {
@@ -25,23 +24,27 @@ export default function ProfilePage() {
 
     const fetchUserData = async () => {
       try {
-        const { data, error } = await supabase
-          .from("users")
-          .select("plan, word_limit, words_used")
-          .eq("id", userId)
-          .maybeSingle()
+        const response = await fetch("/api/user/fetch", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ userId }),
+        })
 
-        if (error) {
-          console.error("Error fetching user data:", error)
+        const data = await response.json()
+
+        if (!response.ok) {
+          console.error("Error fetching user data:", data)
           setLoading(false)
           return
         }
 
-        if (data) {
-          const userPlan = (data.plan as PlanType) || "free"
+        if (data.user) {
+          const userPlan = (data.user.plan as PlanType) || "free"
           setPlan(userPlan)
-          setWordLimit(data.word_limit || 500)
-          setWordsUsed(data.words_used || 0)
+          setWordLimit(data.user.word_limit || 500)
+          setWordsUsed(data.user.words_used || 0)
           setMaxPerRequest(getPlanConfig(userPlan).maxWordsPerRequest)
         }
         setLoading(false)

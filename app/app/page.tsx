@@ -5,8 +5,7 @@ import Link from "next/link"
 import { useAuth, useUser, useClerk } from "@clerk/nextjs"
 import { Clipboard, Loader, X } from "lucide-react"
 import { useSearchParams } from "next/navigation"
-import { supabase } from "@/lib/supabase"
-import { getWordLimit, getPlanConfig, PlanType } from "@/lib/plans"
+import { getPlanConfig, PlanType } from "@/lib/plans"
 import DetectorMarquee from "@/components/DetectorMarquee"
 
 interface SavedSession {
@@ -63,80 +62,43 @@ export default function DashboardPage() {
 
       setIsInitializing(true)
       setError("")
-      console.log("Starting user initialization for userId:", userId)
+      console.log("Client: Starting user initialization for userId:", userId)
 
       try {
-        // Check if user exists (use maybeSingle instead of single)
-        console.log("Querying for existing user...")
-        const { data: existingUser, error: fetchError } = await supabase
-          .from("users")
-          .select("*")
-          .eq("id", userId)
-          .maybeSingle()
+        // Call server API to initialize/fetch user
+        const response = await fetch("/api/user/initialize", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            userId,
+            email: user?.primaryEmailAddress?.emailAddress || "",
+          }),
+        })
 
-        console.log("Query result - existingUser:", existingUser, "fetchError:", fetchError)
+        const data = await response.json()
 
-        if (!existingUser && !fetchError) {
-          // User doesn't exist, create them with free plan
-          console.log("User doesn't exist, creating new user:", userId)
-          const defaultPlan: PlanType = "free"
-          const defaultWordLimit = getWordLimit(defaultPlan)
-
-          const { data: newUser, error: insertError } = await supabase
-            .from("users")
-            .insert({
-              id: userId,
-              email: user?.primaryEmailAddress?.emailAddress || "",
-              plan: defaultPlan,
-              word_limit: defaultWordLimit,
-              words_used: 0,
-            })
-            .select()
-            .single()
-
-          if (insertError) {
-            console.error("Failed to create user - detailed:", {
-              message: insertError.message,
-              code: insertError.code,
-              details: insertError.details,
-              hint: insertError.hint,
-              fullError: insertError
-            })
-            setError(`Failed to set up account (${insertError.code || 'unknown'}). Please refresh.`)
-            setIsInitializing(false)
-            return
-          }
-
-          if (newUser) {
-            setPlan(defaultPlan)
-            setWordLimit(defaultWordLimit)
-            setWordsUsed(0)
-            setMaxPerRequest(getPlanConfig(defaultPlan).maxWordsPerRequest)
-          }
+        if (!response.ok) {
+          console.error("Client: API error:", data)
+          setError(`Failed to set up account. Please refresh.`)
           setIsInitializing(false)
-        } else if (fetchError) {
-          // Some other error occurred
-          console.error("Error fetching user - detailed:", {
-            message: fetchError.message,
-            code: fetchError.code,
-            details: fetchError.details,
-            hint: fetchError.hint,
-            fullError: fetchError
-          })
-          setError(`Error loading account (${fetchError.code || 'unknown'}). Please refresh.`)
-          setIsInitializing(false)
-        } else if (existingUser) {
-          // User exists, load their data
-          console.log("User exists, loading data:", existingUser)
-          const userPlan = (existingUser.plan || "free") as PlanType
-          setPlan(userPlan)
-          setWordLimit(existingUser.word_limit || getWordLimit(userPlan))
-          setWordsUsed(existingUser.words_used || 0)
-          setMaxPerRequest(getPlanConfig(userPlan).maxWordsPerRequest)
-          setIsInitializing(false)
+          return
         }
+
+        if (data.user) {
+          // User data loaded successfully
+          console.log("Client: User initialized:", data.user)
+          const userPlan = (data.user.plan || "free") as PlanType
+          setPlan(userPlan)
+          setWordLimit(data.user.word_limit || 500)
+          setWordsUsed(data.user.words_used || 0)
+          setMaxPerRequest(getPlanConfig(userPlan).maxWordsPerRequest)
+        }
+
+        setIsInitializing(false)
       } catch (err) {
-        console.error("Error initializing user:", err)
+        console.error("Client: Error initializing user:", err)
         setError("Unexpected error. Please refresh.")
         setIsInitializing(false)
       }

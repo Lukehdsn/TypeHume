@@ -1,15 +1,10 @@
 import { Anthropic } from "@anthropic-ai/sdk";
-import { createClient } from "@supabase/supabase-js";
+import { supabaseServer } from "@/lib/supabase-server";
 import { getPlanConfig, PlanType } from "@/lib/plans";
 
 const client = new Anthropic({
   apiKey: process.env.ANTHROPIC_API_KEY,
 });
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
 
 export async function POST(request: Request) {
   try {
@@ -31,7 +26,7 @@ export async function POST(request: Request) {
 
     // Get user's word limit, current usage, and plan
     const dbStartTime = Date.now();
-    const { data: userData, error: userError } = await supabase
+    const { data: userData, error: userError } = await supabaseServer
       .from("users")
       .select("word_limit, words_used, plan")
       .eq("id", userId)
@@ -149,7 +144,7 @@ ${text}`,
 
     // Update user's word usage
     const updateStartTime = Date.now();
-    const { error: updateError } = await supabase
+    const { error: updateError } = await supabaseServer
       .from("users")
       .update({
         words_used: userData.words_used + inputWordCount,
@@ -164,7 +159,7 @@ ${text}`,
 
     // Save to humanizations table
     const saveStartTime = Date.now();
-    await supabase.from("humanizations").insert({
+    await supabaseServer.from("humanizations").insert({
       user_id: userId,
       input_text: text,
       output_text: humanizedText,
