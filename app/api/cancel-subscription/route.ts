@@ -159,7 +159,13 @@ export async function POST(request: NextRequest) {
         .eq("id", userId);
 
       if (updateError) {
-        console.error("Error updating cancellation status:", updateError);
+        console.error("Error updating cancellation status:", {
+          message: updateError.message,
+          code: updateError.code,
+          details: updateError.details,
+          hint: updateError.hint,
+          full: JSON.stringify(updateError),
+        });
         return NextResponse.json(
           { error: "Failed to update cancellation status" },
           { status: 500 }
