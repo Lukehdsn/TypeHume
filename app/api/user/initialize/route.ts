@@ -52,7 +52,69 @@ export async function POST(request: Request) {
         plan: existingUser.plan,
         email: existingUser.email,
         wordLimit: existingUser.word_limit,
+        subscriptionStatus: existingUser.subscription_status,
       });
+
+      // Check if subscription period has ended but status not updated
+      // This is a safety measure in case the webhook doesn't fire
+      if (
+        existingUser.subscription_status === "canceling" &&
+        existingUser.subscription_period_end
+      ) {
+        const periodEnd = new Date(existingUser.subscription_period_end);
+        const now = new Date();
+
+        // If period has ended, downgrade to free
+        if (now > periodEnd) {
+          console.log(
+            "API: Subscription period ended, downgrading user:",
+            {
+              userId: existingUser.id,
+              periodEnd: periodEnd.toISOString(),
+              now: now.toISOString(),
+            }
+          );
+
+          const freeWordLimit = getWordLimit("free");
+          const { error: downgradeError } = await supabaseServer
+            .from("users")
+            .update({
+              plan: "free",
+              word_limit: freeWordLimit,
+              words_used: 0,
+              stripe_subscription_id: null,
+              subscription_status: "canceled",
+              subscription_cancel_at_period_end: false,
+              subscription_period_end: null,
+            })
+            .eq("id", existingUser.id);
+
+          if (downgradeError) {
+            console.error(
+              "API: Error downgrading expired subscription:",
+              downgradeError
+            );
+          } else {
+            console.log(`API: User ${existingUser.id} downgraded after period end`);
+          }
+
+          // Return updated user data
+          return Response.json({
+            success: true,
+            user: {
+              ...existingUser,
+              plan: "free",
+              word_limit: freeWordLimit,
+              words_used: 0,
+              subscription_status: "canceled",
+              subscription_cancel_at_period_end: false,
+              subscription_period_end: null,
+            },
+            isNew: false,
+          });
+        }
+      }
+
       return Response.json({
         success: true,
         user: existingUser,

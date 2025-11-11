@@ -256,25 +256,85 @@ export async function POST(request: NextRequest) {
     // Handle customer.subscription.deleted when subscription ends
     if (event.type === "customer.subscription.deleted") {
       const subscription = event.data.object as Stripe.Subscription;
-      console.log(`⚠️ Subscription deletion event received - DISABLED (too risky to auto-downgrade)`, {
+
+      console.log(`🗑️ Subscription deletion event received`, {
         subscriptionId: subscription.id,
         status: subscription.status,
         canceledAt: subscription.canceled_at,
         cancelAtPeriodEnd: subscription.cancel_at_period_end,
       });
 
-      // DISABLED: Never auto-downgrade users on subscription.deleted events
-      // This event is unreliable and causes users to lose paid access due to:
-      // - Payment failures
-      // - System errors
-      // - Test webhooks
-      // - Retry logic
-      //
-      // Instead, users should only lose access by:
-      // 1. Explicitly cancelling through the app
-      // 2. Payment failures after multiple retry attempts
-      //
-      // Re-enable only if we have a more robust way to handle this.
+      try {
+        // Find user with this subscription
+        const { data: userData, error: fetchError } = await supabase
+          .from("users")
+          .select(
+            "id, plan, subscription_status, subscription_cancel_at_period_end"
+          )
+          .eq("stripe_subscription_id", subscription.id)
+          .maybeSingle();
+
+        if (fetchError) {
+          console.error("❌ Error fetching user for subscription deletion:", {
+            subscriptionId: subscription.id,
+            error: fetchError.message,
+          });
+          return NextResponse.json({ received: true });
+        }
+
+        if (!userData) {
+          console.warn("⚠️ No user found for deleted subscription:", subscription.id);
+          return NextResponse.json({ received: true });
+        }
+
+        // SAFETY CHECK: Only downgrade if cancellation was expected
+        // This prevents unexpected deletions (payment failures, system errors, etc)
+        if (
+          userData.subscription_cancel_at_period_end === true ||
+          userData.subscription_status === "canceling"
+        ) {
+          // Downgrade to free plan
+          const freeWordLimit = getWordLimit("free");
+          const { error: updateError } = await supabase
+            .from("users")
+            .update({
+              plan: "free",
+              word_limit: freeWordLimit,
+              words_used: 0,
+              stripe_subscription_id: null,
+              subscription_status: "canceled",
+              subscription_cancel_at_period_end: false,
+              subscription_period_end: null,
+            })
+            .eq("id", userData.id);
+
+          if (updateError) {
+            console.error("❌ Error downgrading user to free:", {
+              userId: userData.id,
+              error: updateError.message,
+            });
+          } else {
+            console.log(
+              `✅ User ${userData.id} downgraded to free after subscription period ended`
+            );
+          }
+        } else {
+          // Unexpected deletion - log but don't downgrade
+          console.warn(
+            `⚠️ Unexpected subscription deletion for user ${userData.id}. Not downgrading.`,
+            {
+              subscriptionId: subscription.id,
+              userPlan: userData.plan,
+              subscriptionStatus: userData.subscription_status,
+              cancelAtPeriodEnd: userData.subscription_cancel_at_period_end,
+            }
+          );
+
+          // TODO: Send alert to admin/Sentry about unexpected deletion
+        }
+      } catch (err) {
+        console.error("❌ Exception in customer.subscription.deleted handler:", err);
+      }
 
       return NextResponse.json({ received: true });
     }

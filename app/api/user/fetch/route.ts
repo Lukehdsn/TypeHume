@@ -20,7 +20,9 @@ export async function POST(request: Request) {
 
     const { data, error } = await supabaseServer
       .from("users")
-      .select("plan, word_limit, words_used, billing_period")
+      .select(
+        "plan, word_limit, words_used, billing_period, subscription_status, subscription_period_end, subscription_cancel_at_period_end"
+      )
       .eq("id", userId)
       .maybeSingle();
 

@@ -66,40 +66,49 @@ export async function POST(request: NextRequest) {
 
     try {
       // Cancel the Stripe subscription (at period end)
-      await stripe.subscriptions.update(userData.stripe_subscription_id, {
-        cancel_at_period_end: true,
-      });
+      const updatedSubscription = await stripe.subscriptions.update(
+        userData.stripe_subscription_id,
+        {
+          cancel_at_period_end: true,
+        }
+      );
 
       console.log("Subscription cancelled in Stripe:", {
         subscriptionId: userData.stripe_subscription_id,
         userId,
+        periodEnd: updatedSubscription.current_period_end,
       });
 
-      // Update database: downgrade to free plan
-      const freeWordLimit = getWordLimit("free");
+      // Update database: mark as canceling but KEEP paid plan until period ends
+      const periodEndDate = new Date(
+        updatedSubscription.current_period_end * 1000
+      );
+
       const { error: updateError } = await supabase
         .from("users")
         .update({
-          plan: "free",
-          word_limit: freeWordLimit,
-          words_used: 0,
-          stripe_subscription_id: null,
+          subscription_status: "canceling",
+          subscription_cancel_at_period_end: true,
+          subscription_period_end: periodEndDate.toISOString(),
+          // DO NOT change plan, word_limit, or stripe_subscription_id yet!
         })
         .eq("id", userId);
 
       if (updateError) {
-        console.error("Error updating user plan in database:", updateError);
+        console.error("Error updating cancellation status:", updateError);
         return NextResponse.json(
-          { error: "Failed to update plan in database" },
+          { error: "Failed to update cancellation status" },
           { status: 500 }
         );
       }
 
       return NextResponse.json({
         success: true,
-        message: "Subscription cancelled successfully",
-        plan: "free",
-        wordLimit: freeWordLimit,
+        message: "Subscription will be cancelled at period end",
+        plan: userData.plan, // Keep current plan
+        wordLimit: userData.word_limit, // Keep current word limit
+        subscriptionStatus: "canceling",
+        periodEnd: periodEndDate.toISOString(),
       });
     } catch (stripeError: any) {
       console.error("Stripe API error:", {
