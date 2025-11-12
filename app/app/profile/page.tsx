@@ -3,7 +3,7 @@
 import { useUser, useAuth } from "@clerk/nextjs"
 import { SignOutButton, UserProfile } from "@clerk/nextjs"
 import Link from "next/link"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import { getPlanConfig, PlanType } from "@/lib/plans"
 
 export default function ProfilePage() {
@@ -22,45 +22,46 @@ export default function ProfilePage() {
   const [subscriptionPeriodEnd, setSubscriptionPeriodEnd] = useState<string | null>(null)
   const [cancelLoading, setCancelLoading] = useState(false)
 
-  useEffect(() => {
+  const fetchUserData = useCallback(async () => {
     if (!userId) return
 
-    const fetchUserData = async () => {
-      try {
-        const response = await fetch("/api/user/fetch", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ userId }),
-        })
+    setLoading(true)
+    try {
+      const response = await fetch("/api/user/fetch", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ userId }),
+      })
 
-        const data = await response.json()
+      const data = await response.json()
 
-        if (!response.ok) {
-          console.error("Error fetching user data:", data)
-          setLoading(false)
-          return
-        }
-
-        if (data.user) {
-          const userPlan = (data.user.plan as PlanType) || "free"
-          setPlan(userPlan)
-          setWordLimit(data.user.word_limit || 500)
-          setWordsUsed(data.user.words_used || 0)
-          setMaxPerRequest(getPlanConfig(userPlan).maxWordsPerRequest)
-          setSubscriptionStatus(data.user.subscription_status || null)
-          setSubscriptionPeriodEnd(data.user.subscription_period_end || null)
-        }
+      if (!response.ok) {
+        console.error("Error fetching user data:", data)
         setLoading(false)
-      } catch (err) {
-        console.error("Error:", err)
-        setLoading(false)
+        return
       }
-    }
 
-    fetchUserData()
+      if (data.user) {
+        const userPlan = (data.user.plan as PlanType) || "free"
+        setPlan(userPlan)
+        setWordLimit(data.user.word_limit || 500)
+        setWordsUsed(data.user.words_used || 0)
+        setMaxPerRequest(getPlanConfig(userPlan).maxWordsPerRequest)
+        setSubscriptionStatus(data.user.subscription_status || null)
+        setSubscriptionPeriodEnd(data.user.subscription_period_end || null)
+      }
+      setLoading(false)
+    } catch (err) {
+      console.error("Error:", err)
+      setLoading(false)
+    }
   }, [userId])
+
+  useEffect(() => {
+    fetchUserData()
+  }, [fetchUserData])
 
   const handleOpenBillingPortal = async () => {
     setPortalLoading(true)
