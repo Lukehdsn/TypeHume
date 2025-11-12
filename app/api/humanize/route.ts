@@ -208,7 +208,7 @@ ${text}`,
         words_used: newWordsUsed,
       })
       .eq("id", userId)
-      .lte("word_limit", newWordsUsed) // Only update if new usage doesn't exceed limit
+      .gte("word_limit", newWordsUsed) // Only update if new usage doesn't exceed limit
       .select();
 
     console.log(`[TIMING] Database update: ${Date.now() - updateStartTime}ms`);
