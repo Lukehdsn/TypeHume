@@ -134,56 +134,55 @@ export async function POST(request: Request) {
           messages: [
             {
               role: "user",
-              content: `You are an expert at transforming AI-generated text into natural, human-like writing with formal, academic prose style.
+              content: `You are an expert at transforming AI-generated text into natural, human-like writing with a moderately formal tone.
 
-Your task is to rewrite the following text with a scholarly, formal tone that mimics human academic writing while preserving all original meaning.
+Your task is to rewrite the following text with an elevated but readable style that sounds like an educated person writing formally—not overly academic or pretentious.
 
 CRITICAL RULES:
 
-1. SENTENCE STRUCTURE - Build longer, denser sentences:
-   - Combine related ideas using subordinate clauses (because, which, that, through, during, so that)
-   - Create compound structures with multiple prepositional phrases
-   - Aim for 40-60 word sentences for at least 25% of output
-   - Create extreme burstiness: alternate between 15-word and 55-word sentences dramatically
-   - Use gerund phrases (through [verb]ing) and relative clauses (which allows, that provides)
-   - Embed multiple clauses without clear breaks for dense academic flow
+1. SENTENCE STRUCTURE - Combine ideas naturally with good flow:
+   - Combine related short sentences using "and," "because," "which," and "through"
+   - Target sentence length: 25-35 words (natural readable length)
+   - Use gerund phrases: "through its field runs" or "during petting sessions"
+   - Add relative clauses for elaboration: "which allows them to," "who joins your"
+   - Keep sentences readable on first pass - no dense embedding
 
-2. TONE - Write in formal, academic voice:
-   - Use detached, objective third-person perspective (avoid "you" where possible)
-   - Eliminate all conversational interjections entirely (no "honestly," "you know," "for a second," "in a weird way")
-   - Remove casual markers like demonstratives ("this," "that," "those") where possible
-   - Eliminate contractions completely
-   - Avoid fragments or incomplete sentences - all sentences must be grammatically complete
+2. TONE - Write in elevated but accessible voice:
+   - Use third-person perspective ("A dog represents," not "Your dog is")
+   - Avoid conversational interjections and casual markers
+   - Maintain formal but clear English
+   - Eliminate contractions
+   - Keep complete sentences - no fragments
 
-3. WORD CHOICE - Apply systematic formal transformations:
-   - Nominalize verbs into abstract nouns (e.g., "ability to sense emotions" → "emotional perception," "sees" → "exhibits visual perception")
-   - Use Latinate and formal vocabulary over simple words ("represents" not "is," "devoted companion" not "loyal friend," "homecoming" not "return")
-   - Replace concrete imagery with formal equivalents ("soft paws" → "gentle feet," "curious nose" → "exploring snout")
-   - Choose unexpected but appropriate synonyms to increase perplexity
-   - Transform active voice to passive constructions (e.g., "dogs sense emotions" → "emotional states are detected")
-   - Use academic connectors: "constitutes," "manifests," "encompasses," "demonstrates," "exhibits"
+3. WORD CHOICE - Replace casual words with formal equivalents:
+   - Replace single vivid words with 2-word formal phrases:
+     * "soft paws" → "gentle feet"
+     * "curious nose" → "exploring snout"
+     * "tail wags" → "wagging tail" (already works)
+     * "roll onto its back" → "belly exposure"
+   - Use formal verbs: "represents," "develops," "provides," "brings," "delivers," "demonstrates"
+   - Avoid overly academic words (no: "perambulations," "constitutes," "manifests," "facilitate," "quotidian")
+   - Keep vocabulary accessible to educated general readers
 
-4. GRAMMATICAL PATTERNS - Build scholarly complexity:
-   - Heavy use of causal subordination: "because," "which allows," "so that," "in order to"
-   - Long prepositional chains without perfect parallelism (creates human imperfection)
-   - Relative clauses for elaboration: "dogs, which possess," "moments, that become"
-   - Nominalizations in sentence subjects: "The emotional perception of dogs..." not "Dogs can sense emotions..."
-   - Embedded clauses creating sentence density
-   - Mix conjunction patterns (not perfectly parallel)
+4. GRAMMATICAL PATTERNS - Natural formal structure:
+   - Use "and" liberally to combine ideas (this is natural to formal writing)
+   - Causal connectors: "because," "so that," "in order to"
+   - Prepositional elaboration: "through its," "during its," "with its"
+   - Relative clauses: "which allows," "who becomes," "that provides"
+   - Mixed sentence rhythm naturally (not forced burstiness)
 
-5. AI EVASION THROUGH ACADEMIC STYLE:
-   - High burstiness: Dramatically vary sentence length (15-word then 55-word sentences)
-   - High perplexity: Use less predictable formal vocabulary and academic synonyms
-   - Nominalization patterns: Converts verbs to nouns (characteristic of academic prose, not AI)
-   - Dense clause chaining: Multiple ideas connected without clear separation
-   - Formal register: Scholarly tone naturally evades detection
-   - Imperfect parallelism: Academic writing has uneven structures
+5. AI EVASION STRATEGY:
+   - Moderate formality sounds human, not like AI
+   - Unexpected but appropriate word choices ("gentle feet" for "paws")
+   - Longer sentences that feel natural, not forced
+   - Formal register that reads like educated human writing
+   - Complete thoughts with proper subordination
 
 6. CRITICAL CONSTRAINTS:
    - Keep output length within 10–15% of input word count
-   - Preserve all original meaning, concepts, and examples
-   - Maintain logical flow and topic coherence
-   - Remove em-dashes and replace with commas or subordinate clauses
+   - Preserve all original meaning and key concepts
+   - Maintain readability - nothing should sound awkward or pretentious
+   - Remove em-dashes and replace with commas where natural
    - Return ONLY the rewritten text—no explanations, commentary, or metadata
 
 Text to humanize:
