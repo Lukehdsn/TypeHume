@@ -140,47 +140,47 @@ Your task is to rewrite the following text with an elevated but readable style t
 
 CRITICAL RULES:
 
-1. SENTENCE STRUCTURE - Combine ideas naturally with good flow:
-   - Combine related short sentences using "and," "because," "which," and "through"
+1. SENTENCE STRUCTURE - Combine ideas using "and," "because," "which," "through":
+   - Use "and" repeatedly without commas in lists: "feeding and walking and ball play" (not "feeding, walking, or ball play")
    - Target sentence length: 25-35 words (natural readable length)
    - Use gerund phrases: "through its field runs" or "during petting sessions"
-   - Add relative clauses for elaboration: "which allows them to," "who joins your"
+   - Add relative clauses: "which allows them to," "who joins your"
+   - Use "because" frequently for causation and explanation
    - Keep sentences readable on first pass - no dense embedding
 
-2. TONE - Write in elevated but accessible voice:
-   - Use third-person perspective ("A dog represents," not "Your dog is")
-   - Avoid conversational interjections and casual markers
-   - Maintain formal but clear English
+2. TONE - Elevated but accessible, keep it natural:
+   - Keep "your" and "you" references when they exist in original text
+   - Formal but clear English (educated person writing)
    - Eliminate contractions
    - Keep complete sentences - no fragments
+   - Avoid overly formal pronouns like "one" - use "you/your" naturally
 
-3. WORD CHOICE - Replace casual words with formal equivalents:
+3. WORD CHOICE - Selective formal substitutions:
    - Replace single vivid words with 2-word formal phrases:
      * "soft paws" → "gentle feet"
      * "curious nose" → "exploring snout"
-     * "tail wags" → "wagging tail" (already works)
-     * "roll onto its back" → "belly exposure"
-   - Use formal verbs: "represents," "develops," "provides," "brings," "delivers," "demonstrates"
-   - Avoid overly academic words (no: "perambulations," "constitutes," "manifests," "facilitate," "quotidian")
-   - Keep vocabulary accessible to educated general readers
+     * "belly rubs" → "belly exposure during petting sessions"
+   - Use these formal verbs: "represents," "develops," "brings," "provides," "demonstrates"
+   - AVOID: "perambulations," "constitutes," "manifests," "facilitate," "quotidian," "embodying"
+   - Keep vocabulary simple and accessible - don't over-formalize
+   - Make minimal word changes - preserve the essence of the original
 
 4. GRAMMATICAL PATTERNS - Natural formal structure:
-   - Use "and" liberally to combine ideas (this is natural to formal writing)
-   - Causal connectors: "because," "so that," "in order to"
-   - Prepositional elaboration: "through its," "during its," "with its"
+   - Heavy use of "and" in lists without commas (this is how Natural Write structures)
+   - Use "because" to connect ideas with reasons
+   - Prepositional phrases: "through its," "during its," "with its"
    - Relative clauses: "which allows," "who becomes," "that provides"
-   - Mixed sentence rhythm naturally (not forced burstiness)
+   - Don't add extra elaboration or context beyond the original meaning
 
 5. AI EVASION STRATEGY:
-   - Moderate formality sounds human, not like AI
-   - Unexpected but appropriate word choices ("gentle feet" for "paws")
-   - Longer sentences that feel natural, not forced
-   - Formal register that reads like educated human writing
-   - Complete thoughts with proper subordination
+   - Moderate formality with accessible vocabulary (sounds human)
+   - "and" lists create natural variation from original
+   - Complete sentences with natural subordination
+   - Elevated but readable register
 
 6. CRITICAL CONSTRAINTS:
    - Keep output length within 10–15% of input word count
-   - Preserve all original meaning and key concepts
+   - Preserve all original meaning and key concepts - don't expand
    - Maintain readability - nothing should sound awkward or pretentious
    - Remove em-dashes and replace with commas where natural
    - Return ONLY the rewritten text—no explanations, commentary, or metadata
