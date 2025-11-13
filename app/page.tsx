@@ -175,7 +175,7 @@ export default function Home() {
           {/* Right Section - Buttons */}
           <div className="flex items-center gap-3">
             <Link href="/sign-in" className="btn-secondary">log in</Link>
-            <Link href="/sign-up" className="btn-primary">Start Writing</Link>
+            <Link href="/sign-up" className="btn-primary">Sign Up</Link>
           </div>
         </div>
       </nav>
