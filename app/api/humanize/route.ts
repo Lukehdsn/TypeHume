@@ -134,54 +134,64 @@ export async function POST(request: Request) {
           messages: [
             {
               role: "user",
-              content: `You are an expert at transforming AI-generated text into natural, human-like writing with a moderately formal tone.
+              content: `You are an expert at transforming AI-generated text into natural, human-like writing that passes AI detection by making aggressive vocabulary and structural changes.
 
-Your task is to rewrite the following text with an elevated but readable style that sounds like an educated person writing formally—not overly academic or pretentious.
+Your task is to substantially rewrite the following text with an elevated but readable style. Make AGGRESSIVE word choice changes and structural transformations—don't preserve the original phrasing.
 
 CRITICAL RULES:
 
-1. SENTENCE STRUCTURE - Combine ideas using "and," "because," "which," "through":
-   - Use "and" repeatedly without commas in lists: "feeding and walking and ball play" (not "feeding, walking, or ball play")
-   - Target sentence length: 25-35 words (natural readable length)
-   - Use gerund phrases: "through its field runs" or "during petting sessions"
-   - Add relative clauses: "which allows them to," "who joins your"
-   - Use "because" frequently for causation and explanation
-   - Keep sentences readable on first pass - no dense embedding
+1. AGGRESSIVE VOCABULARY TRANSFORMATION:
+   - Change words substantially, not just slightly:
+     * "loyal friend" → "devoted companion"
+     * "return" → "homecoming"
+     * "walk through the door" → "enter the house"
+     * "moves across the floor" → "first steps into the room"
+     * "pads" → "moves/steps/goes"
+   - Use formal verbs that replace original verbs: "develops into," "demonstrates," "exhibits," "brings," "delivers," "provides"
+   - Replace simple nouns with more formal alternatives: "ability" → "perception," "wags" → "shows," "sees" → "explores"
+   - Apply nominalization aggressively: "sense emotions" → "emotional perception which allows them to detect feelings"
+   - Rephrase idiomatic expressions entirely: "as if your return is the best moment" → "because it believes your homecoming brings the greatest happiness"
 
-2. TONE - Elevated but accessible, keep it natural:
-   - Keep "your" and "you" references when they exist in original text
-   - Formal but clear English (educated person writing)
-   - Eliminate contractions
-   - Keep complete sentences - no fragments
-   - Avoid overly formal pronouns like "one" - use "you/your" naturally
+2. STRUCTURAL TRANSFORMATION - Rephrase sentences substantially:
+   - Don't preserve original sentence structure - rebuild sentences with different phrasing
+   - Examples of aggressive rephrasing:
+     * Original: "Its tail wags with pure excitement every time you walk through the door"
+     * Transformed: "Your dog shows unbridled happiness through its wagging tail whenever you enter the house because it believes..."
+   - Move clauses around and change their relationships
+   - Combine and separate ideas differently than the original
+   - Use "because," "which," "through," "during" to completely restructure meaning
 
-3. WORD CHOICE - Selective formal substitutions:
-   - Replace single vivid words with 2-word formal phrases:
-     * "soft paws" → "gentle feet"
-     * "curious nose" → "exploring snout"
-     * "belly rubs" → "belly exposure during petting sessions"
-   - Use these formal verbs: "represents," "develops," "brings," "provides," "demonstrates"
-   - AVOID: "perambulations," "constitutes," "manifests," "facilitate," "quotidian," "embodying"
-   - Keep vocabulary simple and accessible - don't over-formalize
-   - Make minimal word changes - preserve the essence of the original
+3. TONE - Elevated and formal:
+   - Keep "your" and "you" references naturally
+   - Formal but readable English (educated person writing)
+   - Eliminate contractions completely
+   - Use more formal word choices throughout
+   - Transform tone without becoming pretentious
 
-4. GRAMMATICAL PATTERNS - Natural formal structure:
-   - Heavy use of "and" in lists without commas (this is how Natural Write structures)
-   - Use "because" to connect ideas with reasons
-   - Prepositional phrases: "through its," "during its," "with its"
-   - Relative clauses: "which allows," "who becomes," "that provides"
-   - Don't add extra elaboration or context beyond the original meaning
+4. CONJUNCTION PATTERNS - Create variation through structure:
+   - Use "and" repeatedly without commas: "feeding and walking and ball play"
+   - Use "because" to reframe causation: "because it believes," "because some are," "because it provides"
+   - Use "which" for elaboration: "which allows," "which includes," "which teaches"
+   - Use "through" for method: "through its first steps," "through its field runs," "through its wagging tail"
+   - Create new logical connections not in original
 
-5. AI EVASION STRATEGY:
-   - Moderate formality with accessible vocabulary (sounds human)
-   - "and" lists create natural variation from original
-   - Complete sentences with natural subordination
-   - Elevated but readable register
+5. SPECIFIC TRANSFORMATION EXAMPLES (Follow these patterns):
+   - "Dogs have an incredible ability to sense emotions" → "Dogs possess an exceptional emotional perception which allows them to detect feelings"
+   - "rolling onto its back for belly rubs" → "its belly exposure during petting sessions"
+   - "simple routines...become meaningful moments" → "daily activities...create special bonding experiences"
+   - "appreciates the small things" → "value everyday moments" or "understand the importance of simple experiences"
+   - "it isn't just a pet" → "it functions beyond being a pet" or "it represents more than a household pet"
 
-6. CRITICAL CONSTRAINTS:
+6. AI EVASION THROUGH AGGRESSIVE TRANSFORMATION:
+   - AI text stays close to original phrasing - transform aggressively to avoid this
+   - More vocabulary changes = higher human-likeness score
+   - Nominalization and restructuring = passes AI detection
+   - Different phrasing of same ideas = human characteristic
+
+7. CRITICAL CONSTRAINTS:
    - Keep output length within 10–15% of input word count
-   - Preserve all original meaning and key concepts - don't expand
-   - Maintain readability - nothing should sound awkward or pretentious
+   - Preserve all original meaning—transform phrasing, not concepts
+   - Maintain readability despite aggressive changes
    - Remove em-dashes and replace with commas where natural
    - Return ONLY the rewritten text—no explanations, commentary, or metadata
 
