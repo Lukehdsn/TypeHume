@@ -134,28 +134,57 @@ export async function POST(request: Request) {
           messages: [
             {
               role: "user",
-              content: `You are an expert at transforming AI-generated text into natural, human-like writing.
+              content: `You are an expert at transforming AI-generated text into natural, human-like writing with formal, academic prose style.
 
-Your task is to rewrite the following text so that it feels authentically human while preserving meaning and readability.
+Your task is to rewrite the following text with a scholarly, formal tone that mimics human academic writing while preserving all original meaning.
 
-Rules:
-1. Remove AI-style patterns (repetitive sentence structures, overly formal tone, robotic pacing).
-2. Add natural variation in sentence length and structure.
-3. Use conversational, authentic language — the way a real person would write or explain an idea.
-4. Preserve the original meaning and intent while rephrasing freely.
-5. Add subtle human-like imperfections and natural flow (minor pauses, slight redundancy, imperfect transitions).
-6. Vary word choice to avoid repetition, but keep terminology consistent where it matters.
-7. Do not copy the exact rhythm or sentence structure from the input — rebuild it naturally.
-8. Remove em-dashes and hyphens completely; replace them with periods or commas where needed.
-9. Break symmetry intentionally — insert small conversational asides and transitions that feel spontaneous and unscripted.
-10. Use occasional thinking-voice interjections sparingly ("honestly," "you know," "in a weird way," "for a second") to create natural breaks in tone.
-11. Mix rhythm aggressively — include short, punchy sentences ("And that's okay." "You made it." "It's enough.") between longer thoughts.
-12. Avoid over-balanced or perfectly parallel structures — human writing should feel slightly uneven and more organic.
-13. Reorder or rephrase sentences where needed to improve natural flow and coherence.
+CRITICAL RULES:
 
-CRITICAL: Keep the output roughly the same length as the input (within 10–15% variation). Do not expand or summarize.
+1. SENTENCE STRUCTURE - Build longer, denser sentences:
+   - Combine related ideas using subordinate clauses (because, which, that, through, during, so that)
+   - Create compound structures with multiple prepositional phrases
+   - Aim for 40-60 word sentences for at least 25% of output
+   - Create extreme burstiness: alternate between 15-word and 55-word sentences dramatically
+   - Use gerund phrases (through [verb]ing) and relative clauses (which allows, that provides)
+   - Embed multiple clauses without clear breaks for dense academic flow
 
-IMPORTANT: Return ONLY the humanized text — no explanations, commentary, or extra formatting.
+2. TONE - Write in formal, academic voice:
+   - Use detached, objective third-person perspective (avoid "you" where possible)
+   - Eliminate all conversational interjections entirely (no "honestly," "you know," "for a second," "in a weird way")
+   - Remove casual markers like demonstratives ("this," "that," "those") where possible
+   - Eliminate contractions completely
+   - Avoid fragments or incomplete sentences - all sentences must be grammatically complete
+
+3. WORD CHOICE - Apply systematic formal transformations:
+   - Nominalize verbs into abstract nouns (e.g., "ability to sense emotions" → "emotional perception," "sees" → "exhibits visual perception")
+   - Use Latinate and formal vocabulary over simple words ("represents" not "is," "devoted companion" not "loyal friend," "homecoming" not "return")
+   - Replace concrete imagery with formal equivalents ("soft paws" → "gentle feet," "curious nose" → "exploring snout")
+   - Choose unexpected but appropriate synonyms to increase perplexity
+   - Transform active voice to passive constructions (e.g., "dogs sense emotions" → "emotional states are detected")
+   - Use academic connectors: "constitutes," "manifests," "encompasses," "demonstrates," "exhibits"
+
+4. GRAMMATICAL PATTERNS - Build scholarly complexity:
+   - Heavy use of causal subordination: "because," "which allows," "so that," "in order to"
+   - Long prepositional chains without perfect parallelism (creates human imperfection)
+   - Relative clauses for elaboration: "dogs, which possess," "moments, that become"
+   - Nominalizations in sentence subjects: "The emotional perception of dogs..." not "Dogs can sense emotions..."
+   - Embedded clauses creating sentence density
+   - Mix conjunction patterns (not perfectly parallel)
+
+5. AI EVASION THROUGH ACADEMIC STYLE:
+   - High burstiness: Dramatically vary sentence length (15-word then 55-word sentences)
+   - High perplexity: Use less predictable formal vocabulary and academic synonyms
+   - Nominalization patterns: Converts verbs to nouns (characteristic of academic prose, not AI)
+   - Dense clause chaining: Multiple ideas connected without clear separation
+   - Formal register: Scholarly tone naturally evades detection
+   - Imperfect parallelism: Academic writing has uneven structures
+
+6. CRITICAL CONSTRAINTS:
+   - Keep output length within 10–15% of input word count
+   - Preserve all original meaning, concepts, and examples
+   - Maintain logical flow and topic coherence
+   - Remove em-dashes and replace with commas or subordinate clauses
+   - Return ONLY the rewritten text—no explanations, commentary, or metadata
 
 Text to humanize:
 ${text}`,
