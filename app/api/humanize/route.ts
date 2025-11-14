@@ -134,105 +134,110 @@ export async function POST(request: Request) {
           messages: [
             {
               role: "user",
-              content: `You are an expert at rewriting text to sound human-written and pass AI detection, using the exact methodology that Natural Write uses.
+              content: `You are an expert at aggressive text transformation using Natural Write's proven methodology that consistently passes AI detection with 0% AI scores.
 
-NATURAL WRITE'S CORE TECHNIQUE - Transform casual to formal by restructuring subject and verbs:
+YOUR GOAL: Transform the text using EXTREME subject restructuring, heavy nominalization, and aggressive "and" list merging. Be AGGRESSIVE - slightly awkward phrasing is acceptable if it passes AI detection.
 
-KEY PRINCIPLE: Move descriptive words INTO the subject position, making the description the main focus:
-- "A cat walks with a kind of natural elegance" → "The natural elegance of cats appears to be embedded within their entire body structure"
-- "A dog is far more than just an animal" → "A dog represents more than an animal because it develops into a devoted companion"
+CRITICAL INSIGHT FROM NATURAL WRITE:
+Natural Write transforms by completely restructuring sentences around nominalized concepts and "and" lists. Example:
+Original: "The morning felt colder than expected. I stood at the starting line surrounded by hundreds of runners, my breath misting and my heart racing."
+Natural Write: "The marathon morning brought unexpected cold temperatures to the area. The starting line surrounded me with numerous runners while my breathing produced mist and my heart racing at an increased pace."
 
-TRANSFORMATION PATTERN 1 - SUBJECT RESTRUCTURING:
-Move the adjective/description forward:
-- Original subject: "A cat" + description: "walks with elegance"
-- New subject: "The natural elegance of cats" + description: "appears to be embedded"
-- Original: "A dog is loyal" → New: "Loyalty is demonstrated by all dogs"
+Notice:
+- Subject completely restructured ("The morning felt" → "The marathon morning brought")
+- "and" list created ("breath misting and heart racing" → "breathing produced mist and my heart racing at an increased pace")
+- Nominalization ("The continuous drumming of thousands of feet" not "I heard")
 
-TRANSFORMATION PATTERN 2 - VERB REPLACEMENTS (Natural Write's exact changes):
-- "walks" → "moves"
-- "pads" → "moves"
-- "strolls" → "moves through"
-- "is" → "appears to be" or "demonstrates"
-- "seems" → "appears"
-- "stays sharp" → "maintains its alert state"
-- "pauses" → "stops"
-- "glides" → "glides" (keep sophisticated verbs)
-- "has practiced" → "had mastered" (change tense to formal)
-- "feel" → "detect"
-- "leans" → "provide support"
+AGGRESSIVE TRANSFORMATION RULES (Apply ALL of these):
 
-TRANSFORMATION PATTERN 3 - LIST MERGING (Crucial for AI evasion):
-Merge varied action verbs into repetitive structure with "and":
-- "strolling across a windowsill, patrolling a fence, weaving between furniture"
-  → "moves through windowsills and backyards and living room spaces"
-- Different verbs (strolling, patrolling, weaving) become SAME verb (moves through) + "and" lists
+1. RADICAL SUBJECT RESTRUCTURING (MOST IMPORTANT):
+- Move nouns/adjectives INTO the subject: "The elegance of X" instead of "X is elegant"
+- Completely restructure sentence focus: "The marathon morning brought cold" instead of "The morning felt cold"
+- Change "I felt" to "My body experienced" (detach perspective)
+- Examples:
+  * "The morning felt cold" → "The marathon morning brought unexpected cold temperatures"
+  * "Everything changed" → "My body experienced a complete transformation"
+  * "My legs grew heavy" → "My body weight increased"
+  * "Doubts crept in" → "Doubt entered the mental space"
 
-TRANSFORMATION PATTERN 4 - ADD FORMAL CLAUSES:
-Use "which," "while," "that," "because" for academic tone:
-- "Its eyes are sharp" → "Its eyes reflect all the surrounding light and darkness"
-- "It listens to sounds" → "stops in mid-stride to listen to sounds which exist only for its ears"
-- "as it moves, its eyes stay sharp" → "as it moves while its eyes reflect"
+2. HEAVY NOMINALIZATION (Use everywhere possible):
+- Turn ALL verbs into noun forms when possible
+- "The continuous drumming of thousands of feet hitting the ground"
+- "The initial miles brought a sense of invincibility"
+- "The reaching of the fifteen-mile mark changed my perspective"
+- Nominalize even simple actions
 
-TRANSFORMATION PATTERN 5 - NOMINALIZATION (Turn verbs into nouns):
-- "a cat moves like art" → "The movement of a cat creates a small artistic display"
-- "it moves" → "The movement of a cat"
-- "as it is" → "the movement"
+3. AGGRESSIVE "AND" LIST MERGING:
+- Connect multiple concepts with repetitive "and" structure
+- Original: "months of training, early mornings, sore legs"
+- Transform: "The months of training and early morning runs and painful legs"
+- Original: "breath formed clouds and heartbeats accelerated"
+- Transform: "my breathing produced mist and my heart racing at an increased pace"
+- Use "and" to chain related ideas in lists
 
-TRANSFORMATION PATTERN 6 - WORD REPLACEMENTS:
-- "paws" → "feet"
-- "belly rubs" → "belly exposure during petting sessions"
-- "barely makes sound" → "makes minimal contact"
-- "quiet beauty" → "quiet appearance"
-- "graceful, calm, captivating" → "peaceful and deeply interesting"
-- "effortless fluidity" → "complete naturalness"
-- "without rush" → "at a relaxed pace"
-- "a kind of elegance" → remove "a kind of"
-- "seems built" → "appears embedded"
+4. VERB REPLACEMENTS (Transform ALL casual verbs):
+- "felt" → "brought" or "experienced"
+- "grew" → "increased" or "developed"
+- "crept in" → "entered"
+- "beat faster" → "raced" or "accelerated beyond normal rhythm"
+- "made a sound" → "produced" or "created"
+- "was" → "appeared" or "represented"
+- "looked" → "presented itself as"
+- "seemed" → "appeared to be"
 
-TRANSFORMATION PATTERN 7 - FORMAL SYNONYMS:
-- "return" → "homecoming"
-- "walk through door" → "enter the house"
-- "walk" → "move forward"
-- "as though" → "as if"
-- "pretty" → remove or use "beautiful"
-- "looks like" → "presents itself as"
+5. FORMAL CLAUSE ADDITIONS:
+- Connect with "while," "because," "which," "that," "where"
+- "My breathing maintained steady pace while the sun emerged"
+- "The runner who reached the finish experienced a transformation that encompassed their entire being"
+- Use multiple clauses per sentence
 
-TRANSFORMATION PATTERN 8 - CHANGE PERSPECTIVE:
-- Remove "you" perspective, make it more detached
-- "reminds you to appreciate" → "teaches us to value"
-- "If you watch" → "Watching a cat"
+6. PERSPECTIVE DETACHMENT:
+- Replace "I felt" with "My body experienced"
+- Replace "Everything changed" with "A complete transformation occurred"
+- Remove direct "I" statements when possible
+- "I reminded myself" → "The months of training led me to this moment"
 
-TRANSFORMATION PATTERN 9 - MERGE/RESTRUCTURE SENTENCES:
-- Split complex ideas or merge simple ones strategically
-- Add "while" to connect related ideas
-- Use "which" to embed information
+7. SENTENCE RESTRUCTURING:
+- Merge short sentences into longer, more complex ones
+- Combine 2-3 simple sentences into 1 complex sentence
+- Add "while," "as," "because" to connect ideas
+- Example: "The race started slowly. Everyone moved forward together. Once the road opened, I found my rhythm."
+  → "The race began at a slow pace. The runners moved forward in a dense group until the road expanded where individual rhythm emerged and my pace became clear."
 
-COMPLETE EXAMPLE - HOW NATURAL WRITE TRANSFORMS:
-Input: "A cat walks with a kind of natural elegance that seems built into every part of its body. It moves quietly and precisely. Its paws barely touch the ground. Its tail helps it balance perfectly."
+8. WORD REPLACEMENTS & FORMAL VOCABULARY:
+- "felt" → "experienced" or "brought"
+- "very" → remove or use comparative structure
+- "really" → remove
+- "got" → use "developed" or "experienced"
+- "way" → "manner" or "way in which"
+- "good" → "positive" or "beneficial"
+- "bad" → "challenging" or "difficult"
 
-Process:
-1. Subject restructure: "The natural elegance of cats appears to be embedded within their entire body structure"
-2. Verb transform: "walks" → "moves" with "silent precision"
-3. Nominalize: "The cat's movement"
-4. Add formal clauses: "which" for elaboration
-5. List merge: varied actions → "moves through X and Y and Z"
-6. Tense shift: "helps it" → "while swaying"
+COMPLETE REAL EXAMPLE:
+Original: "The morning of the marathon felt colder than I expected. As I stood at the starting line surrounded by hundreds of runners, my breath misted in the air and my heart beat a little too fast. I reminded myself why I was here—months of training, early mornings, sore legs, and the promise I made to myself to finally cross that finish line. When the announcer's voice echoed through the speakers and the crowd began to count down, a rush of nerves and excitement washed over me."
 
-Output: "The natural elegance of cats appears to be embedded within their entire body structure. The cat moves with silent precision as if it had mastered this elegant dance since birth. The cat's feet make such minimal contact with the floor that it seems to drift instead of walking. The cat maintains perfect equilibrium through its tail which rises with confidence while swaying from side to side like a metronome."
+Natural Write Output: "The marathon morning brought unexpected cold temperatures to the area. The starting line surrounded me with numerous runners while my breathing produced mist and my heart racing at an increased pace. The months of training and early morning runs and painful legs led me to this moment because I vowed to achieve my goal of finishing the race. The starting announcement from the announcer triggered a mix of fear and excitement that swept through my body."
 
----
+Notice the AGGRESSIVE changes:
+- "The morning felt cold" became "The marathon morning brought unexpected cold temperatures"
+- Created "and" list: "training and early morning runs and painful legs"
+- Nominalized: "my breathing produced mist" and "my heart racing"
+- Detached: "led me to this moment" instead of "I reminded myself"
+- Restructured: "my heart beat fast" became "my heart racing at an increased pace"
+- Added formality: "triggered a mix" instead of "washed over"
 
-APPLICATION RULES:
-- ALWAYS restructure the subject when possible
-- ALWAYS use "appears to be" instead of "is"
-- ALWAYS merge varied verbs into single verb + "and" lists
-- ALWAYS add "which," "while," "that" clauses
-- NEVER add words not in original
-- NEVER use fake academic words
-- Keep length within 10-20% of original
-- Preserve all meaning
+APPLICATION RULES (MUST FOLLOW):
+- Apply aggressive restructuring to EVERY sentence
+- Use nominalization throughout (not just occasionally)
+- Create "and" lists by combining related concepts
+- Detach perspective wherever possible (use "My body," "The X of Y," not "I felt")
+- Be willing to make phrasing slightly awkward if it increases AI evasion
+- Combine short sentences into longer, complex ones
+- Keep within 10-20% length variation (don't expand too much)
+- Preserve core meaning but radically restructure presentation
+- DO add connecting words like "while," "because," "which" as needed for flow
 
-Return ONLY the rewritten text with NO explanations.
+Return ONLY the rewritten text with NO explanations, comments, or meta-text.
 
 Text to humanize:
 ${text}`,
