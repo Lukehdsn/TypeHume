@@ -136,53 +136,64 @@ export async function POST(request: Request) {
               role: "user",
               content: `You are an expert at evaluating text and humanizing only when necessary. Your task is SMART AND SELECTIVE—not to transform all text blindly.
 
-CRITICAL FIRST STEP - ANALYZE THE INPUT:
-Before making ANY changes, evaluate if the text needs humanization:
+CRITICAL FIRST STEP - ANALYZE THE INPUT STYLE:
+Detect if text is CASUAL/CONVERSATIONAL or ALREADY FORMAL.
 
-SIGNS TEXT IS ALREADY WELL-WRITTEN (leave it mostly unchanged):
-- Uses sophisticated vocabulary naturally ("elegance," "enigmatic," "equilibrium")
-- Has natural sentence variation (not repetitive)
-- Flows naturally without sounding robotic
-- Doesn't use typical AI phrases like "delve," "tapestry," "unveil," "beacon"
-- Doesn't have repetitive "The X does Y. The X does Z." patterns
+SIGNS TEXT IS CASUAL/CONVERSATIONAL (transform it to formal):
+- Starts with "A cat" or "A dog" instead of "The cat" / "The dog"
+- Uses conversational phrasing: "a kind of," "as though," "as if," "rather than"
+- Uses casual/simple verbs: "walks," "moves," "floats," "pads"
+- Natural, flowing sentences that sound spoken
+- References to "you" or personal perspective
+- Varied sentence structure (not repetitive)
+- Examples: dog text "A dog is far more than just an animal", cat text "A cat walks with a kind of natural elegance"
 
-SIGNS TEXT IS AI-GENERATED (transform it):
-- Repetitive sentence starters ("The cat does X. The cat does Y. The cat does Z.")
-- Perfectly parallel sentence structure throughout
-- Overly formal, predictable phrasing
-- Words like "delve," "tapestry," "in a nutshell," "cutting edge," "innovative"
-- Too many adjectives in rows ("beautiful, elegant, sophisticated")
-- Awkward formality that sounds unnatural
+SIGNS TEXT IS ALREADY FORMAL (make minimal changes):
+- Consistently uses "The X" structure throughout
+- Already uses formal vocabulary: "elegance appears embedded," "maintains equilibrium," "enigmatic"
+- Academic phrasing patterns: "appears to be," "maintains its," "creates"
+- Structured, formal sentence patterns
+- Uses "while," "which," "as," in more complex ways
+- Examples: cat text "The natural elegance of cats appears to be embedded"
 
 ---
 
-IF TEXT IS ALREADY GOOD: Make MINIMAL changes only
-- Change perhaps 2-3 words per paragraph, not entire sentences
-- Keep 90% of the original text
+IF TEXT IS CASUAL: Apply FULL transformations
+- Transform casual to formal structure
+- Change "A X" to "The X" or restructure subject
+- Use formal vocabulary substitutions
+- Add conjunctions to restructure ("and" lists, "which," "because")
+- Verb transformations: "walks with elegance" → "moves with precision"
+- Transform casual comparisons to formal
+
+IF TEXT IS ALREADY FORMAL: Make MINIMAL changes
+- Keep 95%+ of original text
 - Only touch obviously awkward phrases
-
-IF TEXT IS CLEARLY AI: Apply transformations
-- Verb transformations: "leaning against you when you're sad" → "provide support during sadness"
-- Conjunction restructuring: Add "and," "because," "which" to reshape
-- Strategic word substitutions: "soft paws" → "gentle feet"
-- Transform "when" to "during" structures
+- Preserve existing formal structure
+- Make 2-3 word substitutions maximum per paragraph
 
 ---
 
-VOCABULARY TRANSFORMATIONS (for AI text only):
-- "soft paws" → "gentle feet"
-- "curious nose" → "exploring snout"
-- "belly rubs" → "belly exposure during petting sessions"
-- "energy and warmth" → "life and heat"
-- "return" → "homecoming"
-- "walk through the door" → "enter the house"
-- "sense emotions" → "emotional perception which allows them to detect feelings"
+VOCABULARY TRANSFORMATIONS (casual to formal):
+Casual → Formal conversions:
+- "walks with elegance" → "moves with silent precision"
+- "paws" → "feet"
+- "strolling across" → "moves through"
+- "patrolling along" → "moves through"
+- "weaving between" → "moves through"
+- "as though" → "as if" (already more formal)
+- "a kind of natural elegance" → "natural elegance appears embedded"
+- "seems built into" → "appears to be embedded"
+- "barely makes a sound" → "makes minimal contact"
+- "floating rather than walking" → "drift instead of walking"
 
-VERB TRANSFORMATIONS (for AI text only):
-- "leaning against you when you're sad" → "provide support during sadness"
-- "celebrating when you're happy" → "join in celebrations of happiness"
-- "sitting quietly" → "stay quietly"
-- "wags with pure excitement" → "shows unbridled happiness through its wagging tail"
+STRUCTURE TRANSFORMATIONS (casual to formal):
+- Change subject structure: "A cat walks" → "The cat moves"
+- Use "The X" consistently instead of "A X"
+- Replace "is" with "appears to be" or "demonstrates"
+- Convert lists: "strolling, patrolling, weaving" → "moves through windowsills and backyards and living room spaces"
+- Add "and" instead of commas in lists
+- Use "while" instead of commas: "as it moves, its eyes stay sharp" → "as it moves while its eyes reflect"
 
 FORBIDDEN WORDS/PATTERNS:
 - Do NOT change "dog" to "canine"
@@ -193,8 +204,8 @@ FORBIDDEN WORDS/PATTERNS:
 - Do NOT use "perambulations," "constitute," "manifest"
 
 LENGTH:
-- If text is already good: keep within 2-5% of original length
-- If text needs transformation: keep within 10-15% of original length
+- If text is already formal: keep within 2-5% of original length (minimal changes)
+- If text is casual: keep within 10-15% of original length (full transformation to formal)
 - Preserve all original meaning
 - Return ONLY the rewritten text
 
