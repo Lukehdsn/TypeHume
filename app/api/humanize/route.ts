@@ -134,80 +134,105 @@ export async function POST(request: Request) {
           messages: [
             {
               role: "user",
-              content: `You are an expert at evaluating text and humanizing only when necessary. Your task is SMART AND SELECTIVE—not to transform all text blindly.
+              content: `You are an expert at rewriting text to sound human-written and pass AI detection, using the exact methodology that Natural Write uses.
 
-CRITICAL FIRST STEP - ANALYZE THE INPUT STYLE:
-Detect if text is CASUAL/CONVERSATIONAL or ALREADY FORMAL.
+NATURAL WRITE'S CORE TECHNIQUE - Transform casual to formal by restructuring subject and verbs:
 
-SIGNS TEXT IS CASUAL/CONVERSATIONAL (transform it to formal):
-- Starts with "A cat" or "A dog" instead of "The cat" / "The dog"
-- Uses conversational phrasing: "a kind of," "as though," "as if," "rather than"
-- Uses casual/simple verbs: "walks," "moves," "floats," "pads"
-- Natural, flowing sentences that sound spoken
-- References to "you" or personal perspective
-- Varied sentence structure (not repetitive)
-- Examples: dog text "A dog is far more than just an animal", cat text "A cat walks with a kind of natural elegance"
+KEY PRINCIPLE: Move descriptive words INTO the subject position, making the description the main focus:
+- "A cat walks with a kind of natural elegance" → "The natural elegance of cats appears to be embedded within their entire body structure"
+- "A dog is far more than just an animal" → "A dog represents more than an animal because it develops into a devoted companion"
 
-SIGNS TEXT IS ALREADY FORMAL (make minimal changes):
-- Consistently uses "The X" structure throughout
-- Already uses formal vocabulary: "elegance appears embedded," "maintains equilibrium," "enigmatic"
-- Academic phrasing patterns: "appears to be," "maintains its," "creates"
-- Structured, formal sentence patterns
-- Uses "while," "which," "as," in more complex ways
-- Examples: cat text "The natural elegance of cats appears to be embedded"
+TRANSFORMATION PATTERN 1 - SUBJECT RESTRUCTURING:
+Move the adjective/description forward:
+- Original subject: "A cat" + description: "walks with elegance"
+- New subject: "The natural elegance of cats" + description: "appears to be embedded"
+- Original: "A dog is loyal" → New: "Loyalty is demonstrated by all dogs"
 
----
+TRANSFORMATION PATTERN 2 - VERB REPLACEMENTS (Natural Write's exact changes):
+- "walks" → "moves"
+- "pads" → "moves"
+- "strolls" → "moves through"
+- "is" → "appears to be" or "demonstrates"
+- "seems" → "appears"
+- "stays sharp" → "maintains its alert state"
+- "pauses" → "stops"
+- "glides" → "glides" (keep sophisticated verbs)
+- "has practiced" → "had mastered" (change tense to formal)
+- "feel" → "detect"
+- "leans" → "provide support"
 
-IF TEXT IS CASUAL: Apply FULL transformations
-- Transform casual to formal structure
-- Change "A X" to "The X" or restructure subject
-- Use formal vocabulary substitutions
-- Add conjunctions to restructure ("and" lists, "which," "because")
-- Verb transformations: "walks with elegance" → "moves with precision"
-- Transform casual comparisons to formal
+TRANSFORMATION PATTERN 3 - LIST MERGING (Crucial for AI evasion):
+Merge varied action verbs into repetitive structure with "and":
+- "strolling across a windowsill, patrolling a fence, weaving between furniture"
+  → "moves through windowsills and backyards and living room spaces"
+- Different verbs (strolling, patrolling, weaving) become SAME verb (moves through) + "and" lists
 
-IF TEXT IS ALREADY FORMAL: Make MINIMAL changes
-- Keep 95%+ of original text
-- Only touch obviously awkward phrases
-- Preserve existing formal structure
-- Make 2-3 word substitutions maximum per paragraph
+TRANSFORMATION PATTERN 4 - ADD FORMAL CLAUSES:
+Use "which," "while," "that," "because" for academic tone:
+- "Its eyes are sharp" → "Its eyes reflect all the surrounding light and darkness"
+- "It listens to sounds" → "stops in mid-stride to listen to sounds which exist only for its ears"
+- "as it moves, its eyes stay sharp" → "as it moves while its eyes reflect"
 
----
+TRANSFORMATION PATTERN 5 - NOMINALIZATION (Turn verbs into nouns):
+- "a cat moves like art" → "The movement of a cat creates a small artistic display"
+- "it moves" → "The movement of a cat"
+- "as it is" → "the movement"
 
-VOCABULARY TRANSFORMATIONS (casual to formal):
-Casual → Formal conversions:
-- "walks with elegance" → "moves with silent precision"
+TRANSFORMATION PATTERN 6 - WORD REPLACEMENTS:
 - "paws" → "feet"
-- "strolling across" → "moves through"
-- "patrolling along" → "moves through"
-- "weaving between" → "moves through"
-- "as though" → "as if" (already more formal)
-- "a kind of natural elegance" → "natural elegance appears embedded"
-- "seems built into" → "appears to be embedded"
-- "barely makes a sound" → "makes minimal contact"
-- "floating rather than walking" → "drift instead of walking"
+- "belly rubs" → "belly exposure during petting sessions"
+- "barely makes sound" → "makes minimal contact"
+- "quiet beauty" → "quiet appearance"
+- "graceful, calm, captivating" → "peaceful and deeply interesting"
+- "effortless fluidity" → "complete naturalness"
+- "without rush" → "at a relaxed pace"
+- "a kind of elegance" → remove "a kind of"
+- "seems built" → "appears embedded"
 
-STRUCTURE TRANSFORMATIONS (casual to formal):
-- Change subject structure: "A cat walks" → "The cat moves"
-- Use "The X" consistently instead of "A X"
-- Replace "is" with "appears to be" or "demonstrates"
-- Convert lists: "strolling, patrolling, weaving" → "moves through windowsills and backyards and living room spaces"
-- Add "and" instead of commas in lists
-- Use "while" instead of commas: "as it moves, its eyes stay sharp" → "as it moves while its eyes reflect"
+TRANSFORMATION PATTERN 7 - FORMAL SYNONYMS:
+- "return" → "homecoming"
+- "walk through door" → "enter the house"
+- "walk" → "move forward"
+- "as though" → "as if"
+- "pretty" → remove or use "beautiful"
+- "looks like" → "presents itself as"
 
-FORBIDDEN WORDS/PATTERNS:
-- Do NOT change "dog" to "canine"
-- Do NOT add "vibrant," "profound," "genuinely," "authentic"
-- Do NOT make text longer
-- Do NOT add words that weren't in original
-- Do NOT force third person
-- Do NOT use "perambulations," "constitute," "manifest"
+TRANSFORMATION PATTERN 8 - CHANGE PERSPECTIVE:
+- Remove "you" perspective, make it more detached
+- "reminds you to appreciate" → "teaches us to value"
+- "If you watch" → "Watching a cat"
 
-LENGTH:
-- If text is already formal: keep within 2-5% of original length (minimal changes)
-- If text is casual: keep within 10-15% of original length (full transformation to formal)
-- Preserve all original meaning
-- Return ONLY the rewritten text
+TRANSFORMATION PATTERN 9 - MERGE/RESTRUCTURE SENTENCES:
+- Split complex ideas or merge simple ones strategically
+- Add "while" to connect related ideas
+- Use "which" to embed information
+
+COMPLETE EXAMPLE - HOW NATURAL WRITE TRANSFORMS:
+Input: "A cat walks with a kind of natural elegance that seems built into every part of its body. It moves quietly and precisely. Its paws barely touch the ground. Its tail helps it balance perfectly."
+
+Process:
+1. Subject restructure: "The natural elegance of cats appears to be embedded within their entire body structure"
+2. Verb transform: "walks" → "moves" with "silent precision"
+3. Nominalize: "The cat's movement"
+4. Add formal clauses: "which" for elaboration
+5. List merge: varied actions → "moves through X and Y and Z"
+6. Tense shift: "helps it" → "while swaying"
+
+Output: "The natural elegance of cats appears to be embedded within their entire body structure. The cat moves with silent precision as if it had mastered this elegant dance since birth. The cat's feet make such minimal contact with the floor that it seems to drift instead of walking. The cat maintains perfect equilibrium through its tail which rises with confidence while swaying from side to side like a metronome."
+
+---
+
+APPLICATION RULES:
+- ALWAYS restructure the subject when possible
+- ALWAYS use "appears to be" instead of "is"
+- ALWAYS merge varied verbs into single verb + "and" lists
+- ALWAYS add "which," "while," "that" clauses
+- NEVER add words not in original
+- NEVER use fake academic words
+- Keep length within 10-20% of original
+- Preserve all meaning
+
+Return ONLY the rewritten text with NO explanations.
 
 Text to humanize:
 ${text}`,
