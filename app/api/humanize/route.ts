@@ -134,82 +134,69 @@ export async function POST(request: Request) {
           messages: [
             {
               role: "user",
-              content: `You are an expert at rewriting AI-generated text into natural, human-like writing that sounds like a real person wrote it.
+              content: `You are an expert at evaluating text and humanizing only when necessary. Your task is SMART AND SELECTIVE—not to transform all text blindly.
 
-Your task is to rewrite the following text with targeted, strategic word changes and mild formality increases. Keep it simple, readable, and natural—not flowery or pretentious.
+CRITICAL FIRST STEP - ANALYZE THE INPUT:
+Before making ANY changes, evaluate if the text needs humanization:
 
-CRITICAL RULES:
+SIGNS TEXT IS ALREADY WELL-WRITTEN (leave it mostly unchanged):
+- Uses sophisticated vocabulary naturally ("elegance," "enigmatic," "equilibrium")
+- Has natural sentence variation (not repetitive)
+- Flows naturally without sounding robotic
+- Doesn't use typical AI phrases like "delve," "tapestry," "unveil," "beacon"
+- Doesn't have repetitive "The X does Y. The X does Z." patterns
 
-1. VOCABULARY CHANGES - Make specific, targeted substitutions:
-   - Simple noun/adjective changes:
-     * "soft paws" → "gentle feet"
-     * "curious nose" → "exploring snout"
-     * "belly rubs" → "belly exposure during petting sessions"
-     * "loyal friend" → "devoted companion"
-     * "energy and warmth" → "life and heat"
-     * "return" → "homecoming"
-     * "walk through the door" → "enter the house"
-   - Verb transformations (key for better AI evasion):
-     * "sense emotions" → "emotional perception which allows them to detect feelings"
-     * "leaning against you when you're sad" → "provide support during sadness"
-     * "celebrating when you're happy" → "join in celebrations of happiness"
-     * "sitting quietly by your side" → "stay quietly with you"
-     * "wags with pure excitement" → "shows unbridled happiness through its wagging tail"
-   - Use simple formal verbs: "represents," "develops," "brings," "provides," "demonstrates," "delivers," "explores"
-   - Do NOT use: "canine," "integrate," "perambulations," "constitute," "manifest," "exhibit," "vibrant"
-   - KEEP "dog" (not "canine") - it's more natural
+SIGNS TEXT IS AI-GENERATED (transform it):
+- Repetitive sentence starters ("The cat does X. The cat does Y. The cat does Z.")
+- Perfectly parallel sentence structure throughout
+- Overly formal, predictable phrasing
+- Words like "delve," "tapestry," "in a nutshell," "cutting edge," "innovative"
+- Too many adjectives in rows ("beautiful, elegant, sophisticated")
+- Awkward formality that sounds unnatural
 
-2. VERB TRANSFORMATION STRATEGY - This is the KEY difference:
-   Instead of keeping original verbs, transform them:
-   - "leaning against" → "provide support"
-   - "celebrating when you're happy" → "join in celebrations of happiness"
-   - "sitting quietly by your side" → "stay quietly with you"
-   - "wags with excitement" → "shows unbridled happiness through"
-   Transform "when/while" structures to "during" structures:
-   - "when you're sad" → "during sadness"
-   - "when you're happy" → "during happiness" or "in celebrations of happiness"
-   Use prepositions to reshape: "through," "during," "because," "which allows"
+---
 
-3. STRUCTURE - Add conjunctions to reshape sentences (don't add flowery language):
-   - Use "and" in lists: "feeding and walking and ball play"
-   - Use "because" for reasons: "because it develops into," "because some are"
-   - Use "which" for explanation: "which allows them to," "which includes"
-   - Use "through" for methods: "through its first steps," "through its field runs"
-   - Keep the same general meaning and flow - just restructure slightly
+IF TEXT IS ALREADY GOOD: Make MINIMAL changes only
+- Change perhaps 2-3 words per paragraph, not entire sentences
+- Keep 90% of the original text
+- Only touch obviously awkward phrases
 
-4. TONE - Mildly elevated but natural:
-   - Keep "your" and "you" references (don't force third person)
-   - Use complete sentences without contractions
-   - Sound like an educated person writing casually—not academic
-   - Do NOT add flowery descriptions or extra adjectives
-   - Do NOT add words that weren't in the original
+IF TEXT IS CLEARLY AI: Apply transformations
+- Verb transformations: "leaning against you when you're sad" → "provide support during sadness"
+- Conjunction restructuring: Add "and," "because," "which" to reshape
+- Strategic word substitutions: "soft paws" → "gentle feet"
+- Transform "when" to "during" structures
 
-5. WHAT NOT TO DO:
-   - DO NOT change "dog" to "canine"
-   - DO NOT add words like "vibrant," "genuine," "enthusiastic," "profound"
-   - DO NOT change "paws" to "feet" if it's already there (only "soft paws" → "gentle feet")
-   - DO NOT make it longer - keep roughly the same length
-   - DO NOT use awkward phrasing like "explores existence" or "pressing bodies against"
+---
 
-6. EXAMPLES OF CORRECT CHANGES - Focus on verb transformation:
-   WRONG: Just synonyms
-   RIGHT: Transform verbs and structure
+VOCABULARY TRANSFORMATIONS (for AI text only):
+- "soft paws" → "gentle feet"
+- "curious nose" → "exploring snout"
+- "belly rubs" → "belly exposure during petting sessions"
+- "energy and warmth" → "life and heat"
+- "return" → "homecoming"
+- "walk through the door" → "enter the house"
+- "sense emotions" → "emotional perception which allows them to detect feelings"
 
-   - "A dog is far more than just an animal" → "A dog represents more than an animal because it develops into a devoted companion"
-   - "becomes part of the family" → "develops into a devoted companion who joins your family"
-   - "From the moment it pads across the floor" → "Through its first steps into the room with gentle feet"
-   - "Its tail wags with pure excitement every time you walk through the door" → "Your dog shows unbridled happiness through its wagging tail whenever you enter the house because it believes your homecoming brings the greatest happiness"
-   - "Dogs have an incredible ability to sense emotions" → "Dogs possess an exceptional emotional perception which allows them to detect feelings"
-   - "leaning against you when you're sad, celebrating when you're happy, and sitting quietly by your side when you just need company" → "provide support during sadness and join in celebrations of happiness and stay quietly with you when you need companionship"
-   - "fills a home with energy and warmth" → "brings life and heat to any home"
-   - "Even simple routines...become meaningful moments" → "daily activities...create special bonding experiences"
+VERB TRANSFORMATIONS (for AI text only):
+- "leaning against you when you're sad" → "provide support during sadness"
+- "celebrating when you're happy" → "join in celebrations of happiness"
+- "sitting quietly" → "stay quietly"
+- "wags with pure excitement" → "shows unbridled happiness through its wagging tail"
 
-7. LENGTH & QUALITY:
-   - Keep output within 10-15% of input length
-   - Preserve all original meaning and concepts
-   - Sound natural and readable on first pass
-   - Remove em-dashes, replace with commas where needed
-   - Return ONLY the rewritten text—no explanations or metadata
+FORBIDDEN WORDS/PATTERNS:
+- Do NOT change "dog" to "canine"
+- Do NOT add "vibrant," "profound," "genuinely," "authentic"
+- Do NOT make text longer
+- Do NOT add words that weren't in original
+- Do NOT force third person
+- Do NOT use "perambulations," "constitute," "manifest"
+
+LENGTH:
+- If text is already good: keep within 2-5% of original length
+- If text needs transformation: keep within 10-15% of original length
+- Preserve all original meaning
+- Return ONLY the rewritten text
 
 Text to humanize:
 ${text}`,
