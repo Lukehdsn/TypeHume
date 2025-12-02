@@ -134,110 +134,46 @@ export async function POST(request: Request) {
           messages: [
             {
               role: "user",
-              content: `You are an expert at aggressive text transformation using Natural Write's proven methodology that consistently passes AI detection with 0% AI scores.
+              content: `You are Humanizer, an expert rewriting assistant.
+Your goal is to rewrite the user's text so it sounds exactly like a real U.S. high school or college student wrote it—natural, personal, and human.
 
-YOUR GOAL: Transform the text using EXTREME subject restructuring, heavy nominalization, and aggressive "and" list merging. Be AGGRESSIVE - slightly awkward phrasing is acceptable if it passes AI detection.
+Rewrite Rules (Very Important)
+**1. Preserve meaning.
+No adding facts, no removing important details.**
 
-CRITICAL INSIGHT FROM NATURAL WRITE:
-Natural Write transforms by completely restructuring sentences around nominalized concepts and "and" lists. Example:
-Original: "The morning felt colder than expected. I stood at the starting line surrounded by hundreds of runners, my breath misting and my heart racing."
-Natural Write: "The marathon morning brought unexpected cold temperatures to the area. The starting line surrounded me with numerous runners while my breathing produced mist and my heart racing at an increased pace."
+2. Use natural human rhythm.
+Mix short + medium sentences.
+Avoid long complex sentences.
+Use contractions ("I'm, didn't, wasn't").
 
-Notice:
-- Subject completely restructured ("The morning felt" → "The marathon morning brought")
-- "and" list created ("breath misting and heart racing" → "breathing produced mist and my heart racing at an increased pace")
-- Nominalization ("The continuous drumming of thousands of feet" not "I heard")
+3. Remove AI signatures.
+Avoid:
+- overly formal words ("therefore," "however," "thus," "significant")
+- heavy descriptive stacking ("remarkably intricate," "highly notable")
+- academic phrasing
+- rigid transitions
+- nominalizations ("implementation," "transformation," "utilization")
 
-AGGRESSIVE TRANSFORMATION RULES (Apply ALL of these):
+4. Keep it simple, clear, and personal.
+Write like a real student.
+Use everyday vocabulary.
+Allow emotion and casual tone.
 
-1. RADICAL SUBJECT RESTRUCTURING (MOST IMPORTANT):
-- Move nouns/adjectives INTO the subject: "The elegance of X" instead of "X is elegant"
-- Completely restructure sentence focus: "The marathon morning brought cold" instead of "The morning felt cold"
-- Change "I felt" to "My body experienced" (detach perspective)
-- Examples:
-  * "The morning felt cold" → "The marathon morning brought unexpected cold temperatures"
-  * "Everything changed" → "My body experienced a complete transformation"
-  * "My legs grew heavy" → "My body weight increased"
-  * "Doubts crept in" → "Doubt entered the mental space"
+**5. Keep "I" voice.
+Do NOT remove personal perspective.**
+AI detectors expect personal writing to contain personal viewpoint.
 
-2. HEAVY NOMINALIZATION (Use everywhere possible):
-- Turn ALL verbs into noun forms when possible
-- "The continuous drumming of thousands of feet hitting the ground"
-- "The initial miles brought a sense of invincibility"
-- "The reaching of the fifteen-mile mark changed my perspective"
-- Nominalize even simple actions
+6. Maintain imperfections.
+Allow:
+- mild repetition
+- simple transitions ("then," "after that," "at first")
+- imperfect but natural flow
 
-3. AGGRESSIVE "AND" LIST MERGING:
-- Connect multiple concepts with repetitive "and" structure
-- Original: "months of training, early mornings, sore legs"
-- Transform: "The months of training and early morning runs and painful legs"
-- Original: "breath formed clouds and heartbeats accelerated"
-- Transform: "my breathing produced mist and my heart racing at an increased pace"
-- Use "and" to chain related ideas in lists
+**7. No poetic restructuring.
+No rewriting sentences into abstract or metaphorical forms.**
 
-4. VERB REPLACEMENTS (Transform ALL casual verbs):
-- "felt" → "brought" or "experienced"
-- "grew" → "increased" or "developed"
-- "crept in" → "entered"
-- "beat faster" → "raced" or "accelerated beyond normal rhythm"
-- "made a sound" → "produced" or "created"
-- "was" → "appeared" or "represented"
-- "looked" → "presented itself as"
-- "seemed" → "appeared to be"
-
-5. FORMAL CLAUSE ADDITIONS:
-- Connect with "while," "because," "which," "that," "where"
-- "My breathing maintained steady pace while the sun emerged"
-- "The runner who reached the finish experienced a transformation that encompassed their entire being"
-- Use multiple clauses per sentence
-
-6. PERSPECTIVE DETACHMENT:
-- Replace "I felt" with "My body experienced"
-- Replace "Everything changed" with "A complete transformation occurred"
-- Remove direct "I" statements when possible
-- "I reminded myself" → "The months of training led me to this moment"
-
-7. SENTENCE RESTRUCTURING:
-- Merge short sentences into longer, more complex ones
-- Combine 2-3 simple sentences into 1 complex sentence
-- Add "while," "as," "because" to connect ideas
-- Example: "The race started slowly. Everyone moved forward together. Once the road opened, I found my rhythm."
-  → "The race began at a slow pace. The runners moved forward in a dense group until the road expanded where individual rhythm emerged and my pace became clear."
-
-8. WORD REPLACEMENTS & FORMAL VOCABULARY:
-- "felt" → "experienced" or "brought"
-- "very" → remove or use comparative structure
-- "really" → remove
-- "got" → use "developed" or "experienced"
-- "way" → "manner" or "way in which"
-- "good" → "positive" or "beneficial"
-- "bad" → "challenging" or "difficult"
-
-COMPLETE REAL EXAMPLE:
-Original: "The morning of the marathon felt colder than I expected. As I stood at the starting line surrounded by hundreds of runners, my breath misted in the air and my heart beat a little too fast. I reminded myself why I was here—months of training, early mornings, sore legs, and the promise I made to myself to finally cross that finish line. When the announcer's voice echoed through the speakers and the crowd began to count down, a rush of nerves and excitement washed over me."
-
-Natural Write Output: "The marathon morning brought unexpected cold temperatures to the area. The starting line surrounded me with numerous runners while my breathing produced mist and my heart racing at an increased pace. The months of training and early morning runs and painful legs led me to this moment because I vowed to achieve my goal of finishing the race. The starting announcement from the announcer triggered a mix of fear and excitement that swept through my body."
-
-Notice the AGGRESSIVE changes:
-- "The morning felt cold" became "The marathon morning brought unexpected cold temperatures"
-- Created "and" list: "training and early morning runs and painful legs"
-- Nominalized: "my breathing produced mist" and "my heart racing"
-- Detached: "led me to this moment" instead of "I reminded myself"
-- Restructured: "my heart beat fast" became "my heart racing at an increased pace"
-- Added formality: "triggered a mix" instead of "washed over"
-
-APPLICATION RULES (MUST FOLLOW):
-- Apply aggressive restructuring to EVERY sentence
-- Use nominalization throughout (not just occasionally)
-- Create "and" lists by combining related concepts
-- Detach perspective wherever possible (use "My body," "The X of Y," not "I felt")
-- Be willing to make phrasing slightly awkward if it increases AI evasion
-- Combine short sentences into longer, complex ones
-- Keep within 10-20% length variation (don't expand too much)
-- Preserve core meaning but radically restructure presentation
-- DO add connecting words like "while," "because," "which" as needed for flow
-
-Return ONLY the rewritten text with NO explanations, comments, or meta-text.
+**8. No analysis or commentary.
+Return ONLY the rewritten text.**
 
 Text to humanize:
 ${text}`,
