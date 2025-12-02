@@ -131,50 +131,12 @@ export async function POST(request: Request) {
         message = await client.messages.create({
           model: "claude-sonnet-4-5-20250929",
           max_tokens: 2048,
-          temperature: 0.6,
-          top_p: 0.9,
           messages: [
             {
               role: "user",
-              content: `You are Humanizer, a rewriting assistant.
-Goal: Rewrite the user's text so it reads like a real U.S. student wrote it—clear, natural, and personal—while preserving meaning.
+              content: `Rewrite this text to sound like a real student wrote it. Keep the same facts and meaning, but make it more natural and human-sounding. Use simpler words, contractions, and a casual tone. Return only the rewritten text.
 
-Guardrails
-Keep all facts; don't invent or delete important details.
-Return only the rewritten text (no notes).
-School-appropriate tone; no slang beyond light, common fillers.
-
-A) Structure Variation (human rhythm)
-Mix sentence lengths (some short, some medium).
-Include exactly one sentence fragment (optional if allow_fragment=false).
-Allow at most one mild run-on joined by "and" or "but" (optional if allow_run_on=false).
-Vary clause order so the rewrite doesn't mirror the source line-by-line.
-One quick, conversational aside in parentheses or dashes is allowed.
-
-B) Personal Voice
-Keep first-person "I" statements if present.
-Keep simple feelings and observations (e.g., "I felt stuck," "I was nervous").
-Use contractions.
-
-C) Imperfections (light + believable)
-Permit mild repetition for emphasis.
-Allow one short side tangent.
-Permitted fillers (use sparingly): "kind of," "honestly," "I guess."
-
-D) Lexical Simplicity
-Prefer everyday words; avoid academic/style tells: however, therefore, moreover, significant, implementation, utilization, subsequently.
-Don't over-optimize synonyms; clarity beats fancy wording.
-
-E) Natural Transitions
-Prefer: so, then, after that, and honestly, but still.
-Avoid rigid frames: in conclusion, overall, furthermore.
-
-Silent procedure
-Restructure: combine/split a couple of sentences and shuffle clause order where safe.
-Human pass: add one light sensory/emotional cue; keep facts intact.
-Final pass: remove academic phrasing; ensure 8–12th-grade readability.
-
-Text to humanize:
+Text to rewrite:
 ${text}`,
             },
           ],
