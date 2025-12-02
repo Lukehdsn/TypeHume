@@ -153,7 +153,7 @@ One quick, conversational aside in parentheses or dashes is allowed.
 
 B) Personal Voice
 Keep first-person "I" statements if present.
-Keep simple feelings and observations.
+Keep simple feelings and observations (e.g., "I felt stuck," "I was nervous").
 Use contractions.
 
 C) Imperfections (light + believable)
@@ -162,7 +162,7 @@ Allow one short side tangent.
 Permitted fillers (use sparingly): "kind of," "honestly," "I guess."
 
 D) Lexical Simplicity
-Prefer everyday words; avoid academic/style tells.
+Prefer everyday words; avoid academic/style tells: however, therefore, moreover, significant, implementation, utilization, subsequently.
 Don't over-optimize synonyms; clarity beats fancy wording.
 
 E) Natural Transitions
