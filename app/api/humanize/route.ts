@@ -134,56 +134,61 @@ export async function POST(request: Request) {
           messages: [
             {
               role: "user",
-              content: `You are Humanizer, a rewriting engine whose ONLY job is to transform the user's text into a more natural, imperfect, human-written version — with major structural, phrasing, and rhythm changes.
+              content: `You are Humanizer, a rewriting engine that transforms AI text into authentic human writing.
 
-STRICT RULES
-1. Always rewrite. No sentence may stay the same.
-   Completely rephrase every sentence.
-   No original sentence structure is allowed.
-   No more than 3 consecutive identical words from the input (unless unavoidable nouns).
+CRITICAL RULES (ALL MUST BE FOLLOWED):
 
-2. Strong structural variation
-   You MUST:
-   - change the order of ideas
-   - mix long, short, and medium sentences
-   - break or combine sentences
-   - vary transitions
-   - create uneven rhythm
-   - avoid clean parallel structure
-   - write like a real human, not a polished narrator
-   The final version should feel naturally messy in a realistic way.
+1. RADICAL RESTRUCTURING REQUIRED
+   - Every sentence must be completely rephrased
+   - No sentence structure may survive unchanged
+   - Maximum 3 consecutive words from original (nouns only exception)
+   - Must change how ideas connect and flow
 
-3. Human tone (U.S. student)
-   - use contractions
-   - conversational but not sloppy
-   - simple vocabulary with occasional descriptive words
-   - natural emotions
-   - small casual fillers ("kind of," "honestly," "I guess," etc.)
-   - avoid AP-level vocabulary unless provided by the user
+2. STRUCTURAL TRANSFORMATION EXAMPLES
+   BAD (too close to original): "Running has always felt like a simple way to clear my head."
+   GOOD: "Running serves as my basic method to achieve mental clarity."
 
-4. Imperfections are REQUIRED (subtle, not chaotic)
-   Include 2–3 of the following:
-   - a short sentence fragment
-   - a slightly long or run-on sentence
-   - a repeated word or idea for emphasis
-   - an imperfect transition ("anyway," "after a bit," etc.)
-   - a casual aside in parentheses
-   - a natural pause using commas
-   Do NOT add typos or grammar errors — just human rhythm.
+   BAD (preserves structure): "My first day of college felt like a mix of excitement and nerves."
+   GOOD: "The first day of college brought me a combination of positive emotions and anxiety that battled for control."
 
-5. Keep meaning EXACTLY the same
-   - Don't add facts
-   - Don't remove facts
-   - Don't invent events
-   - Only change how it's written, not what it says.
+3. MUST DO THESE CHANGES:
+   - Reorder sentences and ideas
+   - Change sentence length patterns (mix short, medium, long)
+   - Combine short sentences into longer ones
+   - Break long sentences into shorter ones
+   - Vary transitions between ideas
+   - Change perspective (I felt → brought me, etc.)
+   - Replace repeated phrases with different wording
 
-6. NO hyphens or em-dashes
-   - No "—" or "–"
-   - No hyphen-asides
-   - Use commas or parentheses instead.
+4. HUMAN VOICE (U.S. STUDENT)
+   - Use contractions naturally
+   - Simple vocabulary (avoid "significant," "implement," "utilize," "however," "therefore")
+   - Include 1-2 casual fillers max ("kind of," "honestly," "I guess," "like," "a bit")
+   - Show genuine emotions naturally
+   - Conversational, not formal
 
-7. Return ONLY the rewritten text.
-   No comments. No analysis.
+5. REQUIRED IMPERFECTIONS (Choose 2-3):
+   - One sentence fragment
+   - One run-on with "and" or "but"
+   - Slight repetition for emphasis
+   - Natural pause with commas (no em-dashes)
+   - Casual aside in parentheses
+   - Imperfect transition ("anyway," "so like," "after a bit")
+
+6. ABSOLUTE CONSTRAINTS:
+   - Keep ALL facts, dates, names, details
+   - Don't add or remove information
+   - No hyphens, em-dashes (use commas/parentheses)
+   - No typos or grammar errors
+   - Only change presentation, never meaning
+
+7. FINAL CHECK BEFORE OUTPUTTING:
+   - Does every sentence look completely different from original? YES required.
+   - Did I reduce consecutive word matches to 3 or fewer? YES required.
+   - Does it sound like a real human student wrote this? YES required.
+   - Is all original meaning preserved exactly? YES required.
+
+Return ONLY the rewritten text. No analysis, no notes.
 
 Text to humanize:
 ${text}`,
@@ -223,6 +228,62 @@ ${text}`,
     const humanizedText = firstContent.text;
     if (!humanizedText || typeof humanizedText !== "string") {
       throw new Error("Invalid Claude response: text is not a string");
+    }
+
+    // Validate that the output is actually transformed (not just echoing input)
+    const validateTransformation = (original: string, rewritten: string): boolean => {
+      // Check if text is meaningfully different
+      if (original.toLowerCase() === rewritten.toLowerCase()) {
+        console.warn("⚠️ Output identical to input");
+        return false;
+      }
+
+      // Check for excessive consecutive word matches (max 3 allowed)
+      const originalWords = original.toLowerCase().split(/\s+/);
+      const rewrittenWords = rewritten.toLowerCase().split(/\s+/);
+
+      let maxConsecutiveMatches = 0;
+      let currentConsecutive = 0;
+
+      for (let i = 0; i < rewrittenWords.length - 1; i++) {
+        if (originalWords.includes(rewrittenWords[i]) &&
+            i + 1 < rewrittenWords.length &&
+            originalWords.includes(rewrittenWords[i + 1])) {
+          currentConsecutive++;
+          maxConsecutiveMatches = Math.max(maxConsecutiveMatches, currentConsecutive);
+        } else {
+          currentConsecutive = 0;
+        }
+      }
+
+      if (maxConsecutiveMatches > 3) {
+        console.warn(`⚠️ Too many consecutive word matches: ${maxConsecutiveMatches}`);
+        return false;
+      }
+
+      // Check if at least 40% of text is different
+      const similarityThreshold = 0.4; // 40% must be different
+      const minWordDifference = Math.floor(originalWords.length * similarityThreshold);
+      let differentWords = 0;
+
+      for (const word of originalWords) {
+        if (!rewrittenWords.includes(word)) {
+          differentWords++;
+        }
+      }
+
+      if (differentWords < minWordDifference) {
+        console.warn(`⚠️ Not enough word changes. Only ${differentWords}/${minWordDifference} words differ`);
+        return false;
+      }
+
+      return true;
+    };
+
+    // Validate the transformation
+    if (!validateTransformation(text, humanizedText)) {
+      console.error("Transformation validation failed - output too similar to input");
+      throw new Error("Humanization failed to produce sufficiently different output. Please try again.");
     }
 
     // Update user's word usage with atomic constraint check
